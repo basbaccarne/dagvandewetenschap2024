@@ -33,7 +33,7 @@ An interactive installation using punching bags and a robot to engage kids in fu
 * **Conclusion**: The robot thanks the child for participating and encourages them to stay active. It also provides a brief educational message about the importance of physical activity, especially in recovery situations. The robot's message is designed to be both informative and motivating.
 * **Waiting Queue Activities**: To keep the children entertained while waiting for their turn, the installation includes playful physical activities such as a balancing board, hopscotch, and a mini obstacle course. These activities help keep the children engaged and active, even while they wait.
 
-# Benchmarks
+# Benchmarks 4 inspiration
 * [DIY Smart Punching Bag](https://www.instructables.com/Smart-Punching-Bag/)
 * [Project HitBox](https://projects.learningplanetinstitute.org/projects/hitbox-interactive-boxing-bag/description)
 * [Padipata Interactive Punching Bag](https://www.facebook.com/GIGadgets.Fans/videos/1075264679489205/)
@@ -45,7 +45,7 @@ Waiting cue (ideation)
 * Balance board(s)
 * Bridges
 * Tunnels
-* Jumming spots (different color patterns)
+* Jumping spots (different color patterns)
 * Stretching station
 * Web structure to climb through
 
