@@ -1,8 +1,8 @@
 # PunchPal
 *Made with* ❤ *by Bas Baccarne & Jamil Joundi*  
 *Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Maike Somers, Renée Bultijnck & Emma Tack*  
-*A [comon](http://www.comon.gent) project, built for [Dag van de Wetenschap 2024](https://www.dagvandewetenschap.be/)*
-
+*A [comon](http://www.comon.gent) project, built for [Dag van de Wetenschap 2024](https://www.dagvandewetenschap.be/)*  
+<img src="img/AIdeation1.png" width="400"> <img src="img/AIdeation2.png" width="400">  
 An interactive installation using punching bags and a robot to engage kids in fun physical challenges and provide personalized activity advice
 
 #  Shor term action points
