@@ -5,7 +5,7 @@
 <img src="img/AIdeation1.png" width="400"> <img src="img/AIdeation2.png" width="400">  
 An interactive installation using punching bags and a robot to engage kids in fun physical challenges and provide personalized activity advice
 
-#  Shor term action points
+#  Short term action points
 - [ ] Margot/Maike: Buy a pilot punch bag
 - [ ] Jeroen/Renée/Emma: Identify most appropriate challenges
 - [ ] Jeroen/Renée/Emma: Identify most appropriate personalized advice
