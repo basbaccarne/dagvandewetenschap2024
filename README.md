@@ -50,14 +50,22 @@ Waiting cue (ideation)
 * Web structure to climb through
 
 Punching bag
-* Velostat
-* Wires
-* Arduino (or Raspi?)
-* LED strips or flexible matrices
-* Audio Unit
+* Velostat (temporary: [RP-S40-ST Thin Film Pressure Sensor](https://www.dfrobot.com/product-1842.html))
+* 2x [Arduino Nano ESP32](https://store.arduino.cc/en-be/products/nano-esp32-with-headers) 
+* [LED strip](https://www.dfrobot.com/product-1835.html)
+* Audio Driver with SD card ([DFPlayer](https://www.dfrobot.com/product-1121.html)) + SD card
+* [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
 * Power
 * Punching bag
 
 Robot
 * Dwengo robot
 * Casing for the robot
+
+# Subchallenges
+Before creating the final prrototypes, we solve a couple of subchallenges
+- [ ] Calibrate sensor and trigger on punch
+- [ ] Send trigger from Arduino A to Arduino B over BLE
+- [ ] Reveive trigger and play a sound
+- [ ] Do some stuff with the LED strip
+- [ ] Build a state machine
