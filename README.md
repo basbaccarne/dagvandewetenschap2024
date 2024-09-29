@@ -61,6 +61,7 @@ Punching bag
 Robot
 * Dwengo robot
 * Casing for the robot
+* Or we could do something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))?
 
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
