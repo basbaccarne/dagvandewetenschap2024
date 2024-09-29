@@ -70,4 +70,4 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
 - [X] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [X] Build a state machine ([test](tests/statemachine_simplesycle.ino))
-- [ ] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino))
+- [ ] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino)) ([eyes](tests/anthro_eyes.ino))
