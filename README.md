@@ -69,5 +69,5 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
 - [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
 - [X] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
-- [ ] Build a state machine
-- [ ] Anthropomorphic stuff with two 8x8 led matrices
+- [X] Build a state machine ([test](tests/statemachine_simplesycle.ino))
+- [ ] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino))
