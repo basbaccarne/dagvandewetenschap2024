@@ -67,7 +67,7 @@ Robot
 Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
 - [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
-- [ ] Reveive trigger and play a sound
-- [ ] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
+- [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+- [X] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [ ] Build a state machine
-- [ ] Anthropomorphic with two 8x8 led matrices
+- [ ] Anthropomorphic stuff with two 8x8 led matrices
