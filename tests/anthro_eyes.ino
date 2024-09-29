@@ -8,10 +8,10 @@
 const uint8_t PROGMEM eye_open[] = {
     0b11111111,
     0b11111111,
-    0b11100111,
-    0b11100111,
-    0b11100111,
-    0b11100111,
+    0b11000011,
+    0b11000011,
+    0b11000011,
+    0b11000011,
     0b11111111,
     0b11111111};
 
@@ -30,8 +30,8 @@ const uint8_t PROGMEM eye_halfopen[] = {
     0b11111111,
     0b11111111,
     0b11111111,
-    0b11100111,
-    0b11100111,
+    0b11000011,
+    0b11000011,
     0b11111111,
     0b11111111};
 
@@ -57,20 +57,22 @@ void loop()
     matrix.fillScreen(0);
     matrix.drawBitmap(0, 0, eye_open, 8, 8, blue);
     matrix.show();
-    delay(random(200, 3000));
+    delay(random(2500, 4500));
 
     matrix.fillScreen(0);
     matrix.drawBitmap(0, 0, eye_halfopen, 8, 8, blue);
     matrix.show();
-    delay(50);
+    delay(random(50, 100));
 
     matrix.fillScreen(0);
     matrix.drawBitmap(0, 0, eye_closed, 8, 8, blue);
     matrix.show();
-    delay(50);
+    delay(random(50, 100));
 
     matrix.fillScreen(0);
     matrix.drawBitmap(0, 0, eye_halfopen, 8, 8, blue);
     matrix.show();
-    delay(50);
+    delay(random(50, 100));
+
+    
 }
