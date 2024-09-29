@@ -70,3 +70,4 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [ ] Reveive trigger and play a sound
 - [ ] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [ ] Build a state machine
+- [ ] Anthropomorphic with two 8x8 led matrices
