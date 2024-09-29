@@ -61,11 +61,13 @@ Punching bag
 Robot
 * Dwengo robot
 * Casing for the robot
+* Or we could do something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))?
 
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
-- [ ] Calibrate sensor and trigger on punch
+- [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
 - [ ] Send trigger from Arduino A to Arduino B over BLE
 - [ ] Reveive trigger and play a sound
-- [ ] Do some stuff with the LED strip
+- [ ] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [ ] Build a state machine
+- [ ] Anthropomorphic with two 8x8 led matrices
