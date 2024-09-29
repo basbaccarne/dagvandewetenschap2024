@@ -66,7 +66,7 @@ Robot
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
-- [ ] Send trigger from Arduino A to Arduino B over BLE
+- [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
 - [ ] Reveive trigger and play a sound
 - [ ] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [ ] Build a state machine
