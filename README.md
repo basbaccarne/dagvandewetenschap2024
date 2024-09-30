@@ -60,10 +60,16 @@ Punching bag
 * We could wrap things around the punhcing bag with cling film
 
 Robot
-* Dwengo robot
-* Casing for the robot
-* Or we could do something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))?
-
+* Active plan: our own robot: a Dall-E like head attached to the punching bag (something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))
+  - 2 x 8x8 LED matrix for the eyes
+  - 2 x microservo for simple head movement
+  - Core Arduino to process everything
+  - 3D printed body
+  - tension strap to attach the body to the bag
+* Backup plan
+   - Dwengo robot
+   - Casing for the robot
+   
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
