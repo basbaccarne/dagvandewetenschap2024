@@ -60,21 +60,21 @@ Punching bag
 * We could wrap things around the punhcing bag with cling film
 
 Robot
-* Active plan: our own robot: a Dall-E like head attached to the punching bag (something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))
+* Active plan: our own robot: a WALL-E like head attached to the punching bag (something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))
   - 2 x 8x8 LED matrix for the eyes
   - 2 x microservo for simple head movement
   - Core Arduino to process everything
   - 3D printed body
   - tension strap to attach the body to the bag
 * Backup plan
-   - Dwengo robot
+   - Dwengo robot (meerwaarde?)
    - Casing for the robot
    
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
-- [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
+- [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino)) -- if we go for the robot head plan, this can be a single UNO, teensy or Mega.
 - [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
 - [X] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [X] Build a state machine ([test](tests/statemachine_simplesycle.ino))
-- [ ] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino)) ([eyes](tests/anthro_eyes.ino))
+- [X] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino)) ([eyes](tests/anthro_eyes.ino))
