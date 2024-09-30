@@ -57,6 +57,7 @@ Punching bag
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
 * Power
 * Punching bag
+* We could wrap things around the punhcing bag with cling film
 
 Robot
 * Dwengo robot
