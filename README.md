@@ -10,6 +10,7 @@ An interactive installation using punching bags and a robot to engage kids in fu
 - [ ] Jeroen/Renée/Emma: Identify most appropriate challenges
 - [ ] Jeroen/Renée/Emma: Identify most appropriate personalized advice
 - [ ] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
+- [ ] Jeroen/Renée: Waiting cue speelelementen
 
 # General goals
 * The goal of this installation is to create an engaging and interactive installation that raises awareness about the importance of physical activity, especially in complex situations like recovering after cancer treatment.
