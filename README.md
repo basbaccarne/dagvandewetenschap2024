@@ -6,7 +6,7 @@
 An interactive installation using punching bags and a robot to engage kids in fun physical challenges and provide personalized activity advice
 
 #  Short term action points
-- [ ] Margot/Maike: Buy a pilot punch bag
+- [X] Margot: Buy a pilot punch bag
 - [ ] Jeroen/Renée/Emma: Identify most appropriate challenges
 - [ ] Jeroen/Renée/Emma: Identify most appropriate personalized advice
 - [ ] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
