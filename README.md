@@ -73,6 +73,7 @@ Robot
    
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
+- [x] Simple velostat test & 3.3V optimizization ([test](tests/punch%20simple%20velostat.ino))
 - [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
 - [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino)) -- if we go for the robot head plan, this can be a single UNO, teensy or Mega.
 - [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
