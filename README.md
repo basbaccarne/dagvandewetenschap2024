@@ -1,15 +1,16 @@
 # PunchPal
 *Made with* ❤ *by Bas Baccarne & Jamil Joundi*  
 *Supported with*🔥 *by Jeroen Bougonjon, Line Winey, Margot Bulcke, Maike Somers, Renée Bultijnck & Emma Tack*  
-*A [comon](http://www.comon.gent) project, built for [Dag van de Wetenschap 2024](https://www.dagvandewetenschap.be/)*    
+*A [comon](http://www.comon.gent) project, built for [Dag van de Wetenschap 2024](https://www.dagvandewetenschap.be/)*    (24 november 2024)    
 <img src="img/AIdeation1.png" width="400"> <img src="img/AIdeation2.png" width="400">  
 An interactive installation using punching bags and a robot to engage kids in fun physical challenges and provide personalized activity advice
 
 #  Short term action points
-- [ ] Margot/Maike: Buy a pilot punch bag
+- [X] Margot: Buy a pilot punch bag
 - [ ] Jeroen/Renée/Emma: Identify most appropriate challenges
 - [ ] Jeroen/Renée/Emma: Identify most appropriate personalized advice
 - [ ] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
+- [ ] Jeroen/Renée: Waiting cue speelelementen (optional?)
 
 # General goals
 * The goal of this installation is to create an engaging and interactive installation that raises awareness about the importance of physical activity, especially in complex situations like recovering after cancer treatment.
@@ -57,17 +58,24 @@ Punching bag
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
 * Power
 * Punching bag
+* We could wrap things around the punhcing bag with cling film
 
 Robot
-* Dwengo robot
-* Casing for the robot
-* Or we could do something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))?
-
+* Active plan: our own robot: a WALL-E like head attached to the punching bag (something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))
+  - 2 x 8x8 LED matrix for the eyes
+  - 2 x microservo for simple head movement
+  - Core Arduino to process everything
+  - 3D printed body
+  - tension strap to attach the body to the bag
+* Backup plan
+   - Dwengo robot (meerwaarde?)
+   - Casing for the robot
+   
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
-- [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
+- [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino)) -- if we go for the robot head plan, this can be a single UNO, teensy or Mega.
 - [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
 - [X] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 - [X] Build a state machine ([test](tests/statemachine_simplesycle.ino))
-- [ ] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino)) ([eyes](tests/anthro_eyes.ino))
+- [X] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino)) ([eyes](tests/anthro_eyes.ino))
