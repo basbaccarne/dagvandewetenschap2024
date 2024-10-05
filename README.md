@@ -73,10 +73,17 @@ Robot
    
 # Subchallenges
 Before creating the final prrototypes, we solve a couple of subchallenges
-- [x] Simple velostat test & 3.3V optimizization ([test](tests/punch%20simple%20velostat.ino))
-- [X] Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
-- [X] Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino)) -- if we go for the robot head plan, this can be a single UNO, teensy or Mega.
-- [X] Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
-- [X] Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
-- [X] Build a state machine ([test](tests/statemachine_simplesycle.ino))
-- [X] Anthropomorphic stuff with two 8x8 led matrices ([head movement](tests/anthro_headmovement.ino)) ([eyes](tests/anthro_eyes.ino))
+- [x] Punch: Simple velostat test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
+- [X] Punch: Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
+***
+- [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
+- [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino))
+---
+- [X] Audio: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+- [X] LED: Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
+---
+- [X] Control Room: Build a state machine ([test](tests/statemachine_simplesycle.ino))
+---
+- [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
+- [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))
+- [ ] Robot: outer casing
