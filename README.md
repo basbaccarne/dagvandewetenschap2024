@@ -87,3 +87,5 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
 - [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))
 - [ ] Robot: outer casing
+---
+- [ ] [diagram]([url](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1))   
