@@ -1,78 +1,91 @@
-// This code tests facial expressions on a 8x8 matrix
-// expressions are stored as PROGMEM bitmaps
-// https://adestefawp.wordpress.com/projects/led-eyes/
-// https://xantorohara.github.io/led-matrix-editor/
+/*
+This code tests facial expressions on a 8x8 matrix
+- The robot has two eyes, which are 2 coupled 8x8 matrices
 
-#include <Adafruit_NeoMatrix.h>
+expressions are stored as PROGMEM bitmaps
+- https://adestefawp.wordpress.com/projects/led-eyes/
+- https://xantorohara.github.io/led-matrix-editor/
 
-const uint8_t PROGMEM eye_open[] = {
-    0b11111111,
-    0b11111111,
-    0b11000011,
-    0b11000011,
-    0b11000011,
-    0b11000011,
-    0b11111111,
-    0b11111111};
+Information on the Adafruit 8x8 matrix:
+- https://www.adafruit.com/product/870
+- The backpacks come with address-selection jumpers so you can connect up to four mini 8x8's on a single I2C bus
+- The adafuit 8x8 matrix works with the backpack library
 
-const uint8_t PROGMEM eye_closed[] = {
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11111111};
+wiring:
++  ---------------------->  Arduino 3.3V
+-  ---------------------->  Arduino GND
+D  ---------------------->  Arduino SDA
+C  ---------------------->  Arduino SCL
+>> Chain second 8x8 matrix to the first (+ to +, - to -, D to D, C to C)
+*/
 
-const uint8_t PROGMEM eye_halfopen[] = {
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11111111,
-    0b11000011,
-    0b11000011,
-    0b11111111,
-    0b11111111};
+#include <Adafruit_GFX.h>
+#include <Adafruit_LEDBackpack.h>
 
-#define PIXEL_PIN 11
-#define MATRIX_NUMBER_OF_COLUMNS 8
-#define MATRIX_NUMBER_OF_ROWS 8
+// emotions
+static const uint8_t PROGMEM
+    eye_open_bmp[] = {
+        0b11111111,
+        0b11111111,
+        0b11000011,
+        0b11000011,
+        0b11000011,
+        0b11000011,
+        0b11111111,
+        0b11111111},
+    eye_closed_bmp[] = {
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11111111
+        }, 
+    eye_halfopen_bmp[] = {
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11111111, 
+        0b11000011, 
+        0b11000011, 
+        0b11111111, 
+        0b11111111
+        };
 
-// configure the neopixel matrix
-Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(8, 8, PIXEL_PIN, NEO_MATRIX_BOTTOM + NEO_MATRIX_LEFT + NEO_MATRIX_ROWS + NEO_MATRIX_ZIGZAG, NEO_GRB + NEO_KHZ800);
-
-// set main color
-uint32_t blue = matrix.Color(255, 0, 0);
+Adafruit_8x8matrix matrix = Adafruit_8x8matrix();
 
 void setup()
 {
-    matrix.begin();
-    matrix.setBrightness(255); // 0 to 255
-    matrix.show();             // Initialize all pixels to 'off'
+    Serial.begin(9600);
+    matrix.begin(0x70); // I2C address
 }
 
 void loop()
 {
-    matrix.fillScreen(0);
-    matrix.drawBitmap(0, 0, eye_open, 8, 8, blue);
-    matrix.show();
-    delay(random(2500, 4500));
 
-    matrix.fillScreen(0);
-    matrix.drawBitmap(0, 0, eye_halfopen, 8, 8, blue);
-    matrix.show();
-    delay(random(50, 100));
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_open_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
 
-    matrix.fillScreen(0);
-    matrix.drawBitmap(0, 0, eye_closed, 8, 8, blue);
-    matrix.show();
-    delay(random(50, 100));
+    delay(random(2000, 4000));
 
-    matrix.fillScreen(0);
-    matrix.drawBitmap(0, 0, eye_halfopen, 8, 8, blue);
-    matrix.show();
-    delay(random(50, 100));
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
 
-    
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_closed_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(100, 130));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
 }
