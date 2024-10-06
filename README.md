@@ -88,4 +88,4 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))
 - [ ] Robot: outer casing
 ---
-- [ ] [diagram]([url](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1))   
+- [ ] [diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1)   
