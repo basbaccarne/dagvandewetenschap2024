@@ -50,7 +50,45 @@ static const uint8_t PROGMEM
         0b11100111, 
         0b11111111, 
         0b01111110, 
-        0b00111100};
+        0b00111100},
+    eye_upperleft_bmp[] = {
+        0b00111100,
+        0b01111110,
+        0b11001111,
+        0b11001111,
+        0b11111111,
+        0b11111111,
+        0b01111110,
+        0b00111100},
+    eye_upperleft_halfopen_bmp[] = {
+        0b00111100,
+        0b01111110,
+        0b11111111,
+        0b11001111,
+        0b11111111,
+        0b11111111,
+        0b01111110,
+        0b00111100},
+    eye_upperright_bmp[] = {
+        0b00111100,
+        0b01111110,
+        0b11110011,
+        0b11110011,
+        0b11111111,
+        0b11111111,
+        0b01111110,
+        0b00111100} ,    
+    eye_upperright_halfopen_bmp[] = {
+        0b00111100,
+        0b01111110,
+        0b11111111,
+        0b11110011,
+        0b11111111,
+        0b11111111,
+        0b01111110,
+        0b00111100}     
+      ;
+
 
 Adafruit_8x8matrix matrix = Adafruit_8x8matrix();
 
@@ -63,6 +101,7 @@ void setup()
 void loop()
 {
 
+    // central
     matrix.clear();
     matrix.drawBitmap(0, 0, eye_open_bmp, 8, 8, LED_ON);
     matrix.writeDisplay();
@@ -86,4 +125,100 @@ void loop()
     matrix.writeDisplay();
 
     delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_open_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+    delay(random(500, 1000));
+
+    // left
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperleft_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(2000, 4000));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperleft_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_closed_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(100, 130));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperleft_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperleft_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+    delay(random(500,1000));
+
+    // central
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_open_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(2000, 4000));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_closed_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(100, 130));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_open_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+    delay(random(500, 1000));
+
+    // right
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperright_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(2000, 4000));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperright_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_closed_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(100, 130));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperright_halfopen_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+
+    delay(random(80, 120));
+
+    matrix.clear();
+    matrix.drawBitmap(0, 0, eye_upperright_bmp, 8, 8, LED_ON);
+    matrix.writeDisplay();
+    delay(random(500,1000));
+    
 }
