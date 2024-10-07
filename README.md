@@ -76,8 +76,8 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [x] Punch: Simple velostat test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
 - [X] Punch: Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
 ***
-- [X] oefening 1: Max force ([test](tests/highesthit_hitcounter.ino)
-- [ ] oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino) (not optimal yet)
+- [X] oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
+- [ ] oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
 - [ ] Oefening 3: Conditie/slabbaken
 ***
 - [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
