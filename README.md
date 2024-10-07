@@ -83,7 +83,6 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
 - [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino))
 ---
-- [X] Audio: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
 - [X] LED: Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 ---
 - [X] Control Room: Build a state machine ([test](tests/statemachine_simplesycle.ino))
@@ -91,5 +90,8 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
 - [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))
 - [ ] Robot: outer casing
+- [ ] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+- [ ] Robot: Making the speaker loud enough
+- [ ] Robot: Sending a signal to a screen for more info
 ---
 - [ ] [diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1)   
