@@ -3,7 +3,7 @@
 
 // Wires:
 // Arduino D10 to DF player TX
-// Arduino D11 to DF player RX
+// Arduino D11 (via 1k resistor) to DF player RX
 // Arduino GND to DF player GND
 // Arduino 5V to DF player VCC
 
