@@ -7,9 +7,9 @@ An interactive installation using punching bags and a robot to engage kids in fu
 
 #  Short term action points
 - [X] Margot: Buy a pilot punch bag
-- [ ] Jeroen/Renée/Emma: Identify most appropriate challenges
-- [ ] Jeroen/Renée/Emma: Identify most appropriate personalized advice
-- [ ] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
+- [X] Jeroen/Renée/Emma: Identify most appropriate challenges
+- [X] Jeroen/Renée/Emma: Identify most appropriate personalized advice
+- [X] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
 - [ ] Jeroen/Renée: Waiting cue speelelementen (optional?)
 
 # General goals
