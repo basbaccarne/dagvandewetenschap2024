@@ -53,7 +53,7 @@ Waiting cue (ideation)
 Punching bag
 * Velostat (temporary: [RP-S40-ST Thin Film Pressure Sensor](https://www.dfrobot.com/product-1842.html))
 * 2x [Arduino Nano ESP32](https://store.arduino.cc/en-be/products/nano-esp32-with-headers) 
-* [LED strip](https://www.dfrobot.com/product-1835.html)
+* WS2812 RGB [LED strip](https://www.dfrobot.com/product-1835.html)
 * Audio Driver with SD card ([DFPlayer](https://www.dfrobot.com/product-1121.html)) + SD card
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
 * Power
