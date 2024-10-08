@@ -76,6 +76,9 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [x] Punch: Simple velostat test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
 - [X] Punch: Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
 ***
+- [ ] Punch bag: Velostat attachment
+- [ ] Punch bag: LED strip & Arduino attachment + power supply
+***
 - [X] oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
 - [ ] oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
 - [ ] Oefening 3: Conditie/slabbaken
@@ -86,12 +89,16 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] LED: Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 ---
 - [X] Control Room: Build a state machine ([test](tests/statemachine_simplesycle.ino))
+- [ ] Control Room: Set-up masterscript
 ---
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
 - [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))
 - [ ] Robot: outer casing
 - [ ] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
-- [ ] Robot: Making the speaker loud enough
+- [ ] Robot: Making the speaker loud enough (extra line out?)
 - [ ] Robot: Sending a signal to a screen for more info
+---
+- [ ] Extra screen: send signal to Raspi with Protopie
+- [ ] Extra screen: show stuff using Protopie with Serial switches
 ---
 - [ ] [diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1)   
