@@ -86,7 +86,7 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
 - [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino))
 ---
-- [X] LED: Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
+- [X] LED: Do some stuff with the LED strip [[rainbow test](tests/LEDstrip_rainbowtest.ino), [punch test](tests/LEDstrip_punchtest.ino)]
 ---
 - [X] Control Room: Build a state machine ([test](tests/statemachine_simplesycle.ino))
 - [ ] Control Room: Set-up masterscript
