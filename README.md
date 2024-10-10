@@ -79,8 +79,8 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [ ] Punch bag: Velostat attachment
 - [ ] Punch bag: LED strip & Arduino attachment + power supply
 ***
-- [X] oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
-- [ ] oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
+- [X] Oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
+- [ ] Oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
 - [ ] Oefening 3: Conditie/slabbaken
 ***
 - [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
@@ -101,4 +101,4 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [ ] Extra screen: send signal to Raspi with Protopie
 - [ ] Extra screen: show stuff using Protopie with Serial switches
 ---
-- [ ] [diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1)   
+- [ ] [Diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1)   
