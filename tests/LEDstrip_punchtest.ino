@@ -1,7 +1,7 @@
 // This script drives a LED strip up and down depending on the force detected by the velostat
 
 // LED strip: WS2812 RGB LED strip
-// Requires 5V & 0.2W per LED (works on Nano with 5V enabled)
+// Requires 5V & 0.2W per LED (works on Nano with 5V bridge enabled - only when powered on USB)
 // N = 120 leds on an original strip
 
 // We ditched the Neopixel library because it was too slow
@@ -13,6 +13,11 @@ Wiring:
 - Connect the GND of the LED strip to the GND of the Arduino
 - Connect the DIN of the LED strip to pin 7 of the Arduino
 - Connect the GND of the external power source to the GND of the Arduino
+
+- connect (-) side of the velostat [to] side 1 of resistor (1.6 KΩ, brow/blue/red)) 
+- connect side 1 of the resistor [to] A0
+- connect side 2 of the resistor [to] GND
+- connect (+) side of the velostat [to] 3.3V
 */
 
 #include <FastLED.h>
