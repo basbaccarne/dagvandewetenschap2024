@@ -7,9 +7,9 @@ An interactive installation using punching bags and a robot to engage kids in fu
 
 #  Short term action points
 - [X] Margot: Buy a pilot punch bag
-- [ ] Jeroen/Renée/Emma: Identify most appropriate challenges
-- [ ] Jeroen/Renée/Emma: Identify most appropriate personalized advice
-- [ ] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
+- [X] Jeroen/Renée/Emma: Identify most appropriate challenges
+- [X] Jeroen/Renée/Emma: Identify most appropriate personalized advice
+- [X] Jeroen/Bas/Jamil: Figure out Dwengo ~ Arduino communication
 - [ ] Jeroen/Renée: Waiting cue speelelementen (optional?)
 
 # General goals
@@ -53,7 +53,7 @@ Waiting cue (ideation)
 Punching bag
 * Velostat (temporary: [RP-S40-ST Thin Film Pressure Sensor](https://www.dfrobot.com/product-1842.html))
 * 2x [Arduino Nano ESP32](https://store.arduino.cc/en-be/products/nano-esp32-with-headers) 
-* [LED strip](https://www.dfrobot.com/product-1835.html)
+* WS2812 RGB [LED strip](https://www.dfrobot.com/product-1835.html)
 * Audio Driver with SD card ([DFPlayer](https://www.dfrobot.com/product-1121.html)) + SD card
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
 * Power
@@ -76,14 +76,29 @@ Before creating the final prrototypes, we solve a couple of subchallenges
 - [x] Punch: Simple velostat test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
 - [X] Punch: Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
 ***
+- [ ] Punch bag: Velostat attachment
+- [ ] Punch bag: LED strip & Arduino attachment + power supply
+***
+- [X] oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
+- [ ] oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
+- [ ] Oefening 3: Conditie/slabbaken
+***
 - [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
 - [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino))
 ---
-- [X] Audio: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
 - [X] LED: Do some stuff with the LED strip [[test](tests/punch_withled.ino)]
 ---
 - [X] Control Room: Build a state machine ([test](tests/statemachine_simplesycle.ino))
+- [ ] Control Room: Set-up masterscript
 ---
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
 - [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))
 - [ ] Robot: outer casing
+- [ ] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+- [ ] Robot: Making the speaker loud enough (extra line out?)
+- [ ] Robot: Sending a signal to a screen for more info
+---
+- [ ] Extra screen: send signal to Raspi with Protopie
+- [ ] Extra screen: show stuff using Protopie with Serial switches
+---
+- [ ] [diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1)   
