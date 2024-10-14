@@ -9,15 +9,20 @@
 
 /*
 Wiring:
-- Connect the 5V of the LED strip to an external 5V power source
-- Connect the GND of the LED strip to the GND of the Arduino
-- Connect the DIN of the LED strip to pin 7 of the Arduino
-- Connect the GND of the external power source to the GND of the Arduino
+- Power:
+  * External power to VIN Arduino
+  * External power to LED strip
+  * External power to (+) side Velostat
 
-- connect (-) side of the velostat [to] side 1 of resistor (1.6 KΩ, brow/blue/red)) 
-- connect side 1 of the resistor [to] A0
-- connect side 2 of the resistor [to] GND
-- connect (+) side of the velostat [to] 3.3V
+- Grounds
+  * External GND to GND Arduino
+  * External GND to GND LED strip
+  * External GND to side 2 of the resistor 
+
+- Signals
+  * DIN of the LED strip to pin 7 of the Arduino
+  * (-) side velostat to side 1 of resistor (1.6 KΩ, brow/blue/red)) 
+  * side 1 of the resistor [to] A0
 */
 
 #include <FastLED.h>
@@ -26,29 +31,41 @@ Wiring:
 #define ledCount 120
 #define sensorPin A0
 
+// adapt to set thesholds & timers
+const int lower_force_threshold = 200;
+const long ledInterval = 0;
+const long sensorInterval = 10;
+
+unsigned long previousMillis = 0;
+
+
 int sensorReading = 0;
-int mappedPressure = 0;
 
 CRGB leds[ledCount];
 int currentLitLEDs = 0;
-int targetLitLEDs = 0;  
+int targetLitLEDs = 0;
 
 void setup() {
-  pinMode(ledPin, INPUT);
   Serial.begin(9600);
-
   FastLED.addLeds<NEOPIXEL, ledPin>(leds, ledCount);
   FastLED.clear();
-  FastLED.show(); 
+  FastLED.show();
 }
 
 void loop() {
+  unsigned long currentMillis = millis();
 
-  sensorReading = analogRead(sensorPin);
-  Serial.print(sensorReading);
-  targetLitLEDs  = map(sensorReading, 200, 1023, 0, ledCount);
-  Serial.print(" | ");
-  Serial.println(mappedPressure);
+  if (currentMillis - previousMillis >= sensorInterval) {
+    previousMillis = currentMillis;
+    sensorReading = analogRead(sensorPin);
+    Serial.print(sensorReading);
+    targetLitLEDs = map(sensorReading, lower_force_threshold, 1023, 0, ledCount);
+    if (targetLitLEDs < 0) {
+      targetLitLEDs = 0;
+    }
+    Serial.print(",");
+    Serial.println(targetLitLEDs);
+  }
 
   // If the force value is increasing, go up fast
   if (targetLitLEDs > currentLitLEDs) {
@@ -60,7 +77,7 @@ void loop() {
   else if (targetLitLEDs < currentLitLEDs) {
     currentLitLEDs--;  // Go down one LED at a time (slowly)
     updateLEDStrip(currentLitLEDs);
-    delay(10);  // Slow down the decrease
+    delay(ledInterval);  // Slow down the decrease
   }
 }
 
@@ -73,7 +90,7 @@ void updateLEDStrip(int numLitLEDs) {
       leds[i] = CRGB::Black;  // Turn off the LED
     }
   }
-  
+
   // Update the LED strip with the new values
   FastLED.show();
 }
