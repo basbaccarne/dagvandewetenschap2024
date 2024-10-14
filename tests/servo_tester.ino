@@ -1,7 +1,7 @@
 /*
 This is a simple script to test a servo motor. It moves the servo to 0, 90, and 180 degrees, waiting for a second between each movement.
 Wiring: external 5V power source to the servo, GND of the servo to the GND of the Arduino, and the signal wire of the servo to pin 11 of the Arduino.
-Draws peaks around 0,2 A when moving.
+Draws peaks around 0,2 A when moving. Multiple motorn peak higher/
 */
 
 #include <Servo.h>
