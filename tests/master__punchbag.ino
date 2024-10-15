@@ -8,7 +8,7 @@ In entails the following components:
 
 ** LED **
 - LED strip: WS2812 RGB LED strip
--  Requires 5V & 0.2W per LED (works on Nano with 5V bridge enabled - only when powered on USB)
+-  Requires 5V & 0.2W per LED = 4.8 A for 120 leds
 - N = 120 leds on an original strip
 - We ditched the Neopixel library because it was too slow
 - The FastLED library works much better
@@ -39,6 +39,7 @@ In entails the following components:
 const int lower_force_threshold = 200;
 const long ledInterval = 0;
 const long sensorInterval = 10;
+int brightness = 100; // Set brightness level (0-255) - check for amps (adapter has 1A max)
 
 unsigned long previousMillis = 0;
 
@@ -51,6 +52,7 @@ int targetLitLEDs = 0;
 void setup() {
   Serial.begin(9600);
   FastLED.addLeds<NEOPIXEL, ledPin>(leds, ledCount);
+  FastLED.setBrightness(brightness); 
   FastLED.clear();
   FastLED.show();
 }
