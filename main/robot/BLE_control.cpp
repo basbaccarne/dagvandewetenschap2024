@@ -6,7 +6,8 @@ BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
 BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
 
 // define the constructor (for easier referencing in the .ino script)
-BLEControl::BLEControl() : floatValue(0.0) {
+BLEControl::BLEControl()
+  : floatValue(0.0) {
 }
 
 // initialize the BLE connection
@@ -61,5 +62,5 @@ void BLEControl::checkForSignal() {
 }
 
 float BLEControl::getFloatValue() {
-    return floatValue;
+  return floatValue;
 }

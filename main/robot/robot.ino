@@ -40,7 +40,7 @@ enum State {
   CHALLENGE4_DEBRIEF,
   CONCLUSION
 };
-State currentState = BOOTING;  // Initial state
+State currentState = BOOTING;      // Initial state
 State previousState = CONCLUSION;  // Previous state
 
 void setup() {
@@ -51,17 +51,17 @@ void setup() {
 void loop() {
   switch (currentState) {
     case BOOTING:
-    // status update
-      if(previousState != BOOTING){
+      // status update
+      if (previousState != BOOTING) {
         Serial.println("Booting ...");
         previousState = BOOTING;
       }
-    // get puch value
+      // get puch value
       bleControl.checkForSignal();
       float value = bleControl.getFloatValue();
       Serial.println(value);
 
-      
+
       delay(10);
       break;
   }
