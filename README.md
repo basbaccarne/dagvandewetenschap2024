@@ -54,8 +54,8 @@ The punching bag is a boxing bag, hung at the ceiling, with power coming from ab
 3.  The force is send over BLE to be processed by the robot control center.
 
 ### Hardware components
-* [Velostat]([https://www.dfrobot.com/product-1842.html](https://www.kiwi-electronics.com/nl/pressure-sensitive-conductive-sheet-velostat-linqstat-2808?gad_source=1&gclid=Cj0KCQjw99e4BhDiARIsAISE7P83tbKT8K8KwEgOXDDLqLYTPzCBY2VCoNgPV55UpImcOOfay8eXonoaAoaCEALw_wcB)))
-* [Arduino Nano 33 IOT]([https://store.arduino.cc/en-be/products/nano-esp32-with-headers](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)) 
+* [Velostat](https://www.dfrobot.com/product-1842.html](https://www.kiwi-electronics.com/nl/pressure-sensitive-conductive-sheet-velostat-linqstat-2808?gad_source=1&gclid=Cj0KCQjw99e4BhDiARIsAISE7P83tbKT8K8KwEgOXDDLqLYTPzCBY2VCoNgPV55UpImcOOfay8eXonoaAoaCEALw_wcB))
+* [Arduino Nano 33 IOT](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)
 * [WS2812 RGB LED strip](https://www.dfrobot.com/product-1835.html)
 * [Audio Driver with SD card (DFPlayer)](https://www.dfrobot.com/product-1121.html) + SD card with audio files
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
