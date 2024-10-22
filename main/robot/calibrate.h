@@ -1,17 +1,19 @@
-#ifndef CALIBRATEL_H
-#define CALIBRATEL_H
+#ifndef CALIBRATE_H
+#define CALIBRATE_H
 
 #include <Arduino.h>
 
 class calibrate {
-public:
+    public:
     calibrate();
-    void gather(float value);
+    void gather();
     float getBaseline();
-private:
+
+    private:
     float baseline;
     int counter;
-    float sum;
+    int sum;
+
 };
 
 #endif
