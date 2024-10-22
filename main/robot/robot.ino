@@ -1,9 +1,9 @@
 /*
  This is the main robot script. The script entails the following modules:
  - BLE control to reveice pressure readings from the punchbag
+- Speaker control to play instructions
  - Motor control to move the robot head
  - LED control to light up the robot eyes
- - Speaker control to play instructions
  - Protopie Control to send instructions to the Protopie app
 
 The program is organized across a switch case state machine. The states are:
@@ -25,58 +25,120 @@ The program is organized across a switch case state machine. The states are:
 #include "BLE_control.h"
 BLEControl bleControl;
 
+#include "calibrate.h"
+calibrate calibrate;
+
 // States
-enum State
-{
-    BOOTING,
-    IDLE,
-    WELCOME,
-    CHALLENGE1,
-    CHALLENGE1_DEBRIEF,
-    CHALLENGE2,
-    CHALLENGE2_DEBRIEF,
-    CHALLENGE3,
-    CHALLENGE3_DEBRIEF,
-    CHALLENGE4,
-    CHALLENGE4_DEBRIEF,
-    CONCLUSION
+enum State {
+  BOOTING,
+  IDLE,
+  WELCOME,
+  CHALLENGE1,
+  CHALLENGE1_DEBRIEF,
+  CHALLENGE2,
+  CHALLENGE2_DEBRIEF,
+  CHALLENGE3,
+  CHALLENGE3_DEBRIEF,
+  CHALLENGE4,
+  CHALLENGE4_DEBRIEF,
+  CONCLUSION
 };
-State currentState = BOOTING;  
+State currentState = BOOTING;
 State previousState = CONCLUSION;
 
 // Delays and timers
 unsigned long previousMillis_BLE = 0;
-int BLEInterval = 10;
+int BLEInterval = 200;
 
-void setup()
-{
-    Serial.begin(9600);
-    bleControl.begin();
+unsigned long calibration_time = 5000;
+
+// State overarchin variables
+float punch_baseline = 0;
+float punch_threshold = 500;
+
+void setup() {
+  Serial.begin(9600);
+  bleControl.begin();
 }
 
-void loop()
-{
-    // general timer for the delays
-    unsigned long currentMillis = millis();
+void loop() {
+  // general timer for the delays
+  unsigned long currentMillis = millis();
 
-    // the big state machine!
-    switch (currentState)
-    {
+  // the big state machine!
+  switch (currentState) {
     case BOOTING:
-        // status update
-        if (previousState != BOOTING)
-        {
-            Serial.println("Booting ...");
-            previousState = BOOTING;
+      // status update
+      if (previousState != BOOTING) {
+        Serial.print("state||");
+        Serial.println("BOOTING");
+        Serial.println("Booting ...");
+        previousState = BOOTING;
+      }
+      // get punch value
+      if (currentMillis - previousMillis_BLE >= BLEInterval) {
+        previousMillis_BLE = currentMillis;
+        bleControl.checkForSignal();
+        float value = bleControl.getFloatValue();
+        Serial.print("punch_value||");
+        Serial.println(value);
+
+        // calibrate
+        if (currentMillis < calibration_time) {
+          calibrate.gather(value);
+          punch_baseline = calibrate.getBaseline();
+          Serial.print("baseline||");
+          Serial.println(punch_baseline);
         }
-        // get punch value
-        if(currentMillis - previousMillis_BLE >= BLEInterval){
-            previousMillis_BLE = currentMillis;
-            bleControl.checkForSignal();
-            float value = bleControl.getFloatValue();
-            Serial.println(value);
+
+        // go to the next state
+        else {
+          currentState = IDLE;
         }
-        
-        break;
-    }
+      }
+
+      break;
+
+    case IDLE:
+      // status update
+      if (previousState != IDLE) {
+        Serial.print("Punch baseline set at: ");
+        Serial.println(punch_baseline);
+        Serial.print("state||");
+        Serial.println("IDLE");
+        Serial.println("Ready for action! Waiting for the first punch ...");
+        previousState = IDLE;
+      }
+
+      // get punch value
+      if (currentMillis - previousMillis_BLE >= BLEInterval) {
+        previousMillis_BLE = currentMillis;
+        bleControl.checkForSignal();
+        float value = bleControl.getFloatValue();
+        Serial.print("punch_value ||");
+        Serial.println(value);
+
+        if (value > punch_threshold) {
+          currentState = WELCOME;
+        }
+      }
+      break;
+
+    case WELCOME:
+      // status update
+      if (previousState != WELCOME) {
+        Serial.print("state||");
+        Serial.println("WELCOME");
+        Serial.println("Welcome! ...");
+        previousState = WELCOME;
+      }
+
+      // Welcome message
+      // play welcome message
+
+      break;
+  }
+
+  // end of the state machine
+  // below are the constantly running processes
 }
