@@ -26,7 +26,7 @@ In entails the following components:
 
 - Signals
   * DIN of the LED strip to pin 7 of the Arduino
-  * (-) side velostat to side 1 of resistor (1.6 KΩ, brow/blue/red)) 
+  * (-) side velostat to side 1 of resistor (150Ω, brown/green/brown)) 
   * side 1 of the resistor [to] A0
 */
 
