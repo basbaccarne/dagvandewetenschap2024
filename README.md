@@ -54,60 +54,85 @@ The punching bag is a boxing bag, hung at the ceiling, with power coming from ab
 3.  The force is send over BLE to be processed by the robot control center.
 
 ### Hardware components
-* [Velostat](https://www.dfrobot.com/product-1842.html](https://www.kiwi-electronics.com/nl/pressure-sensitive-conductive-sheet-velostat-linqstat-2808?gad_source=1&gclid=Cj0KCQjw99e4BhDiARIsAISE7P83tbKT8K8KwEgOXDDLqLYTPzCBY2VCoNgPV55UpImcOOfay8eXonoaAoaCEALw_wcB))
 * [Arduino Nano 33 IOT](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)
+* [Velostat](https://www.dfrobot.com/product-1842.html](https://www.kiwi-electronics.com/nl/pressure-sensitive-conductive-sheet-velostat-linqstat-2808?gad_source=1&gclid=Cj0KCQjw99e4BhDiARIsAISE7P83tbKT8K8KwEgOXDDLqLYTPzCBY2VCoNgPV55UpImcOOfay8eXonoaAoaCEALw_wcB))
 * [WS2812 RGB LED strip](https://www.dfrobot.com/product-1835.html)
 * [Audio Driver with SD card (DFPlayer)](https://www.dfrobot.com/product-1121.html) + SD card with audio files
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
 * 5V Power adapter (> 1A) + power connector
 * Some resistors, jumper cables & breadboard(s)
 * Punching bag
+### Code & casing
 * [Casing](https://a360.co/40fPP0c)
 * [Punch bag code & wiring](main/punchbag.ino)
 
 ## Robot
-The robot is ...  
-* Active plan: our own robot: a WALL-E like head attached to the punching bag (something [like this](https://www.youtube.com/watch?v=6P0FF4LY1e4))
-  - 2 x 8x8 LED matrix for the eyes
-  - 2 x microservo for simple head movement
-  - Core Arduino to process everything
-  - 3D printed body
-  - tension strap to attach the body to the bag
-* Backup plan
-   - Dwengo robot (meerwaarde?)
-   - Casing for the robot
- 
+The robot is a 3D printed robot with a moving head and LED eyes. The robot processes the data from the punch bag and speaks to the kids ([inspired by this guy](https://www.youtube.com/watch?v=6P0FF4LY1e4)). In entais the following components:
+1. It receives BLE readings from the punchbag
+2. It moves its head
+3. It has LED controlled eyes
+4. It speaks to the users
+5. It controls a screen with extra information
+6. It processes the BLE data (depending on the state)
+7. It manages the states of the interaction
+
+The robot can be in the following states: 
+1.  BOOTING: the start up and calibration state, right after the robot is turned on
+2.  IDLE: the initial state, waiting for a signal to start
+3.  WELCOME: the state where the robot welcomes the user and gives the first instructions
+4.  CHALLENGE1: the first challenge state (punch as hard as you can)
+5.  CHALLENGE1_DEBRIEF: the debrief state after the first challeng
+6.  CHALLENGE2: the second challenge state (punch as fast as you can)
+7.  CHALLENGE2_DEBRIEF: the debrief state after the second challenge
+8.  CHALLENGE3: the third challenge state (punch as accurate/steady as you can)
+9.  CHALLENGE3_DEBRIEF: the debrief state after the third challenge
+10.  CHALLENGE4: the fourth challenge state (punch as long as you can
+11.  CHALLENGE4_DEBRIEF: the debrief state after the fourth challenge
+12.  CONCLUSION: the final state, where the robot gives the final instructions and the user can leave > goes back the IDLE state
+### Hardware components
+* [Arduino Nano 33 IOT](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)
+* [Audio Driver with SD card (DFPlayer)](https://www.dfrobot.com/product-1121.html) + SD card with audio files
+* [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
+* 2 x [9g microservo](https://www.robotshop.com/products/feetech-9g-digital-servo-22kg-cm-fs90mg)
+* 2 x [Adafruit Mini 8x8 LED Matrix w/I2C Backpack](https://www.adafruit.com/product/870)
+* Some jumper cables, resistors and a breadboard
+
+### Code & casing
+* [Casing](https://a360.co/4fcM1B4)
+* [Robot code & wiring](main/robot)
+
 ## Screen
-The screen is ...
+The screen is a protopie screen with extra text and information. The screens are triggered and 'data fed' thorugh serial messages of the robot arduino. This screen runs on a raspberry pi with and external screen.
    
 # Subchallenges
 Before creating the final prototypes, we solve a couple of subchallenges
 - [x] Punch: Simple velostat test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
 - [X] Punch: Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
+- [x] Punch: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+- [x] Punch: Led strip [punch test](tests/LEDstrip_punchtest.ino) & [simple rainbox test](tests/LEDstrip_rainbowtest.ino)
 ***
 - [X] Oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
 - [ ] Oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
 - [ ] Oefening 3: Conditie/slabbaken
 ***
 - [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
-- [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino))
+- [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino)) ([simple demo sender](tests/BLE_sender_v2.ino))
 ---
 - [X] LED: Do some stuff with the LED strip [[rainbow test](tests/LEDstrip_rainbowtest.ino), [punch test](tests/LEDstrip_punchtest.ino)]
 ---
-- [X] Control Room: Build a state machine ([test](tests/statemachine_simplesycle.ino))
----
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
-- [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino)) (almost there)
+- [x] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+- [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino)) (almost there) ([simple test script to test if the servo is still working](tests/servo_tester.ino))
 - [ ] Robot: outer casing (almost there)
-- [ ] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
+
 - [ ] Robot: Making the speaker loud enough (extra line out?)
-- [ ] Robot: Sending a signal to a screen for more info
 ---
 - [ ] Extra screen: send signal to Raspi with Protopie
 - [ ] Extra screen: show stuff using Protopie with Serial switches
 ---
-- [ ] [Diagram](https://www.figma.com/board/RnfKpI49EF7PNarbsCpS0A/DVDW24?node-id=0-1&t=k4dAAmsSwIFww2ve-1) (probably to ommit)
-
+- [x] [State machine](tests/statemachine_simplesycle.ino)
+- [x] [.h and .cpp test](tests/multifilescripting)
+      
 # Benchmarks 4 inspiration
 * [DIY Smart Punching Bag](https://www.instructables.com/Smart-Punching-Bag/)
 * [Project HitBox](https://projects.learningplanetinstitute.org/projects/hitbox-interactive-boxing-bag/description)
