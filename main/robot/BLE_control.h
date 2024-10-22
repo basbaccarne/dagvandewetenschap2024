@@ -6,13 +6,15 @@
 
 class BLEControl {
 public:
-    BLEControl();
-    void begin();
-    void checkForSignal();
+  BLEControl();
+  void begin();
+  void checkForSignal();
+  float getFloatValue();
 
 private:
-    BLEDevice peripheral;
-    BLECharacteristic characteristic;
+  BLEDevice peripheral;
+  BLECharacteristic characteristic;
+  float floatValue;
 };
 
 #endif

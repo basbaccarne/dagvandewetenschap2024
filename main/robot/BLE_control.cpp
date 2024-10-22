@@ -6,7 +6,7 @@ BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
 BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
 
 // define the constructor (for easier referencing in the .ino script)
-BLEControl::BLEControl() {
+BLEControl::BLEControl() : floatValue(0.0) {
 }
 
 // initialize the BLE connection
@@ -54,9 +54,12 @@ void BLEControl::checkForSignal() {
 
     if (characteristic && characteristic.valueUpdated()) {
       // Get the value if there is an update
-      float floatValue;
-      characteristic.readValue(&floatValue, 4);
-      Serial.println(floatValue);
+      characteristic.readValue(&floatValue, sizeof(floatValue));
+      // Serial.println(floatValue);
     }
   }
+}
+
+float BLEControl::getFloatValue() {
+    return floatValue;
 }

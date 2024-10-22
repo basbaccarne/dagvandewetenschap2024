@@ -51,12 +51,18 @@ void setup() {
 void loop() {
   switch (currentState) {
     case BOOTING:
+    // status update
       if(previousState != BOOTING){
         Serial.println("Booting ...");
         previousState = BOOTING;
       }
+    // get puch value
       bleControl.checkForSignal();
-      delay(1000);
+      float value = bleControl.getFloatValue();
+      Serial.println(value);
+
+      
+      delay(10);
       break;
   }
 }
