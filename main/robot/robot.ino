@@ -115,7 +115,7 @@ void loop() {
         previousMillis_BLE = currentMillis;
         bleControl.checkForSignal();
         float value = bleControl.getFloatValue();
-        Serial.print("punch_value ||");
+        Serial.print("punch_value||");
         Serial.println(value);
 
         if (value > punch_threshold) {
