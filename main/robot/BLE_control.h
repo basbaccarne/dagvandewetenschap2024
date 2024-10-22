@@ -8,7 +8,11 @@ class BLEControl {
 public:
     BLEControl();
     void begin();
-    void readSignal();
+    void checkForSignal();
+
+private:
+    BLEDevice peripheral;
+    BLECharacteristic characteristic;
 };
 
 #endif

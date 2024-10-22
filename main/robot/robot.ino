@@ -41,6 +41,7 @@ enum State {
   CONCLUSION
 };
 State currentState = BOOTING;  // Initial state
+State previousState = CONCLUSION;  // Previous state
 
 void setup() {
   Serial.begin(9600);
@@ -50,9 +51,11 @@ void setup() {
 void loop() {
   switch (currentState) {
     case BOOTING:
-      Serial.println("Booting ...");
-      bleControl.readSignal();
-
+      if(previousState != BOOTING){
+        Serial.println("Booting ...");
+        previousState = BOOTING;
+      }
+      bleControl.checkForSignal();
       delay(1000);
       break;
   }
