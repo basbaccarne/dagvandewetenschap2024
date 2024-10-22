@@ -48,15 +48,21 @@ Extra ideas:
 * Web structure to climb through
 
 ## Punching bag
-The punhcing bag is ...  
-* Velostat (temporary: [RP-S40-ST Thin Film Pressure Sensor](https://www.dfrobot.com/product-1842.html))
-* 2x [Arduino Nano ESP32](https://store.arduino.cc/en-be/products/nano-esp32-with-headers) 
-* WS2812 RGB [LED strip](https://www.dfrobot.com/product-1835.html)
-* Audio Driver with SD card ([DFPlayer](https://www.dfrobot.com/product-1121.html)) + SD card
+The punching bag is a boxing bag, hung at the ceiling, with power coming from above.  A microcontroller on the top is power through a 5V power adapter. The punch bag detects punches using velostat. This force is processed in 3 ways: 
+1.  The force drives the led strip. A led strip op 120 leds is wrapped around the punch bag. From the middle the leds flare out at both sides. The bigger the punch, the wider the leds spread out.
+2.  The force triggers sound effects. Whenever a puch is detected a sound effect is played.
+3.  The force is send over BLE to be processed by the robot control center.
+
+### Hardware components
+* [Velostat]([https://www.dfrobot.com/product-1842.html](https://www.kiwi-electronics.com/nl/pressure-sensitive-conductive-sheet-velostat-linqstat-2808?gad_source=1&gclid=Cj0KCQjw99e4BhDiARIsAISE7P83tbKT8K8KwEgOXDDLqLYTPzCBY2VCoNgPV55UpImcOOfay8eXonoaAoaCEALw_wcB)))
+* [Arduino Nano 33 IOT]([https://store.arduino.cc/en-be/products/nano-esp32-with-headers](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)) 
+* [WS2812 RGB LED strip](https://www.dfrobot.com/product-1835.html)
+* [Audio Driver with SD card (DFPlayer)](https://www.dfrobot.com/product-1121.html) + SD card with audio files
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
-* Power
+* 5V Power adapter (> 1A) + power connector
+* Some resistors, jumper cables & breadboard(s)
 * Punching bag
-* We could wrap things around the punhcing bag with cling film
+* [Casing](https://a360.co/40fPP0c)
 * [Punch bag code & wiring](main/punchbag.ino)
 
 ## Robot
