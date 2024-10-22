@@ -26,43 +26,57 @@ The program is organized across a switch case state machine. The states are:
 BLEControl bleControl;
 
 // States
-enum State {
-  BOOTING,
-  IDLE,
-  WELCOME,
-  CHALLENGE1,
-  CHALLENGE1_DEBRIEF,
-  CHALLENGE2,
-  CHALLENGE2_DEBRIEF,
-  CHALLENGE3,
-  CHALLENGE3_DEBRIEF,
-  CHALLENGE4,
-  CHALLENGE4_DEBRIEF,
-  CONCLUSION
+enum State
+{
+    BOOTING,
+    IDLE,
+    WELCOME,
+    CHALLENGE1,
+    CHALLENGE1_DEBRIEF,
+    CHALLENGE2,
+    CHALLENGE2_DEBRIEF,
+    CHALLENGE3,
+    CHALLENGE3_DEBRIEF,
+    CHALLENGE4,
+    CHALLENGE4_DEBRIEF,
+    CONCLUSION
 };
-State currentState = BOOTING;      // Initial state
-State previousState = CONCLUSION;  // Previous state
+State currentState = BOOTING;  
+State previousState = CONCLUSION;
 
-void setup() {
-  Serial.begin(9600);
-  bleControl.begin();
+// Delays and timers
+unsigned long previousMillis_BLE = 0;
+int BLEInterval = 10;
+
+void setup()
+{
+    Serial.begin(9600);
+    bleControl.begin();
 }
 
-void loop() {
-  switch (currentState) {
+void loop()
+{
+    // general timer for the delays
+    unsigned long currentMillis = millis();
+
+    // the big state machine!
+    switch (currentState)
+    {
     case BOOTING:
-      // status update
-      if (previousState != BOOTING) {
-        Serial.println("Booting ...");
-        previousState = BOOTING;
-      }
-      // get puch value
-      bleControl.checkForSignal();
-      float value = bleControl.getFloatValue();
-      Serial.println(value);
-
-
-      delay(10);
-      break;
-  }
+        // status update
+        if (previousState != BOOTING)
+        {
+            Serial.println("Booting ...");
+            previousState = BOOTING;
+        }
+        // get punch value
+        if(currentMillis - previousMillis_BLE >= BLEInterval){
+            previousMillis_BLE = currentMillis;
+            bleControl.checkForSignal();
+            float value = bleControl.getFloatValue();
+            Serial.println(value);
+        }
+        
+        break;
+    }
 }
