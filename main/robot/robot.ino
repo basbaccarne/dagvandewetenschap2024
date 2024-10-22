@@ -135,10 +135,20 @@ void loop() {
 
       // Welcome message
       // play welcome message
+      // ...
 
       break;
+
+      
   }
 
-  // end of the state machine
+  // ... end of the state machine
   // below are the constantly running processes
+
+  // robot head movements
+  // ...
+
+  // robot eye movement
+  // ...
+
 }
