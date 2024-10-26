@@ -88,7 +88,7 @@ static const uint8_t PROGMEM
         0b11111111,
         0b01111110,
         0b00111100};   
-        
+
 // led control object
 Adafruit_8x8matrix matrix = Adafruit_8x8matrix();
 
@@ -104,6 +104,8 @@ int posH = 60;
 unsigned long previousMillis_eyes = 0;
 unsigned long interval_eyes = 0;
 int state_eyes = 0;
+unsigned long previousMillis_head = 0;
+unsigned long interval_head = 200;
 
 
 void setup() {
@@ -117,6 +119,11 @@ void setup() {
 void loop() {
   // general timer for the delays
   unsigned long currentMillis = millis();
+
+  if(currentMillis - previousMillis_head >= interval_head){
+      randomHeadMovement();
+      previousMillis_head = currentMillis;
+  }
 
   if (currentMillis - previousMillis_eyes >= interval_eyes)
     {
@@ -266,4 +273,14 @@ void loop() {
             break;
         }
     }
+}
+
+void randomHeadMovement(){
+  int DoesItMove = random(0,100);
+  if(DoesItMove > 50){
+    posV = random(40,80);
+    posH = random(40,80);
+    servoV.write(posV);
+    servoH.write(posH);
+  }
 }
