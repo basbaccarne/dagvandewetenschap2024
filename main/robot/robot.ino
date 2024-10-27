@@ -64,6 +64,7 @@ void setup() {
   Serial.begin(9600);
   bleControl.begin();
   setupDFPlayer();
+  setupEyeHeadMovement();
 
 }
 
@@ -157,10 +158,7 @@ void loop() {
   // ... end of the state machine
   // below are the constantly running processes
 
-  // robot head movements
-  // ...
-
-  // robot eye movement
-  // ...
+  // robot head & eye movement
+  updateBehavior();
 
 }
