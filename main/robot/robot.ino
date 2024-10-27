@@ -52,6 +52,7 @@ State previousState = CONCLUSION;
 // Delays and timers
 unsigned long previousMillis_BLE = 0;
 int BLEInterval = 200;
+int audio_testInterval = 3000;
 
 unsigned long calibration_time = 5000;
 
@@ -62,11 +63,19 @@ float punch_threshold = 500;
 void setup() {
   Serial.begin(9600);
   bleControl.begin();
+  setupDFPlayer();
+
 }
 
 void loop() {
   // general timer for the delays
   unsigned long currentMillis = millis();
+
+  // temp test function fot the audio. play a random sound every 3 seconds
+  if(currentMillis - audio_testInterval > 3000){
+    audio_testInterval = currentMillis;
+      playSound(random(1,11));
+  }
 
   // the big state machine!
   switch (currentState) {
