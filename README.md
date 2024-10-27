@@ -119,8 +119,9 @@ Before creating the final prototypes, we solve a couple of subchallenges
 - [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino)) ([simple demo sender](tests/BLE_sender_v2.ino))
 ---
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
+- [X] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))([simple test script to test if the servo is still working](tests/servo_tester.ino))
+- [X] Robot: [integrated head movement & eye movement](tests/robot_intergration.ino)
 - [x] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino) // [sound tests with status pin](tests/DFplayer_with_status.ino))
-- [ ] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino)) (almost there) ([simple test script to test if the servo is still working](tests/servo_tester.ino))
 - [ ] Robot: outer casing (almost there)
 - [ ] Robot: Making the speaker loud enough (extra line out?)
 ---
