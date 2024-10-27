@@ -6,7 +6,7 @@
 class calibrate {
     public:
     calibrate();
-    void gather();
+    void gather(float value);
     float getBaseline();
 
     private:

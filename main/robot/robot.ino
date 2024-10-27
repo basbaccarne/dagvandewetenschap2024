@@ -28,6 +28,9 @@ BLEControl bleControl;
 #include "calibrate.h"
 calibrate calibrate;
 
+#include "audio.h"
+#include "behavior.h"
+
 // States
 enum State {
   BOOTING,
