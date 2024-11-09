@@ -75,7 +75,7 @@ void loop() {
   // temp test function fot the audio. play a random sound every 3 seconds
   if(currentMillis - audio_testInterval > 3000){
     audio_testInterval = currentMillis;
-      playSound(random(1,11));
+      playSound(random(1,48));
   }
 
   // the big state machine!
