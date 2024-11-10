@@ -112,21 +112,22 @@ Before creating the final prototypes, we solve a couple of subchallenges
 - [x] Punch: Led strip [punch test](tests/LEDstrip_punchtest.ino) & [simple rainbox test](tests/LEDstrip_rainbowtest.ino)
 ***
 - [X] Oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
-- [ ] Oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino)) (not optimal yet)
-- [ ] Oefening 3: Conditie/slabbaken
+- [X] Oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino))
+- [X] Oefening 3: Ritme
 ***
-- [X] Commz: Send trigger from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
-- [X] Commz: Send trigger from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino)) ([simple demo sender](tests/BLE_sender_v2.ino))
+- [X] Commz: Send data from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
+- [X] Commz: Send data from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino)) ([simple demo sender](tests/BLE_sender_v2.ino))
+- [ ] Commz: Send data from Arduino A to Arduino B over HC-05 (Bluetooth) (sender & receiver)
+- [ ] Commz: Send data from Arduino A to Arduino B over HTTP (server & client) 
 ---
 - [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
 - [X] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))([simple test script to test if the servo is still working](tests/servo_tester.ino))
 - [X] Robot: [integrated head movement & eye movement](tests/robot_intergration.ino)
 - [x] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino) // [sound tests with status pin](tests/DFplayer_with_status.ino))
-- [ ] Robot: outer casing (almost there)
-- [ ] Robot: Making the speaker loud enough (extra line out?)
+- [ ] Robot: outer casing
 ---
 - [ ] Extra screen: send signal to Raspi with Protopie
-- [ ] Extra screen: show stuff using Protopie with Serial switches
+- [X] Extra screen: show stuff using Protopie with Serial switches
 ---
 - [x] [State machine](tests/statemachine_simplesycle.ino)
 - [x] [.h and .cpp test](tests/multifilescripting)
