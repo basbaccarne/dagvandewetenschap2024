@@ -35,9 +35,9 @@
 The waiting cue is a playfull arena. Children can take a number from a [ticket dispenser](https://www.amazon.com.be/-/en/CYSSJF-Number-Ticket-Dispenser-Waiting/dp/B0BBVB9T41/ref=asc_df_B0BBVB9T41/). A screen shows the number of the next participant who can enter the boxing ring. Meanwhile, the screen also shows (in an alternating way) (1) information on the importance of physical activity and (2) movement advice. There is no cue, but waiting participants are challenged to exercise while waiting.  
 
 - [x] [List of activities](content/Input%20Emma%20Tack.docx)
-- [ ] Ticket dispenser
-- [ ] Protopie / PPT for the screen
-- [ ] Arena delineation (poles & ribbons)
+- [X] Ticket dispenser
+- [X] Protopie / PPT for the screen
+- [X] Arena delineation (poles & ribbons)
 
 Extra ideas:
 * Balance board(s)
@@ -86,9 +86,7 @@ The robot can be in the following states:
 7.  `CHALLENGE2_DEBRIEF`: the debrief state after the second challenge
 8.  `CHALLENGE3`: the third challenge state (punch as accurate/steady as you can)
 9.  `CHALLENGE3_DEBRIEF`: the debrief state after the third challenge
-10. `CHALLENGE4`: the fourth challenge state (punch as long as you can
-11. `CHALLENGE4_DEBRIEF`: the debrief state after the fourth challenge
-12. `CONCLUSION`: the final state, where the robot gives the final instructions and the user can leave > goes back the IDLE state
+10.  `CONCLUSION`: the final state, where the robot gives the final instructions and the user can leave > goes back the IDLE state
 ### Hardware components
 * [Arduino Nano 33 IOT](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)
 * [Audio Driver with SD card (DFPlayer)](https://www.dfrobot.com/product-1121.html) + SD card with audio files
