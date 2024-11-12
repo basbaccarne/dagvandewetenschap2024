@@ -732,6 +732,7 @@ void loop() {
                     if (millis() - stateStart >= 5000) {
                       Serial.println("Going to IDLE state");
                       currentState = IDLE;
+                      punchData = 0;
                     }
 
                     break;
