@@ -3,7 +3,8 @@ This is the master script for the punch bag.
 In entails the following components:
 - Arduino nano 33 IoT: the microcontroller
 - Velostat: a force sensor that detects the force of the punch
-- LED strip: light up from the center (led 60 of 120) and spreads outward depending on the force of the punch
+- LED strip: light up from the center (led 60 of 120) and spreads outward
+depending on the force of the punch
 - A DF player mini with a speaker: plays a sound when the punch is hard enough
 - BLE connection to send the values to the robot
 
@@ -17,7 +18,8 @@ In entails the following components:
 *** DF player mini ***
 - file structure:
 // files need to start with 4 digits: e.g. 0001.mp3, 0002.mp3, 0003.mp3, etc.
-// after these 4 digits, the file name can be anything: e.g. 0001.mp3, 0001_hello.mp3, 0001_hello_world.mp3, etc.
+// after these 4 digits, the file name can be anything: e.g. 0001.mp3,
+0001_hello.mp3, 0001_hello_world.mp3, etc.
 // the folder name needs to be "MP3", placed under the SD card "root" directory
 
 ** Wiring **
@@ -30,7 +32,7 @@ In entails the following components:
 - Grounds:
   * External GND to GND Arduino
   * External GND to GND LED strip
-  * External GND to side 2 of the resistor 
+  * External GND to side 2 of the resistor
   * External GND to DF player GND
 
 - Signals:
@@ -40,99 +42,83 @@ In entails the following components:
   * Arduino TX (via 1k resistor) to DF player RX
   * Speaker - to DF player SPK1
   * Speaker + to DF player SPK2
-  
-  * Arduino A0 to side 1 of the resistor 
-  * (-) side velostat to side 1 of resistor (150Ω, brown/green/brown)) 
+
+  * Arduino A0 to side 1 of the resistor
+  * (-) side velostat to side 1 of resistor (150Ω, brown/green/brown))
 */
 
-/*
-  Arduino LSM6DS3 - Simple Accelerometer
-
-  This example reads the acceleration values from the LSM6DS3
-  sensor and continuously prints them to the Serial Monitor
-  or Serial Plotter.
-
-  The circuit:
-  - Arduino Uno WiFi Rev 2 or Arduino Nano 33 IoT
-
-  created 10 Jul 2019
-  by Riccardo Rizzo
-
-  This example code is in the public domain.
-*/
-
+// libraries
+#include <ArduinoBLE.h>
 #include <Arduino_LSM6DS3.h>
 #include <FastLED.h>
-#include <ArduinoBLE.h>
-
 
 // pins
 #define ledPin 7
 
 // define the BLE service
 BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
-BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
+BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387",
+                             BLERead | BLENotify);
 
-// Variables to save acceleration and gyro values
-float ax, ay, az;
+// accelerometer variables
+float ax, ay, az;  // Variables to save acceleration and gyro values
+float ax_start, ay_start,
+    az_start;  // Variables to store initial calibration values for acceleromter
 
-// Variables to store initial calibration values for acceleromter
-float ax_start, ay_start, az_start;
-
-float punching_bag_mass = 25; // Mass in kg
-float gravity_constant = 9.81; // m/s²
-float range_contant = 4; // Range setting of the ACC
-float gravity_range = gravity_constant * range_contant; // Full (positive) range of ACC in m/s²
-float register_range = pow(2, 15); // Full (positive) register range of the ACC register (16bit)
+float punching_bag_mass = 25;   // Mass in kg
+float gravity_constant = 9.81;  // m/s²
+float range_contant = 4;        // Range setting of the ACC
+float gravity_range =
+    gravity_constant * range_contant;  // Full (positive) range of ACC in m/s²
+float register_range =
+    pow(2, 15);  // Full (positive) register range of the ACC register (16bit)
 float force = 0;
-const int lower_force_threshold = 100; // force threshold to light up the first LED (check serial to set right value) aka punch trehsold
+
+// led variables
+const int lower_force_threshold =
+    100;  // force threshold to light up the first LED (check serial to set
+          // right value) aka punch trehsold
 const int upper_force_threshold = 400;
-const long ledInterval = 50; // Set the interval between lighting up the LEDs
+const long ledInterval = 50;  // Set the interval between lighting up the LEDs
 
-// LED strip variables
 #define ledCount 120
-CRGB leds[ledCount]; // Define the array of leds
-int brightness = 100; // Set brightness level (0-255) - check for amps required
-int currentLitLEDs = 0; // The number of LEDs currently lit up
-int targetLitLEDs = 0; // The number of LEDs that should be lit up
+CRGB leds[ledCount];   // Define the array of leds
+int brightness = 100;  // Set brightness level (0-255) - check for amps required
+int currentLitLEDs = 0;  // The number of LEDs currently lit up
+int targetLitLEDs = 0;   // The number of LEDs that should be lit up
 
+// punch counter
+int punches = 0;
 
 void setup() {
+  // initialize serial commnication
   Serial.begin(9600);
-  while (!Serial);
 
+  // initialize accelerometer
   if (!IMU.begin()) {
     Serial.println("Failed to initialize IMU!");
-
     while (1);
   }
 
-  Serial.print("Accelerometer sample rate = ");
-  Serial.print(IMU.accelerationSampleRate());
-  Serial.println(" Hz");
-  Serial.println();
-  Serial.println("Acceleration in g's");
-  Serial.println("X\tY\tZ");
-
+  // inial read of accelerometer values
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(ax_start, ay_start, az_start);
   }
 
   // initialize led strip
   FastLED.addLeds<NEOPIXEL, ledPin>(leds, ledCount);
-  FastLED.setBrightness(brightness); 
+  FastLED.setBrightness(brightness);
   FastLED.clear();
   FastLED.show();
 
-    // initialize BLE: part 1
-  if (!BLE.begin())
-    {
-        Serial.println("BLE failed to Initiate");
-        delay(500);
-        while (1);
-    }
-  
-  // initialize BLE: part 2 
+  // initialize BLE: part 1
+  if (!BLE.begin()) {
+    Serial.println("BLE failed to Initiate");
+    delay(500);
+    while (1);
+  }
+
+  // initialize BLE: part 2
   // Set advertised local name and services UUID
   BLE.setLocalName("BLE punchbag 1 (peripheral)");
   BLE.setAdvertisedService(punchService);
@@ -147,96 +133,111 @@ void setup() {
   // Start advertising
   BLE.advertise();
   Serial.println("BLE sending device 1 is now advertising ...");
-
 }
-
-int punches = 0;
 
 void loop() {
-  float ax, ay, az;
+  getForce();
 
-      // Listen for BLE central
-      BLEDevice central = BLE.central();
-      if (central) {
-        Serial.print("Connected to central: ");
-        Serial.println(central.address());
-        if (!central.connected()) {
-          Serial.println("Disconnected from central");
-        }
-        while (central.connected()){
-          if (IMU.accelerationAvailable()) {
-            IMU.readAcceleration(ax, ay, az);
+  // listen for Bluetooth® Low Energy centrals to connect
+  // this returns a BLEDevice object, central, containing information about the
+  // central that connected to this peripheral
+  BLEDevice central = BLE.central();
 
-            float prev_force = force;
-            float force = punching_bag_mass * sqrt(pow((ax-ax_start)*gravity_constant, 2) + pow((ay-ay_start)*gravity_constant, 2) + pow((az-az_start)*gravity_constant, 2));
-            // Filter using exponential moving average
-            force = 0.5*force + 0.5*prev_force;
-
-            updateLEDS(force);
-
-            // If force is above threshold calculate average force over punch duration
-            if (force > lower_force_threshold){
-
-              float totalforce = 0;
-              float readValues = 0;
-              // Keep reading values until force is below threshold
-              while (force > lower_force_threshold){
-                totalforce += force;
-                readValues++;
-                IMU.readAcceleration(ax, ay, az);
-                prev_force = force;
-                force = punching_bag_mass * sqrt(pow((ax-ax_start)*gravity_constant, 2) + pow((ay-ay_start)*gravity_constant, 2) + pow((az-az_start)*gravity_constant, 2));
-              }
-
-              force = totalforce/readValues;
-              Serial.println("punch with force: " + String(force));
-              punch.writeValue(force);
-              
-              punches++;
-              Serial.println("punches: " + String(punches));
-              delay(5);
-            } 
-          }
-        }
-
-      }
-  
+  if (central) {
+    Serial.print("Connected to central: ");
+    Serial.println(central.address());
+    if (!central.connected()) {
+      Serial.println("Disconnected from central");
+    }
+  }
   // Poll for BLE events (this processes any pending BLE events)
   BLE.poll();
+
+  // hold your horses
+  delay(10);
+
 }
 
-void updateLEDS(float force){
+void updateLEDS(float force) {
   // map the sensor value to the number of LEDs to light up
-    targetLitLEDs = map(force, 20, 300, 0, ledCount / 2);
-    if (targetLitLEDs < 0) {
-      targetLitLEDs = 0;
-    }
-      // If the force value is increasing, go up fast
-    if (targetLitLEDs > currentLitLEDs) {
-      currentLitLEDs = targetLitLEDs;
-      updateLEDStrip(currentLitLEDs);
-    }
+  targetLitLEDs = map(force, 20, 300, 0, ledCount / 2);
+  if (targetLitLEDs < 0) {
+    targetLitLEDs = 0;
+  }
+  // If the force value is increasing, go up fast
+  if (targetLitLEDs > currentLitLEDs) {
+    currentLitLEDs = targetLitLEDs;
+    updateLEDStrip(currentLitLEDs);
+  }
 
-    // If the force value is decreasing, go down slowly
-    else if (targetLitLEDs < currentLitLEDs) {
-      currentLitLEDs--;  // Go down one LED at a time (slowly)
-      updateLEDStrip(currentLitLEDs);
-      delay(ledInterval);  // Slow down the decrease
-    }
+  // If the force value is decreasing, go down slowly
+  else if (targetLitLEDs < currentLitLEDs) {
+    currentLitLEDs--;  // Go down one LED at a time (slowly)
+    updateLEDStrip(currentLitLEDs);
+    delay(ledInterval);  // Slow down the decrease
+  }
 }
 
 void updateLEDStrip(int numLitLEDs) {
   for (int i = 0; i < ledCount; i++) {
-    if (i < ledCount / 2 - numLitLEDs){
+    if (i < ledCount / 2 - numLitLEDs) {
       leds[i] = CRGB::Black;
-    }
-    else if (i < ledCount / 2 + numLitLEDs){
-      leds[i] = CRGB::Red; 
-    }
-    else {
+    } else if (i < ledCount / 2 + numLitLEDs) {
+      leds[i] = CRGB::Red;
+    } else {
       leds[i] = CRGB::Black;
     }
   }
 
   FastLED.show();
+}
+
+void getForce() {
+  // read the acceleration values if the IMU is available
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(ax, ay, az);
+
+    // calculate the force of the punch
+    float prev_force = force;
+    float force =
+        punching_bag_mass * sqrt(pow((ax - ax_start) * gravity_constant, 2) +
+                                 pow((ay - ay_start) * gravity_constant, 2) +
+                                 pow((az - az_start) * gravity_constant, 2));
+
+    // update the LEDs (unfiltered value)
+    updateLEDS(force);
+
+    // filter using exponential moving average
+    force = 0.5 * force + 0.5 * prev_force;
+
+    // if force is above threshold calculate average force over punch duration
+    if (force > lower_force_threshold) {
+      float totalforce = 0;
+      float readValues = 0;
+
+      // keep reading values until force is below threshold
+      while (force > lower_force_threshold) {
+        totalforce += force;
+        readValues++;
+        IMU.readAcceleration(ax, ay, az);
+        prev_force = force;
+        force = punching_bag_mass *
+                sqrt(pow((ax - ax_start) * gravity_constant, 2) +
+                     pow((ay - ay_start) * gravity_constant, 2) +
+                     pow((az - az_start) * gravity_constant, 2));
+      }
+
+      // calculate the average force and send it over BLE
+      force = totalforce / readValues;
+      Serial.println("punch with force: " + String(force));
+      punch.writeValue(force);
+
+      // play sound if force is above threshold
+      // ...
+
+      // count the number of punches (to be omitted in final version)
+      punches++;
+      Serial.println("punches: " + String(punches));
+    }
+  }
 }

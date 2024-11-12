@@ -24,6 +24,7 @@ void playSound(int soundID) {
 
   if (audioStatus == HIGH) {
     myDFPlayer.play(soundID);
-    Serial.println("bliep!");
+    Serial.print("Audio: ");
+    Serial.println(soundID);
   }
 }
