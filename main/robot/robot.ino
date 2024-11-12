@@ -112,8 +112,6 @@ void loop() {
   // general timer for the delays
   unsigned long currentMillis = millis();
 
-
-
   // robot head & eye movement (also outside while loop)
   updateBehavior();
 
@@ -157,8 +155,8 @@ void loop() {
                 punchData;
                 characteristic.readValue(&punchData, 4);
                 if (punchData > 0) {
-                  Serial.print("Punch detected: ");
-                  Serial.println(punchData);
+                  // Serial.print("Punch detected: ");
+                  // Serial.println(punchData);
                 }
               }
 
@@ -780,12 +778,16 @@ void loop() {
                       // communication to protopie
                       Serial.print("mantis||");
                       Serial.println(mantis);
+                      delay(10);
                       Serial.print("hummingbird||");
                       Serial.println(hummingbird);
+                      delay(10);
                       Serial.print("maki||");
                       Serial.println(maki);
+                      delay(10);
                       Serial.print("jaguar||");
                       Serial.println(jaguar);
+                      delay(10);
                       Serial.print("final_animal||");
                       Serial.println(final_animal);
                       delay(10);
