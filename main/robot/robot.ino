@@ -203,7 +203,7 @@ void loop() {
                   {
                     if (previousState != IDLE) {
                       previousState = IDLE;
-                      punchData = 0;
+                      punchData = previousPunchData;
                       
                       // state commz to protopie each 10 ms in this state
                       Serial.print("state||");
@@ -244,7 +244,7 @@ void loop() {
                     }
 
                     // get punch value
-                    if (punchData - previousPunchData != 0) {
+                    if (punchData != previousPunchData) {
                       Serial.println("Punch detected");
                       Serial.println("Going to WELCOME state");
                       currentState = WELCOME;
@@ -774,23 +774,23 @@ void loop() {
                         "bord!");
                         delay(10);
 
-
+                      delay(500);
                       // communication to protopie
                       Serial.print("mantis||");
                       Serial.println(mantis);
-                      delay(10);
+                      delay(200);
                       Serial.print("hummingbird||");
                       Serial.println(hummingbird);
-                      delay(10);
+                      delay(200);
                       Serial.print("maki||");
                       Serial.println(maki);
-                      delay(10);
+                      delay(200);
                       Serial.print("jaguar||");
                       Serial.println(jaguar);
-                      delay(10);
+                      delay(200);
                       Serial.print("final_animal||");
                       Serial.println(final_animal);
-                      delay(10);
+                      delay(200);
                     }
 
 
