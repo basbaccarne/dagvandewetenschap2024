@@ -80,7 +80,7 @@ int mantis = 0;
 int hummingbird = 0;
 int maki = 0;
 int jaguar = 0;
-char final_animal[15];
+int final_animal;
 
 // BLE information
 BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
@@ -502,6 +502,9 @@ void loop() {
                       delay(200);
                       stateStart = millis();
                       previousPunchData = 0;
+                      previousMillis_C3 = millis();
+                      stateStage = 0;
+                      punchData = 0;
 
                       // reset punchVariance for every user
                       punchVariance = 0.0;
@@ -510,11 +513,22 @@ void loop() {
                       previousInterval == 0;
                     }
 
-                    // print actual force
-                    if (punchData != previousPunchData) {
+                    // first hit
+                    if(punchData != previousPunchData && stateStage == 0){
+                      stateStage = 1;
+                      previousPunchData = punchData;
+                      Serial.print("First Hit! ");
                       Serial.print("punchforce||");
                       Serial.println(punchData);
+                      previousMillis_C3 = millis();
+                    } 
 
+                    // if a hit is detected
+                    if (punchData != previousPunchData && stateStage == 1) {
+                      // print it
+                      previousPunchData = punchData;
+                      Serial.print("punchforce||");
+                      Serial.println(punchData);
 
                       // get punch variance
                       // calculate the time (in ms) between two punches
@@ -681,13 +695,13 @@ void loop() {
                       // vanaf je een 3 ster jaguar bent wint dat dier
                       // anders wint het dier met de hoogste score
                       if (jaguar == 3) {
-                        char final_animal[] = "jaguar";
+                         final_animal = 4; // jaguar
                       } else if (speedMapped > strengthMapped && speedMapped > punchVarianceMapped) {
-                        char final_animal[] = "hummingbird";
+                         final_animal = 2; // hummingbird
                       } else if (strengthMapped > speedMapped && strengthMapped > punchVarianceMapped) {
-                        char final_animal[] = "mantis";
+                         final_animal = 1; // mantis
                       } else if (punchVarianceMapped > speedMapped && punchVarianceMapped > strengthMapped) {
-                        char final_animal[] = "maki";
+                         final_animal = 3; // snow monkey
                       }
 
                       // voice 34 (once on state switch)
