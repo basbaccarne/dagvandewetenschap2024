@@ -80,7 +80,7 @@ int mantis = 0;
 int hummingbird = 0;
 int maki = 0;
 int jaguar = 0;
-char final_animal;
+char final_animal[15];
 
 // BLE information
 BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
@@ -160,8 +160,6 @@ void loop() {
                 }
               }
 
-
-
               delay(10);
               // robot head & eye movement (within the while loop)
               updateBehavior();
@@ -176,24 +174,26 @@ void loop() {
                   //---------//
 
                 case BOOTING:
-                  if (previousState != BOOTING) {
-                    previousState = BOOTING;
+                  {
+                    if (previousState != BOOTING) {
+                      previousState = BOOTING;
+                      punchData = 0;
 
-                    // state commz to protopie each 10 ms in this state
-                    Serial.print("state||");
-                    Serial.println("BOOTING");
-                    delay(200);
+                      // state commz to protopie each 10 ms in this state
+                      Serial.print("state||");
+                      Serial.println("BOOTING");
+                      delay(200);
+                    }
+
+                    // get punch value
+                    if (punchData > 1) {
+                      Serial.println("Punch detected");
+                      Serial.println("Going to IDLE state");
+                      currentState = IDLE;
+                      punchData = 0;
+                    }
+                    break;
                   }
-
-                  // get punch value
-                  if (punchData > 1) {
-                    Serial.println("Punch detected");
-                    Serial.println("Going to IDLE state");
-                    currentState = IDLE;
-                    punchData = 0;
-                  }
-                  break;
-
                   //-------//
                   // IDLE //
                   //------//
@@ -202,6 +202,7 @@ void loop() {
                   {
                     if (previousState != IDLE) {
                       previousState = IDLE;
+                      punchData = 0;
 
                       // state commz to protopie each 10 ms in this state
                       Serial.print("state||");
@@ -255,6 +256,7 @@ void loop() {
                       Serial.print("state||");
                       Serial.println("WELCOME");
                       stateStart = millis();
+                      punchData = 0;
                       delay(200);
 
                       playSound(3);
@@ -624,9 +626,11 @@ void loop() {
                 case CONCLUSION:
                   {
                     if (previousState != CONCLUSION) {
+                      // eenmalig loop
                       previousState = CONCLUSION;
                       Serial.print("state||");
                       Serial.println("CONCLUSION");
+                      stateStart = millis();
 
                       // caclucate the final score
                       // use benchmarks for the relative values (measure!!!!)
@@ -677,18 +681,14 @@ void loop() {
                       // vanaf je een 3 ster jaguar bent wint dat dier
                       // anders wint het dier met de hoogste score
                       if (jaguar == 3) {
-                        final_animal = 'jaguar';
+                        char final_animal[] = "jaguar";
                       } else if (speedMapped > strengthMapped && speedMapped > punchVarianceMapped) {
-                        final_animal = 'hummingbird';
+                        char final_animal[] = "hummingbird";
                       } else if (strengthMapped > speedMapped && strengthMapped > punchVarianceMapped) {
-                        final_animal = 'mantis';
+                        char final_animal[] = "mantis";
                       } else if (punchVarianceMapped > speedMapped && punchVarianceMapped > strengthMapped) {
-                        final_animal = 'maki';
+                        char final_animal[] = "maki";
                       }
-
-                      // state commz to protopie
-                      Serial.print("state||");
-                      Serial.println("CONCLUSION");
 
                       // voice 34 (once on state switch)
                       playSound(34);
@@ -697,25 +697,25 @@ void loop() {
                         "Ojo jij, gij kunt er wat van! Ik heb ontdekt welk beestje "
                         "gij zijt. Benieuwd? Check je dierprofiel op het grote "
                         "bord!");
+
+
+                      // communication to protopie
+                      Serial.print("mantis||");
+                      Serial.println(mantis);
+                      Serial.print("hummingbird||");
+                      Serial.println(hummingbird);
+                      Serial.print("maki||");
+                      Serial.println(maki);
+                      Serial.print("jaguar||");
+                      Serial.println(jaguar);
+                      Serial.print("final_animal||");
+                      Serial.println(final_animal);
+                      delay(10);
                     }
 
-                    // communication to protopie
-                    Serial.print("mantis||");
-                    Serial.println(mantis);
-                    Serial.print("hummingbird||");
-                    Serial.println(hummingbird);
-                    Serial.print("maki||");
-                    Serial.println(maki);
-                    Serial.print("jaguar||");
-                    Serial.println(jaguar);
-                    Serial.print("final_animal||");
-                    Serial.println(final_animal);
 
-                    // timer to end the conclusion state and go back to IDLE (10
-                    // seconds)
-                    unsigned long conclusionDuration = 10000;
-                    unsigned long conclusionStart = millis();
-                    if (millis() - conclusionStart >= conclusionDuration) {
+                    // timer to end the conclusion state and go back to IDLE (10 sec)
+                    if (millis() - stateStart >= 5000) {
                       Serial.println("Going to IDLE state");
                       currentState = IDLE;
                     }
