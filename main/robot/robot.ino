@@ -54,6 +54,8 @@ int BLEInterval = 500;
 unsigned long previousMillis_voice = 0;
 int voiceInterval = 3000;
 
+int audiofile;
+
 float punchData;
 float previousPunchData;
 
@@ -167,6 +169,7 @@ void loop() {
               //////////////////////////////
               /// the big state machine! ///
               //////////////////////////////
+              currentMillis = millis();
 
               switch (currentState) {
                   //---------//
@@ -203,20 +206,26 @@ void loop() {
                     if (previousState != IDLE) {
                       previousState = IDLE;
                       punchData = 0;
-
+                      
                       // state commz to protopie each 10 ms in this state
                       Serial.print("state||");
                       Serial.println("IDLE");
-                      delay(200);
+                      delay(100);
+
+                      previousMillis_voice = 0;
+
                     }
 
                     // random voice (2 & 39)
+                    int longestAudiotime = 11000 + 3000;
                     int audiofiles[] = { 2, 39 };
-                    if (currentMillis - previousMillis_voice >= voiceInterval) {
-                      previousMillis_voice = currentMillis;
 
-                      int audiofile = audiofiles[random(2)];
+                    currentMillis = millis();
+                    if (currentMillis - previousMillis_voice >= longestAudiotime) {
+                      previousMillis_voice = currentMillis;
+                      audiofile = audiofiles[random(2)];
                       playSound(audiofile);
+                      delay(10);
 
                       if (audiofile == 2) {
                         Serial.print("subtitles||");
@@ -224,13 +233,15 @@ void loop() {
                           "Hi! Ik ben Boxy, jouw boksmaatje! Kijk eens naar die "
                           "stoere zakken… Durf jij het aan om er een flinke klap "
                           "op te geven?");
+                        delay(10);
                       }
 
-                      else if (audiofile == 39) {
+                      if (audiofile == 39) {
                         Serial.print("subtitles||");
                         Serial.println(
                           "Hola hola! Wijs dat ge hier zijt! Kom eens dichterbij, "
                           "stoere held!");
+                        delay(10);
                       }
                     }
 
@@ -255,11 +266,16 @@ void loop() {
 
                       Serial.print("state||");
                       Serial.println("WELCOME");
+
                       stateStart = millis();
+                      previousMillis_voice = 0;
+
                       punchData = 0;
-                      delay(200);
+                      delay(10);
 
                       playSound(3);
+                      delay(10);
+
                       Serial.print("subtitles||");
                       Serial.println(
                         "Wauw, dat voelde ik! Jij hebt kracht, mannekes! Ik heb "
@@ -269,16 +285,20 @@ void loop() {
                         "worden!");
                     }
 
-                    if (millis() - stateStart > 5000 && stateStage == 0) {
+                    currentMillis = millis();
+                    if (currentMillis - stateStart > 15000 && stateStage == 0) {
                       stateStage = 1;
                       playSound(37);
+                      delay(10);
+
                       Serial.print("subtitles||");
                       Serial.println(
                         "Oké, hier komt de eerste uitdaging: ik wil zien hoe sterk "
                         "je bent! Sla zo hard als ge kunt!");
                     }
 
-                    if (millis() - stateStart > 10000) {
+                    currentMillis = millis();
+                    if (currentMillis - stateStart > 10000 + 15000) {
                       Serial.println("Going to CHALLENGE1 state");
                       currentState = CHALLENGE1;
                     }
@@ -296,19 +316,25 @@ void loop() {
                     if (previousState != CHALLENGE1) {
                       previousState = CHALLENGE1;
 
+                      previousMillis_voice = millis();
+
                       // state commz to protopie each 10 ms in this state
                       Serial.print("state||");
                       Serial.println("CHALLENGE1");
+
                       stateStart = millis();
+
                       punchData = 0;
-                      delay(200);
+                      previousPunchData = 0;
+
+                      delay(20);
 
                       // reset maxPunch for every user
                       maxPunch = 0.0;
                     }
 
                     // print actual force
-                    if (punchData - previousPunchData > 10) {
+                    if (punchData != previousPunchData) {
                       previousPunchData = punchData;
                       Serial.print("punchforce||");
                       Serial.println(punchData);
@@ -330,31 +356,38 @@ void loop() {
                     }
 
                     // random voice (6, 7, 42, 13)
+                    int longestAudiotime = 4000 + 1000;
                     int audiofiles[] = { 6, 7, 42, 13 };
-                    if (currentMillis - previousMillis_voice >= voiceInterval) {
-                      previousMillis_voice = currentMillis;
 
-                      int audiofile = audiofiles[random(4)];
+                    currentMillis = millis();
+                    if (currentMillis - previousMillis_voice >= longestAudiotime) {
+                      previousMillis_voice = currentMillis;
+                      audiofile = audiofiles[random(4)];
                       playSound(audiofile);
+                      delay(10);
 
                       if (audiofile == 6) {
                         Serial.print("subtitles||");
                         Serial.println("Kom op, geef alles wat je hebt!");
+                        delay(10);
                       }
 
                       else if (audiofile == 7) {
                         Serial.print("subtitles||");
                         Serial.println("Wauw, dat was krachtig!");
+                        delay(10);
                       }
 
                       if (audiofile == 42) {
                         Serial.print("subtitles||");
                         Serial.println("Denk je dat je nog harder kunt slaan?");
+                        delay(10);
                       }
 
                       if (audiofile == 13) {
                         Serial.print("subtitles||");
                         Serial.println("Veel beloven, veel beloven …");
+                        delay(10);
                       }
                     }
 
@@ -369,21 +402,25 @@ void loop() {
                   {
                     if (previousState != CHALLENGE1_DEBRIEF) {
                       previousState = CHALLENGE1_DEBRIEF;
-                      // state commz to protopie
+                      
                       Serial.print("state||");
                       Serial.println("CHALLENGE1_DEBRIEF");
+                      
+                      delay(100);
+
                       stateStart = millis();
-                      delay(200);
 
                       playSound(15);
+                      delay(10);
+
                       Serial.print("subtitles||");
                       Serial.println(
                         "Nu kijken we hoe snel je bent! Sla zo vaak als je kan in "
                         "30 seconden! Klaar, set… bam!");
                     }
 
-                    // timer to end the debrief state (5 seconds)
-                    if (millis() - stateStart >= 5000) {
+                    // timer to end the debrief state (15 seconds)
+                    if (millis() - stateStart >= 12000) {
                       Serial.println("Going to CHALLENGE 2 state");
                       currentState = CHALLENGE2;
                     }
@@ -403,8 +440,11 @@ void loop() {
                       // state commz to protopie
                       Serial.print("state||");
                       Serial.println("CHALLENGE2");
+                      
+                      delay(100);
+
                       stateStart = millis();
-                      delay(200);
+                      previousMillis_voice = millis();
 
                       // reset punchCounter for every user
                       punchCounter = 0;
@@ -422,26 +462,33 @@ void loop() {
                     }
 
                     // random voice (18, 19, 22)
+                    int longestAudiotime = 4000 + 1000;
                     int audiofiles[] = { 18, 19, 22 };
-                    if (currentMillis - previousMillis_voice >= voiceInterval) {
+
+                    currentMillis = millis();
+                    if (currentMillis - previousMillis_voice >= longestAudiotime) {
                       previousMillis_voice = currentMillis;
 
-                      int audiofile = audiofiles[random(3)];
+                      audiofile = audiofiles[random(3)];
                       playSound(audiofile);
+                      delay(10);
 
                       if (audiofile == 18) {
                         Serial.print("subtitles||");
                         Serial.println("Dat gaat snel, ga door! Goed bezig!");
+                        delay(10);
                       }
 
                       else if (audiofile == 19) {
                         Serial.print("subtitles||");
                         Serial.println("Ola, wa een tempo! Kunt ge nog sneller?");
+                        delay(10);
                       }
 
-                      if (audiofile == 22) {
+                      else if (audiofile == 22) {
                         Serial.print("subtitles||");
                         Serial.println("Amai, gij hebt nen langen adem!");
+                        delay(10);
                       }
                     }
 
@@ -466,11 +513,14 @@ void loop() {
                       // state commz to protopie
                       Serial.print("state||");
                       Serial.println("CHALLENGE2_DEBRIEF");
-                      delay(200);
+                      delay(100);
+
                       stateStart = millis();
 
                       // voice 26 (once on state switch)
                       playSound(26);
+                      delay(10);
+
                       Serial.print("subtitles||");
                       Serial.println(
                         "Nen goeie bokser slaat op het ritme! Dus als laatste "
@@ -479,7 +529,7 @@ void loop() {
                     }
 
                     // timer to end the debrief state (5 seconds)
-                    if (millis() - stateStart >= 5000) {
+                    if (millis() - stateStart >= 15000) {
                       Serial.println("Going to CHALLENGE3 2 state");
                       currentState = CHALLENGE3;
                     }
@@ -496,13 +546,17 @@ void loop() {
                     if (previousState != CHALLENGE3) {
                       previousState = CHALLENGE3;
 
-                      // state commz to protopie
                       Serial.print("state||");
                       Serial.println("CHALLENGE3");
-                      delay(200);
+
+                      delay(100);
+
                       stateStart = millis();
+                      previousMillis_voice = millis();
+
                       previousPunchData = 0;
                       previousMillis_C3 = millis();
+
                       stateStage = 0;
                       punchData = 0;
 
@@ -514,14 +568,14 @@ void loop() {
                     }
 
                     // first hit
-                    if(punchData != previousPunchData && stateStage == 0){
+                    if (punchData != previousPunchData && stateStage == 0) {
                       stateStage = 1;
                       previousPunchData = punchData;
                       Serial.print("First Hit! ");
                       Serial.print("punchforce||");
                       Serial.println(punchData);
                       previousMillis_C3 = millis();
-                    } 
+                    }
 
                     // if a hit is detected
                     if (punchData != previousPunchData && stateStage == 1) {
@@ -568,18 +622,23 @@ void loop() {
                     }
 
                     // random voice (29, 47, 33)
+                    int longestAudiotime = 17000 + 1000;
                     int audiofiles[] = { 29, 47, 33 };
-                    if (currentMillis - previousMillis_voice >= voiceInterval) {
+
+                    currentMillis = millis();
+                    if (currentMillis - previousMillis_voice >= longestAudiotime) {
                       previousMillis_voice = currentMillis;
 
-                      int audiofile = audiofiles[random(3)];
+                      audiofile = audiofiles[random(3)];
                       playSound(audiofile);
+                      delay(10);
 
                       if (audiofile == 29) {
                         Serial.print("subtitles||");
                         Serial.println(
                           "Amai, gij zou beter drummer worden, wat een ritme, wat "
                           "een precisie!");
+                        delay(10);
                       }
 
                       else if (audiofile == 47) {
@@ -589,6 +648,7 @@ void loop() {
                           "ritme van Happy! Zo gaade in de goeie flow geraken!  "
                           "“Because I'm happy - Clap along- if you feel like a "
                           "room without a roof - Because I'm happy");
+                        delay(10);
                       }
 
                       if (audiofile == 33) {
@@ -596,6 +656,7 @@ void loop() {
                         Serial.println(
                           "Allez, voel het ritme in uw vuisten! Gelijk ne goeie "
                           "danser slaat gij perfect op de maat!");
+                        delay(10);
                       }
                     }
 
@@ -640,16 +701,16 @@ void loop() {
                 case CONCLUSION:
                   {
                     if (previousState != CONCLUSION) {
-                      // eenmalig loop
                       previousState = CONCLUSION;
+
                       Serial.print("state||");
                       Serial.println("CONCLUSION");
+
                       stateStart = millis();
 
                       // caclucate the final score
                       // use benchmarks for the relative values (measure!!!!)
                       // map (variable, bad benchmark, good benchmark, from 0, to 100)
-
                       int strengthMapped = map(maxPunch, 10, 100, 0, 100);
                       int speedMapped = map(punchCounter, 20, 200, 0, 100);
                       int punchVarianceMapped = map(punchVariance, 200, 20, 0, 100);  // reverse mapping
@@ -695,22 +756,25 @@ void loop() {
                       // vanaf je een 3 ster jaguar bent wint dat dier
                       // anders wint het dier met de hoogste score
                       if (jaguar == 3) {
-                         final_animal = 4; // jaguar
+                        final_animal = 4;  // jaguar
                       } else if (speedMapped > strengthMapped && speedMapped > punchVarianceMapped) {
-                         final_animal = 2; // hummingbird
+                        final_animal = 2;  // hummingbird
                       } else if (strengthMapped > speedMapped && strengthMapped > punchVarianceMapped) {
-                         final_animal = 1; // mantis
+                        final_animal = 1;  // mantis
                       } else if (punchVarianceMapped > speedMapped && punchVarianceMapped > strengthMapped) {
-                         final_animal = 3; // snow monkey
+                        final_animal = 3;  // snow monkey
                       }
 
                       // voice 34 (once on state switch)
                       playSound(34);
+                      delay(10);
+
                       Serial.print("subtitles||");
                       Serial.println(
                         "Ojo jij, gij kunt er wat van! Ik heb ontdekt welk beestje "
                         "gij zijt. Benieuwd? Check je dierprofiel op het grote "
                         "bord!");
+                        delay(10);
 
 
                       // communication to protopie
@@ -729,7 +793,7 @@ void loop() {
 
 
                     // timer to end the conclusion state and go back to IDLE (10 sec)
-                    if (millis() - stateStart >= 5000) {
+                    if (millis() - stateStart >= 30000) {
                       Serial.println("Going to IDLE state");
                       currentState = IDLE;
                       punchData = 0;

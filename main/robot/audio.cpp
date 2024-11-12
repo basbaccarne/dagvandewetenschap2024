@@ -17,14 +17,10 @@ void setupDFPlayer() {
   myDFPlayer.volume(30);  // Set volume value. From 0 to 30
 }
 
-void playSound(int soundID) {
-
+void playSound(int fileNumber) {
   // get the status of the player
-  audioStatus = digitalRead(audioStatus_pin);
-
-  if (audioStatus == HIGH) {
-    myDFPlayer.play(soundID);
+  // audioStatus = digitalRead(audioStatus_pin);
+    myDFPlayer.playMp3Folder(fileNumber);
     Serial.print("Audio: ");
-    Serial.println(soundID);
-  }
+    Serial.println(fileNumber);
 }
