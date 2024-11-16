@@ -25,7 +25,7 @@ In entails the following components:
   * External power to VIN Arduino
   * External power to LED strip
   * External power to (+) side Velostat
-  * Exterbal power to DF player VCC
+  * Exterbal power to DF player VCC   
 
 - Grounds:
   * External GND to GND Arduino
@@ -49,6 +49,7 @@ In entails the following components:
 #include <Arduino_LSM6DS3.h>
 #include <ArduinoBLE.h>
 #include <FastLED.h>
+#include "DFRobotDFPlayerMini.h"
 
 // parameters
 int brightness = 100;  // Set brightness level of leds (0-255) - check for amps required
@@ -59,13 +60,13 @@ const int upper_force_threshold = 400;  // for mapping the leds
 const int acceleroSamplingFrequency = 10;
 const long ledInterval = 10;  // Set the decrease rate of the leds
 
-
 // BLE information
 BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
 BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
 
 // pins
 #define ledPin 7
+#define DFSerial Serial1
 
 // timer
 unsigned long currentMillis;
@@ -91,8 +92,13 @@ CRGB leds[ledCount];
 int currentLitLEDs = 0;
 int targetLitLEDs = 0;
 
+// init DFplayer
+DFRobotDFPlayerMini myDFPlayer;
+
 void setup() {
   Serial.begin(9600);
+  DFSerial.begin(9600);
+
   // initialize accelerometer
   if (!IMU.begin()) {
     Serial.println("Failed to initialize IMU!");
@@ -128,6 +134,10 @@ void setup() {
   FastLED.setBrightness(brightness);
   FastLED.clear();
   FastLED.show();
+
+  // initialize Audio module
+  myDFPlayer.begin(DFSerial);
+  myDFPlayer.volume(20); 
 }
 
 void loop() {
@@ -204,6 +214,9 @@ void getForce() {
         punch.writeValue(punchForce);
         Serial.print("Sent: ");
         Serial.println(punchForce);
+
+        // play sound effect
+        playSound();
       }
     }
   }
@@ -244,4 +257,11 @@ void updateLEDStrip(int numLitLEDs) {
   }
 
   FastLED.show();
+}
+
+void playSound() {
+  int fileNumber = random(1,18);
+    myDFPlayer.playMp3Folder(fileNumber);
+    Serial.print("Audio: ");
+    Serial.println(fileNumber);
 }
