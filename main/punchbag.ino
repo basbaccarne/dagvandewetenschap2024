@@ -2,9 +2,7 @@
 This is the master script for the punch bag.
 In entails the following components:
 - Arduino nano 33 IoT: the microcontroller
-- Velostat: a force sensor that detects the force of the punch
-- LED strip: light up from the center (led 60 of 120) and spreads outward
-depending on the force of the punch
+- LED strip: light up from the center (led 60 of 120) and spreads outward depending on the force of the punch
 - A DF player mini with a speaker: plays a sound when the punch is hard enough
 - BLE connection to send the values to the robot
 
@@ -27,7 +25,7 @@ depending on the force of the punch
   * External power to VIN Arduino
   * External power to LED strip
   * External power to (+) side Velostat
-  * Externbal power to DF player VCC
+  * Exterbal power to DF player VCC
 
 - Grounds:
   * External GND to GND Arduino
@@ -47,76 +45,67 @@ depending on the force of the punch
   * (-) side velostat to side 1 of resistor (150Ω, brown/green/brown))
 */
 
-// libraries
-#include <ArduinoBLE.h>
+// library
 #include <Arduino_LSM6DS3.h>
+#include <ArduinoBLE.h>
 #include <FastLED.h>
+
+// parameters
+int brightness = 100;  // Set brightness level of leds (0-255) - check for amps required
+//  threshold to detect something a s a punch
+// (check serial to set right value)
+const int lower_punch_threshold = 200;
+const int upper_force_threshold = 400;  // for mapping the leds
+const int acceleroSamplingFrequency = 10;
+const long ledInterval = 10;  // Set the decrease rate of the leds
+
+
+// BLE information
+BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
+BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
 
 // pins
 #define ledPin 7
 
-// define the BLE service
-BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
-BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387",
-                             BLERead | BLENotify);
+// timer
+unsigned long currentMillis;
 
 // accelerometer variables
-float ax, ay, az;  // Variables to save acceleration and gyro values
-float ax_start, ay_start,
-    az_start;  // Variables to store initial calibration values for acceleromter
+int previousMillisAccelero;
+float ax, ay, az;
+float ax_start, ay_start, az_start;
+float punching_bag_mass = 25;
+float gravity_constant = 9.81;
+float range_contant = 4;                                 // Range setting of the ACC
+float gravity_range = gravity_constant * range_contant;  // Full (positive) range of ACC in m/s²
+float register_range = pow(2, 15);                       // Full (positive) register range of the ACC register (16bit)
 
-float punching_bag_mass = 25;   // Mass in kg
-float gravity_constant = 9.81;  // m/s²
-float range_contant = 4;        // Range setting of the ACC
-float gravity_range =
-    gravity_constant * range_contant;  // Full (positive) range of ACC in m/s²
-float register_range =
-    pow(2, 15);  // Full (positive) register range of the ACC register (16bit)
-float force = 0;
-
-// led variables
-const int lower_force_threshold =
-    100;  // force threshold to light up the first LED (check serial to set
-          // right value) aka punch trehsold
-const int upper_force_threshold = 400;
-const long ledInterval = 50;  // Set the interval between lighting up the LEDs
-
-#define ledCount 120
-CRGB leds[ledCount];   // Define the array of leds
-int brightness = 100;  // Set brightness level (0-255) - check for amps required
-int currentLitLEDs = 0;  // The number of LEDs currently lit up
-int targetLitLEDs = 0;   // The number of LEDs that should be lit up
-
-// punch counter
+float punchForce = 0;
 int punches = 0;
 
-void setup() {
-  // initialize serial commnication
-  Serial.begin(9600);
+// led variables
+unsigned long previousMillisLED;
 
+#define ledCount 120
+CRGB leds[ledCount];
+int currentLitLEDs = 0;
+int targetLitLEDs = 0;
+
+void setup() {
+  Serial.begin(9600);
   // initialize accelerometer
   if (!IMU.begin()) {
     Serial.println("Failed to initialize IMU!");
-    while (1);
+    while (1)
+      ;
   }
-
   // inial read of accelerometer values
   if (IMU.accelerationAvailable()) {
     IMU.readAcceleration(ax_start, ay_start, az_start);
   }
 
-  // initialize led strip
-  FastLED.addLeds<NEOPIXEL, ledPin>(leds, ledCount);
-  FastLED.setBrightness(brightness);
-  FastLED.clear();
-  FastLED.show();
-
   // initialize BLE: part 1
-  if (!BLE.begin()) {
-    Serial.println("BLE failed to Initiate");
-    delay(500);
-    while (1);
-  }
+  BLE.begin();
 
   // initialize BLE: part 2
   // Set advertised local name and services UUID
@@ -132,49 +121,114 @@ void setup() {
   // initialize BLE: part 4
   // Start advertising
   BLE.advertise();
-  Serial.println("BLE sending device 1 is now advertising ...");
+  Serial.println("BLE sending device is now advertising ...");
+
+  // initialize led strip
+  FastLED.addLeds<NEOPIXEL, ledPin>(leds, ledCount);
+  FastLED.setBrightness(brightness);
+  FastLED.clear();
+  FastLED.show();
 }
 
 void loop() {
-  getForce();
-
-  // listen for Bluetooth® Low Energy centrals to connect
-  // this returns a BLEDevice object, central, containing information about the
-  // central that connected to this peripheral
+  // Check BLE connection
   BLEDevice central = BLE.central();
 
+  // Send data if there is a connection
   if (central) {
-    Serial.print("Connected to central: ");
-    Serial.println(central.address());
-    if (!central.connected()) {
-      Serial.println("Disconnected from central");
+    if (central.connected()) {
+      // measure force & send over BLE
+      getForce();
     }
   }
+
+  // Let us know if there is no connection
+  if (!central) {
+    Serial.println("Disconnected from central");
+  }
+
   // Poll for BLE events (this processes any pending BLE events)
   BLE.poll();
 
-  // hold your horses
+  // delay for stability
   delay(10);
-
 }
 
-void updateLEDS(float force) {
+void getForce() {
+  // function to read the accelorometer, calculate the punch force and detect a punch
+
+  // sampling frequency
+  currentMillis = millis();
+  if (currentMillis - previousMillisAccelero >= acceleroSamplingFrequency) {
+    previousMillisAccelero = currentMillis;
+
+    // read the acceleration values
+    if (IMU.accelerationAvailable()) {
+      IMU.readAcceleration(ax, ay, az);
+
+      // calculate the force of the punch
+      float prev_punch = punchForce;
+      float punchForce =
+        punching_bag_mass * sqrt(pow((ax - ax_start) * gravity_constant, 2) + pow((ay - ay_start) * gravity_constant, 2) + pow((az - az_start) * gravity_constant, 2));
+
+      // filter using exponential moving average
+      punchForce = 0.5 * punchForce + 0.5 * punchForce;
+
+      // general print for debugging
+      // Serial.println(punchForce);
+      updateLEDS(punchForce);
+
+      // if punchForce is above threshold, calculate average punch force over punch duration
+      if (punchForce > lower_punch_threshold) {
+        float totalpunchforce = 0;
+        float readValues = 0;
+
+        // keep reading values until punch force is below threshold
+        while (punchForce > lower_punch_threshold) {
+          totalpunchforce += punchForce;
+          readValues++;
+          IMU.readAcceleration(ax, ay, az);
+          prev_punch = punchForce;
+          punchForce = punching_bag_mass * sqrt(pow((ax - ax_start) * gravity_constant, 2) + pow((ay - ay_start) * gravity_constant, 2) + pow((az - az_start) * gravity_constant, 2));
+        }
+
+        // calculate the average totalpunchforce force and send it over BLE
+        punchForce = totalpunchforce / readValues;
+        Serial.println("punch with totalpunchforce: " + String(punchForce));
+
+        // count the number of punches (to be omitted in final version)
+        punches++;
+        Serial.println("punches: " + String(punches));
+
+        // send data over BLE
+        punch.writeValue(punchForce);
+        Serial.print("Sent: ");
+        Serial.println(punchForce);
+      }
+    }
+  }
+}
+
+void updateLEDS(float punchForce) {
   // map the sensor value to the number of LEDs to light up
-  targetLitLEDs = map(force, 20, 300, 0, ledCount / 2);
+  targetLitLEDs = map(punchForce, lower_punch_threshold, upper_force_threshold, 0, ledCount / 2);
   if (targetLitLEDs < 0) {
     targetLitLEDs = 0;
   }
-  // If the force value is increasing, go up fast
+  // If the punchForce value is increasing, go up fast
   if (targetLitLEDs > currentLitLEDs) {
     currentLitLEDs = targetLitLEDs;
     updateLEDStrip(currentLitLEDs);
   }
 
-  // If the force value is decreasing, go down slowly
+  // If the punchForce value is decreasing, go down slowly
   else if (targetLitLEDs < currentLitLEDs) {
-    currentLitLEDs--;  // Go down one LED at a time (slowly)
-    updateLEDStrip(currentLitLEDs);
-    delay(ledInterval);  // Slow down the decrease
+    currentMillis = millis();
+    if (currentMillis - previousMillisLED >= ledInterval) {
+      previousMillisLED = currentMillis;
+      currentLitLEDs--;  // Go down one LED at a time (slowly)
+      updateLEDStrip(currentLitLEDs);
+    }
   }
 }
 
@@ -190,54 +244,4 @@ void updateLEDStrip(int numLitLEDs) {
   }
 
   FastLED.show();
-}
-
-void getForce() {
-  // read the acceleration values if the IMU is available
-  if (IMU.accelerationAvailable()) {
-    IMU.readAcceleration(ax, ay, az);
-
-    // calculate the force of the punch
-    float prev_force = force;
-    float force =
-        punching_bag_mass * sqrt(pow((ax - ax_start) * gravity_constant, 2) +
-                                 pow((ay - ay_start) * gravity_constant, 2) +
-                                 pow((az - az_start) * gravity_constant, 2));
-
-    // update the LEDs (unfiltered value)
-    updateLEDS(force);
-
-    // filter using exponential moving average
-    force = 0.5 * force + 0.5 * prev_force;
-
-    // if force is above threshold calculate average force over punch duration
-    if (force > lower_force_threshold) {
-      float totalforce = 0;
-      float readValues = 0;
-
-      // keep reading values until force is below threshold
-      while (force > lower_force_threshold) {
-        totalforce += force;
-        readValues++;
-        IMU.readAcceleration(ax, ay, az);
-        prev_force = force;
-        force = punching_bag_mass *
-                sqrt(pow((ax - ax_start) * gravity_constant, 2) +
-                     pow((ay - ay_start) * gravity_constant, 2) +
-                     pow((az - az_start) * gravity_constant, 2));
-      }
-
-      // calculate the average force and send it over BLE
-      force = totalforce / readValues;
-      Serial.println("punch with force: " + String(force));
-      punch.writeValue(force);
-
-      // play sound if force is above threshold
-      // ...
-
-      // count the number of punches (to be omitted in final version)
-      punches++;
-      Serial.println("punches: " + String(punches));
-    }
-  }
 }
