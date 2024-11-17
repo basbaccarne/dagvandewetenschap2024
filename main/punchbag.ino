@@ -60,6 +60,14 @@ const int upper_force_threshold = 400;  // for mapping the leds
 const int acceleroSamplingFrequency = 10;
 const long ledInterval = 10;  // Set the decrease rate of the leds
 
+// new FSR variables
+int punchThreshold = 50;
+const int sensorPin = A0;
+int sensorReading = 0;
+int peakReading = 0;
+bool punching = false;
+bool sending = false;
+
 // BLE information
 BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
 BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
@@ -99,6 +107,8 @@ void setup() {
   Serial.begin(9600);
   DFSerial.begin(9600);
 
+  pinMode(A0, INPUT);
+
   // initialize accelerometer
   if (!IMU.begin()) {
     Serial.println("Failed to initialize IMU!");
@@ -137,7 +147,7 @@ void setup() {
 
   // initialize Audio module
   myDFPlayer.begin(DFSerial);
-  myDFPlayer.volume(20); 
+  myDFPlayer.volume(20);
 }
 
 void loop() {
@@ -148,7 +158,8 @@ void loop() {
   if (central) {
     if (central.connected()) {
       // measure force & send over BLE
-      getForce();
+      // getForce();
+      FSR_reading();
     }
   }
 
@@ -159,6 +170,7 @@ void loop() {
 
   // Poll for BLE events (this processes any pending BLE events)
   BLE.poll();
+  central = BLE.central();
 
   // delay for stability
   delay(10);
@@ -260,8 +272,39 @@ void updateLEDStrip(int numLitLEDs) {
 }
 
 void playSound() {
-  int fileNumber = random(1,18);
-    myDFPlayer.playMp3Folder(fileNumber);
-    Serial.print("Audio: ");
-    Serial.println(fileNumber);
+  int fileNumber = random(1, 18);
+  myDFPlayer.playMp3Folder(fileNumber);
+  Serial.print("Audio: ");
+  Serial.println(fileNumber);
+}
+
+void FSR_reading() {
+  sensorReading = analogRead(sensorPin);
+
+  while (sensorReading > punchThreshold) {
+    punching = true;
+    sensorReading = analogRead(sensorPin);
+    updateLEDS(punchForce);
+    if (punchForce < sensorReading) {
+      punchForce = sensorReading;
+    }
+    delay(10);
+  }
+
+  if (punching == true) {
+    Serial.println(punchForce);
+    updateLEDS(punchForce);
+    // send data over BLE
+    punch.writeValue(punchForce);
+    Serial.print("Sent: ");
+    Serial.println(punchForce);
+
+    // play sound effect
+    playSound();
+    punchForce = 0;
+    punching = false;
+  }
+
+  updateLEDS(punchForce);
+  delay(10);
 }
