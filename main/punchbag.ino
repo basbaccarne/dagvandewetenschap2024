@@ -60,6 +60,23 @@ const int upper_force_threshold = 400;  // for mapping the leds
 const int acceleroSamplingFrequency = 10;
 const long ledInterval = 10;  // Set the decrease rate of the leds
 
+// BLE information (UUID)
+// Robot - old but working
+BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
+BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
+
+// Robot 1
+// BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
+// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001", BLERead | BLENotify);
+
+// Robot 2
+// BLEService punchService("123e4567-e89b-12d3-a456-426614174002");
+// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174003", BLERead | BLENotify);
+
+// Robot 3
+// BLEService punchService("123e4567-e89b-12d3-a456-426614174004");
+// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174005", BLERead | BLENotify);
+
 // new FSR variables
 int punchThreshold = 50;
 const int sensorPin = A0;
@@ -67,10 +84,6 @@ int sensorReading = 0;
 int peakReading = 0;
 bool punching = false;
 bool sending = false;
-
-// BLE information
-BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
-BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
 
 // pins
 #define ledPin 7
