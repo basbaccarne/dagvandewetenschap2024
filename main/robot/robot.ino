@@ -549,7 +549,7 @@ void loop() {
                         "u!");
                   }
 
-                  // timer to end the debrief state (5 seconds)
+                  // timer to end the debrief state (15 seconds)
                   if (millis() - stateStart >= 15000) {
                     Serial.println("Going to CHALLENGE3 2 state");
                     currentState = CHALLENGE3;
