@@ -14,7 +14,7 @@ void setupDFPlayer() {
 
   // Open the SD card stream
   myDFPlayer.begin(DFSerial);
-  myDFPlayer.volume(10);  // Set volume value. From 0 to 30
+  myDFPlayer.volume(30);  // Set volume value. From 0 to 30
 }
 
 void playSound(int fileNumber) {

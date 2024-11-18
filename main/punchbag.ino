@@ -62,12 +62,12 @@ const long ledInterval = 10;  // Set the decrease rate of the leds
 
 // BLE information (UUID)
 // Robot - old but working
-BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
-BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
+// BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
+// BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
 
 // Robot 1
-// BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
-// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001", BLERead | BLENotify);
+BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
+BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001", BLERead | BLENotify);
 
 // Robot 2
 // BLEService punchService("123e4567-e89b-12d3-a456-426614174002");
