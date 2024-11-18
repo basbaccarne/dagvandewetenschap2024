@@ -70,6 +70,8 @@ int BLEInterval = 500;
 
 unsigned long previousMillis_voice = 0;
 int voiceInterval = 3000;
+int previousMillis_snap = 0;
+int snapInterval = 500;
 
 int audiofile;
 
@@ -78,6 +80,7 @@ float previousPunchData;
 
 unsigned long stateStart;
 int stateStage = 0;
+bool punched;
 
 // Main variables for the challenges
 float maxPunch = 0.0;
@@ -86,12 +89,12 @@ float punchVariance = 0.0;
 
 // benchmarks
 float mean_punchForce = 300;
-float mean_punchCounter = 100;
-float mean_punchVariance = 10;
+float mean_punchCounter = 200;
+float mean_punchVariance = 300;
 
-float sd_punchForce = 100;
-float sd_punchCounter = 50;
-float sd_punchVariance = 5;
+float sd_punchForce = 20;
+float sd_punchCounter = 40;
+float sd_punchVariance = 100;
 
 // supporting variables
 unsigned long previousMillis_C3 = 0;  // 1st timer for interval calculation
@@ -288,6 +291,7 @@ void loop() {
                     previousMillis_voice = 0;
 
                     punchData = 0;
+                    stateStage = 0;
                     delay(10);
 
                     playSound(3);
@@ -298,10 +302,7 @@ void loop() {
                         "Wauw, dat voelde ik! Jij hebt kracht, mannekes! Ik "
                         "heb "
                         "drie zotte uitdagingen voor jou. Zijn je vuisten "
-                        "klaar? "
-                        "Laten "
-                        "we samen spelen en ik beloof je, het zal hier plezant "
-                        "worden!");
+                        "klaar? ");
                   }
 
                   currentMillis = millis();
@@ -343,13 +344,13 @@ void loop() {
 
                     stateStart = millis();
 
+                    delay(100);
                     punchData = 0;
                     previousPunchData = 0;
-
-                    delay(20);
-
-                    // reset maxPunch for every user
                     maxPunch = 0.0;
+                    Serial.println("reset ùax force");
+
+                    delay(20);                    
                   }
 
                   // print actual force
@@ -428,9 +429,11 @@ void loop() {
                     delay(100);
 
                     stateStart = millis();
+                    playSound(48);
 
+                    delay(4000);
                     playSound(15);
-                    delay(10);
+                    delay(30);
 
                     Serial.print("subtitles||");
                     Serial.println(
@@ -464,6 +467,7 @@ void loop() {
 
                     stateStart = millis();
                     previousMillis_voice = millis();
+                    punched = false;
 
                     // reset punchCounter for every user
                     punchCounter = 0;
@@ -484,9 +488,14 @@ void loop() {
                   int longestAudiotime = 4000 + 1000;
                   int audiofiles[] = {18, 19, 22};
 
+
+                  if(previousPunchData > 4){
+                    punched = true;
+                  }
+
                   currentMillis = millis();
                   if (currentMillis - previousMillis_voice >=
-                      longestAudiotime) {
+                      longestAudiotime && punched) {
                     previousMillis_voice = currentMillis;
 
                     audiofile = audiofiles[random(3)];
@@ -535,6 +544,10 @@ void loop() {
                     delay(100);
 
                     stateStart = millis();
+
+                    // audio  on state switch
+                    playSound(48);
+                    delay(4000);
 
                     // voice 26 (once on state switch)
                     playSound(26);
@@ -587,6 +600,15 @@ void loop() {
                     previousInterval == 0;
                   }
 
+                  // snap sound
+                  currentMillis = millis();
+                  if (currentMillis - previousMillis_snap >=
+                      snapInterval) {
+                    previousMillis_snap = currentMillis;
+                    playSound(49);
+                    delay(10);
+                    }
+
                   // first hit
                   if (punchData != previousPunchData && stateStage == 0) {
                     stateStage = 1;
@@ -614,6 +636,8 @@ void loop() {
                     Serial.print("interval_ms||");
                     Serial.println(interval);
                     delay(1);
+
+                    
 
                     // check the delta with the previous interval (baseline)
                     if (previousInterval == 0) {
@@ -735,62 +759,50 @@ void loop() {
                     // use benchmarks for the relative values (measure!!!!)
                     // map (variable, bad benchmark, good benchmark, from 0, to
                     // 100)
-                    int strengthMapped = map(maxPunch, 10, 100, 0, 100);
-                    int speedMapped = map(punchCounter, 20, 200, 0, 100);
+
+                    int strengthMapped = map(maxPunch, mean_punchForce-(2*sd_punchForce), mean_punchForce+(2*sd_punchForce), 0, 100);
+                    int speedMapped = map(punchCounter, mean_punchCounter-(2*sd_punchCounter), mean_punchCounter+(2*sd_punchCounter), 0, 100);
                     int punchVarianceMapped =
-                        map(punchVariance, 200, 20, 0, 100);  // reverse mapping
+                        map(punchVariance, mean_punchVariance+(2*sd_punchVariance), mean_punchVariance-(2*sd_punchVariance), 0, 100);  // reverse mapping
 
                     // calculate the animal rank
                     mantis = 0;
-                    if (strengthMapped > 0.75) {
+                    if (strengthMapped > 75) {
                       mantis = 3;
-                    } else if (strengthMapped > 0.5) {
+                    } else if (strengthMapped > 50) {
                       mantis = 2;
-                    } else if (strengthMapped > 0.25) {
+                    } else if (strengthMapped > 25) {
                       mantis = 1;
                     }
 
                     hummingbird = 0;
-                    if (speedMapped > 0.75) {
+                    if (speedMapped > 75) {
                       hummingbird = 3;
-                    } else if (speedMapped > 0.5) {
+                    } else if (speedMapped > 50) {
                       hummingbird = 2;
-                    } else if (speedMapped > 0.25) {
+                    } else if (speedMapped > 25) {
                       hummingbird = 1;
                     }
 
                     maki = 0;
-                    if (punchVarianceMapped > 0.75) {
+                    if (punchVarianceMapped > 75) {
                       maki = 3;
-                    } else if (punchVarianceMapped > 0.5) {
+                    } else if (punchVarianceMapped > 50) {
                       maki = 2;
-                    } else if (punchVarianceMapped > 0.25) {
+                    } else if (punchVarianceMapped > 25) {
                       maki = 1;
                     }
 
-                    jaguar = 0;
-                    if (strengthMapped > 0.75 && speedMapped > 0.75 &&
-                        punchVarianceMapped > 0.75) {
-                      jaguar = 3;
-                    } else if (strengthMapped > 0.50 && speedMapped > 0.50 &&
-                               punchVarianceMapped > 0.50) {
-                      jaguar = 2;
-                    } else if (strengthMapped > 0.25 && speedMapped > 0.25 &&
-                               punchVarianceMapped > 0.25) {
-                      jaguar = 1;
-                    }
 
                     // welk dier ben je?
                     // vanaf je een 3 ster jaguar bent wint dat dier
                     // anders wint het dier met de hoogste score
-                    if (jaguar == 3) {
-                      final_animal = 4;  // jaguar
-                    } else if (speedMapped > strengthMapped &&
-                               speedMapped > punchVarianceMapped) {
-                      final_animal = 2;  // hummingbird
-                    } else if (strengthMapped > speedMapped &&
+                    if (strengthMapped > speedMapped &&
                                strengthMapped > punchVarianceMapped) {
                       final_animal = 1;  // mantis
+                    } else if (speedMapped > strengthMapped &&
+                               speedMapped > punchVarianceMapped) {
+                      final_animal = 2;  // kolibri
                     } else if (punchVarianceMapped > speedMapped &&
                                punchVarianceMapped > strengthMapped) {
                       final_animal = 3;  // snow monkey
@@ -809,27 +821,48 @@ void loop() {
                     delay(10);
 
                     delay(500);
-                    // communication to protopie
+
+                    communication to protopie
+                    Serial.print("score_strength||");
+                    Serial.println(maxPunch);
+                    delay(20);
+                    Serial.print("score_speed||");
+                    Serial.println(punchCounter);
+                    delay(20);
+                    Serial.print("score_ritme||");
+                    Serial.println(punchVariance);
+                    delay(20);
+
+                    // Serial.print("score_strength||");
+                    // Serial.println(strengthMapped);
+                    // delay(20);
+                    // Serial.print("score_speed||");
+                    // Serial.println(speedMapped);
+                    // delay(20);
+                    // Serial.print("score_ritme||");
+                    // Serial.println(punchVarianceMapped);
+                    // delay(20);
+
                     Serial.print("mantis||");
                     Serial.println(mantis);
-                    delay(200);
+                    delay(20);
                     Serial.print("hummingbird||");
                     Serial.println(hummingbird);
-                    delay(200);
+                    delay(20);
                     Serial.print("maki||");
                     Serial.println(maki);
-                    delay(200);
+                    delay(20);
                     Serial.print("jaguar||");
                     Serial.println(jaguar);
-                    delay(200);
+                    delay(20);
                     Serial.print("final_animal||");
                     Serial.println(final_animal);
-                    delay(200);
+                    delay(20);
                   }
 
                   // timer to end the conclusion state and go back to IDLE (10
                   // sec)
-                  if (millis() - stateStart >= 30000) {
+                  if (millis() - stateStart >= 20000) {
                     Serial.println("Going to IDLE state");
                     currentState = IDLE;
                     punchData = 0;
