@@ -20,17 +20,17 @@
 
 // On Arduino Nano 33IOT the TX & RX pins are added to the Serial1 object
 // Name Serial1 as DFSerial to make it clear that it is used for the DFPlayer
-#define DFSerial Serial1
+// #define DFSerial Serial1
 
 DFRobotDFPlayerMini myDFPlayer;
 
 void setup()
 {
   // initialize both Serial communications
-  DFSerial.begin(9600);
+  Serial1.begin(9600);
   Serial.begin(115200);
   // Open the SD card stream
-  myDFPlayer.begin(DFSerial);
+  myDFPlayer.begin(Serial1);
   myDFPlayer.volume(30);  //Set volume value. From 0 to 30
   // myDFPlayer.play(1);  //Play the first mp3
 }

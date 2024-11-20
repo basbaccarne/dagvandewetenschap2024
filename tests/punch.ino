@@ -75,8 +75,3 @@ void calibrate()
         sensorMin = sensorReading;
     }
 }
-
-
-void ledDriver(reading){
-  
-}

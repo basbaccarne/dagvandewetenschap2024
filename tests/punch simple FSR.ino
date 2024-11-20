@@ -25,7 +25,7 @@ void setup() {
 }
 
 void loop() {
-  FSR_reading()
+  FSR_reading();
 }
 
 
