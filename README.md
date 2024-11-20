@@ -4,7 +4,10 @@
 <br>
 *A [comon](http://www.comon.gent) project, built for [Dag van de Wetenschap 2024](https://www.dagvandewetenschap.be/)    ([24 november 2024](https://comon.gent/evenement/kom-boksen-met-robots-op-dag-van-de-wetenschap))*
 ***
+<div align="center">
 <img src="img/AIdeation1.png" width="400"> <img src="img/AIdeation2.png" width="400">  
+</div>
+
 ***
 **Punchpal is an interactive installation using punching bags and a robot to engage kids in fun physical challenges and provide personalized activity advice**
 ***
@@ -46,6 +49,10 @@ The waiting cue is a playfull arena. Children can take a number from a [ticket d
 - [X] [Ticket dispenser](https://www.amazon.com.be/-/nl/nummerdispenser-wandankerhouder-nummersysteem-deurinstallatiesystemen-INTERNATIONAL/dp/B08NW6LV42/ref=asc_df_B08NW6LV42/?tag=begogshpadd0d-21&linkCode=df0&hvadid=714473552846&hvpos=&hvnetw=g&hvrand=16276129641215346199&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1001228&hvtargid=pla-1157752077288&psc=1&mcid=38ea6b2bdddd3091a15afb6feddee7aa&gad_source=1)
 - [X] [Protopie for the screen](pies/counter.pie)
 - [X] Arena delineation (poles & ribbons)
+
+<div align="center">
+<img src="img/counter.gif" height="150"> <img src="img/tickets.jpg" height="150">  
+</div>
 
 ## Main game
 ### Punching bag
@@ -124,6 +131,10 @@ Variables:
 
 ### Post-game
 With this conclusion the players can to to a screen with extra information.
+
+<div align="center">
+<img src="img/panels.png" width="400">  
+</div>
 
 ***
    
