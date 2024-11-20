@@ -47,6 +47,10 @@ The waiting cue is a playfull arena. Children can take a number from a [ticket d
 - [X] [Protopie for the screen](pies/counter.pie)
 - [X] Arena delineation (poles & ribbons)
 
+<div align="center">
+<img src="img/counter.gif" height="150"> <img src="img/tickets.jpg" height="150">  
+</div>
+
 ## Main game
 ### Punching bag
 The punching bag is a boxing bag, hung at the ceiling with strong magnets, with power coming from above.  A microcontroller on the top is powered through a 5V power adapter. The punch bag detects punches using its onboard IMU. This force is processed in 3 ways: 
@@ -124,6 +128,10 @@ Variables:
 
 ### Post-game
 With this conclusion the players can to to a screen with extra information.
+
+<div align="center">
+<img src="img/panels.png" height="150">  
+</div>
 
 ***
    
