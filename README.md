@@ -109,6 +109,10 @@ The robot can be in the following states:
 #### Code & casing
 * 💼 [Casing](https://a360.co/4fcM1B4)
 * ⌨️ [Robot code & wiring](main/robot)
+  
+<div align="center">
+<img src="img/wip.gif" height="300"> <img src="img/trio.gif" height="300">  
+</div>
 
 ### Robot Assistant Screen
 The screen is a protopie screen with extra text and information. The screens are triggered and 'data fed' thorugh serial messages of the robot arduino. This screen runs on a raspberry pi with and external screen.   
