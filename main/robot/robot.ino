@@ -31,19 +31,23 @@ the user can leave > goes back the IDLE state
 // BLE information (UUID)
 // Robot - old but working
 // BLEService punchService("95ff7bf8-aa6f-4671-82d9-22a8931c5387");
-// BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead | BLENotify);
+// BLEFloatCharacteristic punch("95ff7bf8-aa6f-4671-82d9-22a8931c5387", BLERead
+// | BLENotify);
 
 // Robot 1
 BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
-BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001", BLERead | BLENotify);
+BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001",
+                             BLERead | BLENotify);
 
 // Robot 2
 // BLEService punchService("123e4567-e89b-12d3-a456-426614174002");
-// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174003", BLERead | BLENotify);
+// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174003", BLERead
+// | BLENotify);
 
 // Robot 3
 // BLEService punchService("123e4567-e89b-12d3-a456-426614174004");
-// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174005", BLERead | BLENotify);
+// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174005", BLERead
+// | BLENotify);
 
 // States
 enum State {
@@ -94,11 +98,12 @@ float mean_punchVariance = 300;
 
 float sd_punchForce = 20;
 float sd_punchCounter = 40;
-float sd_punchVariance = 100;
+float sd_punchVariance = 100;  // mean - 2*SD  mag niet onder nul gaan
 
 // supporting variables
 unsigned long previousMillis_C3 = 0;  // 1st timer for interval calculation
 unsigned long currentMillis_C3 = 0;   // 2nd timer for interval calculation
+int interval;
 int previousInterval = 0;  // previous interval for variance calculation
 int punchCounter_C3 = 0;   // punch counter for variance calculation
 float cumulativeSum_C3 =
@@ -350,7 +355,7 @@ void loop() {
                     maxPunch = 0.0;
                     Serial.println("reset ùax force");
 
-                    delay(20);                    
+                    delay(20);
                   }
 
                   // print actual force
@@ -488,14 +493,14 @@ void loop() {
                   int longestAudiotime = 4000 + 1000;
                   int audiofiles[] = {18, 19, 22};
 
-
-                  if(previousPunchData > 4){
+                  if (previousPunchData > 4) {
                     punched = true;
                   }
 
                   currentMillis = millis();
                   if (currentMillis - previousMillis_voice >=
-                      longestAudiotime && punched) {
+                          longestAudiotime &&
+                      punched) {
                     previousMillis_voice = currentMillis;
 
                     audiofile = audiofiles[random(3)];
@@ -602,70 +607,64 @@ void loop() {
 
                   // snap sound
                   currentMillis = millis();
-                  if (currentMillis - previousMillis_snap >=
-                      snapInterval) {
+                  if (currentMillis - previousMillis_snap >= snapInterval) {
                     previousMillis_snap = currentMillis;
                     playSound(49);
                     delay(10);
-                    }
-
-                  // first hit
-                  if (punchData != previousPunchData && stateStage == 0) {
-                    stateStage = 1;
-                    previousPunchData = punchData;
-                    Serial.print("First Hit! ");
-                    Serial.print("punchforce||");
-                    Serial.println(punchData);
-                    delay(1);
-                    previousMillis_C3 = millis();
                   }
 
-                  // if a hit is detected
-                  if (punchData != previousPunchData && stateStage == 1) {
-                    // print it
+                  // hitcounter
+                  punchCounter_C3++;
+
+                  // first hit
+                  if (punchData != previousPunchData) {
                     previousPunchData = punchData;
+                    currentMillis_C3 = millis();
                     Serial.print("punchforce||");
                     Serial.println(punchData);
                     delay(1);
 
-                    // get punch variance
-                    // calculate the time (in ms) between two punches
-                    currentMillis_C3 = millis();
-                    int interval = currentMillis_C3 - previousMillis_C3;
-                    previousMillis_C3 = currentMillis_C3;
-                    Serial.print("interval_ms||");
-                    Serial.println(interval);
-                    delay(1);
+                    if (punchCounter_C3 == 1) {
+                      Serial.print("First Hit! ");
+                      Serial.println(punchData);
+                      delay(1);
+                      previousMillis_C3 = millis();
 
-                    
+                    } else if (punchCounter_C3 > 1) {
+                      // get punch variance
+                      // calculate the time (in ms) between two punches
+                      interval = currentMillis_C3 - previousMillis_C3;
+                      previousMillis_C3 = currentMillis_C3;
+                      Serial.print("interval_ms||");
+                      Serial.println(interval);
+                      delay(1);
+                    }
 
-                    // check the delta with the previous interval (baseline)
-                    if (previousInterval == 0) {
+                    if (punchCounter_C3 == 2) {
+                      // calculate the deviation from the moving baseline
                       previousInterval = interval;
                       Serial.println("baseline_interval||");
                       Serial.println(interval);
                       delay(1);
                     }
 
-                    // calculate the deviation from the moving baseline
-                    // (deviation)
-                    int delta = (interval - previousInterval);
-                    previousInterval = interval;
-                    Serial.print("punch_deviance||");
-                    Serial.println(delta);
-                    delay(1);
+                    if (punchCounter_C3 > 2){
+                      int delta = (interval - previousInterval);
+                      previousInterval = interval;
+                      Serial.print("punch_deviance||");
+                      Serial.println(delta);
+                      delay(1);
 
-                    // sum the total deviation
-                    cumulativeSum_C3 += abs(delta);
-                    punchCounter_C3++;
+                      // sum the total deviation
+                      cumulativeSum_C3 += abs(delta);
 
-                    // Calculate the moving average (mean deviation)
-                    punchVariance = cumulativeSum_C3 / punchCounter_C3;
-                    Serial.print("punch_variance||");
-                    Serial.println(punchVariance);
-                    delay(1);
+                      // Calculate the moving average (mean deviation)
+                      punchVariance = cumulativeSum_C3 / (punchCounter_C3 - 2);
+                      Serial.print("punch_variance||");
+                      Serial.println(punchVariance);
+                      delay(1);
+                    }
                   }
-
                   // random voice (29, 47, 33)
                   int longestAudiotime = 17000 + 1000;
                   int audiofiles[] = {29, 47, 33};
@@ -760,10 +759,17 @@ void loop() {
                     // map (variable, bad benchmark, good benchmark, from 0, to
                     // 100)
 
-                    int strengthMapped = map(maxPunch, mean_punchForce-(2*sd_punchForce), mean_punchForce+(2*sd_punchForce), 0, 100);
-                    int speedMapped = map(punchCounter, mean_punchCounter-(2*sd_punchCounter), mean_punchCounter+(2*sd_punchCounter), 0, 100);
+                    int strengthMapped =
+                        map(maxPunch, mean_punchForce - (2 * sd_punchForce),
+                            mean_punchForce + (2 * sd_punchForce), 0, 100);
+                    int speedMapped = map(
+                        punchCounter, mean_punchCounter - (2 * sd_punchCounter),
+                        mean_punchCounter + (2 * sd_punchCounter), 0, 100);
                     int punchVarianceMapped =
-                        map(punchVariance, mean_punchVariance+(2*sd_punchVariance), mean_punchVariance-(2*sd_punchVariance), 0, 100);  // reverse mapping
+                        map(punchVariance,
+                            mean_punchVariance + (2 * sd_punchVariance),
+                            mean_punchVariance - (2 * sd_punchVariance), 0,
+                            100);  // reverse mapping
 
                     // calculate the animal rank
                     mantis = 0;
@@ -793,12 +799,11 @@ void loop() {
                       maki = 1;
                     }
 
-
                     // welk dier ben je?
                     // vanaf je een 3 ster jaguar bent wint dat dier
                     // anders wint het dier met de hoogste score
                     if (strengthMapped > speedMapped &&
-                               strengthMapped > punchVarianceMapped) {
+                        strengthMapped > punchVarianceMapped) {
                       final_animal = 1;  // mantis
                     } else if (speedMapped > strengthMapped &&
                                speedMapped > punchVarianceMapped) {
@@ -822,7 +827,7 @@ void loop() {
 
                     delay(500);
 
-                    communication to protopie
+                    // communication to protopie 
                     Serial.print("score_strength||");
                     Serial.println(maxPunch);
                     delay(20);

@@ -47,7 +47,7 @@ unsigned long previousMillis_eyes = 0;
 unsigned long interval_eyes = 0;
 int state_eyes = 0;
 unsigned long previousMillis_head = 0;
-unsigned long interval_head = 400;
+unsigned long interval_head = 800;
 
 void setupEyeHeadMovement() {
   matrix.begin(0x70);  // I2C address of the LED matrix
