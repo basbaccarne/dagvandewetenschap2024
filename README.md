@@ -43,7 +43,7 @@
 The waiting cue is a playfull arena. Children can take a number from a [ticket dispenser](https://www.amazon.com.be/-/en/CYSSJF-Number-Ticket-Dispenser-Waiting/dp/B0BBVB9T41/ref=asc_df_B0BBVB9T41/). A screen shows the number of the next participant who can enter the boxing ring. Meanwhile, the screen also shows (in an alternating way) (1) information on the importance of physical activity and (2) movement advice. There is no cue, but waiting participants are challenged to exercise while waiting.  
 
 - [x] [List of activities](content/Input%20Emma%20Tack.docx)
-- [X] Ticket dispenser
+- [X] [Ticket dispenser](https://www.amazon.com.be/-/nl/nummerdispenser-wandankerhouder-nummersysteem-deurinstallatiesystemen-INTERNATIONAL/dp/B08NW6LV42/ref=asc_df_B08NW6LV42/?tag=begogshpadd0d-21&linkCode=df0&hvadid=714473552846&hvpos=&hvnetw=g&hvrand=16276129641215346199&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1001228&hvtargid=pla-1157752077288&psc=1&mcid=38ea6b2bdddd3091a15afb6feddee7aa&gad_source=1)
 - [X] [Protopie for the screen](pies/counter.pie)
 - [X] Arena delineation (poles & ribbons)
 
@@ -56,13 +56,13 @@ The punching bag is a boxing bag, hung at the ceiling with strong magnets, with 
 
 #### Hardware components
 * [Arduino Nano 33 IOT](https://store.arduino.cc/en-be/products/arduino-nano-33-iot?srsltid=AfmBOoqs3picykI2RmGLFcmqDr-7JXn37wr0dZKpgsBNeWgEOX8gPXjQ)
-* [Velostat](https://www.dfrobot.com/product-1842.html](https://www.kiwi-electronics.com/nl/pressure-sensitive-conductive-sheet-velostat-linqstat-2808?gad_source=1&gclid=Cj0KCQjw99e4BhDiARIsAISE7P83tbKT8K8KwEgOXDDLqLYTPzCBY2VCoNgPV55UpImcOOfay8eXonoaAoaCEALw_wcB)) (omitted)
+* [Big Pressure Detector - RP-S40-ST](https://www.amazon.com.be/-/en/dp/B07H35RZCT?ref=ppx_yo2ov_dt_b_fed_asin_title)
 * [WS2812 RGB LED strip](https://www.dfrobot.com/product-1835.html)
 * [Audio Driver with SD card (DFPlayer)](https://www.dfrobot.com/product-1121.html) + SD card with [audio files](mp3/soundfx)
 * [Speaker](https://www.dfrobot.com/product-1506.html) (<3W)
+* [Punching bag](https://www.decathlon.be/fr/p/sac-de-frappe-poing-14-kg-rouge/_/R-p-331858?mc=8651245&srsltid=AfmBOorR6KR3TMO4XhtYN0VpDQgSnXRjlLiIrg5T-x6PiLyhr9W8kmmJ0rI)
 * 5V Power adapter (> 1A) + power connector
 * Some resistors, jumper cables & breadboard(s)
-* Punching bag
   
 #### Code & casing
 * 💼 [Casing](https://a360.co/40fPP0c)
@@ -129,31 +129,26 @@ With this conclusion the players can to to a screen with extra information.
    
 # Subchallenges
 Before creating the final prototypes, we solve a couple of subchallenges
-- [x] Punch: Simple velostat test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
-- [X] Punch: Calibrate sensor and trigger on punch [[test](tests/punch.ino)]
-- [x] Punch: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino))
-- [x] Punch: Led strip [punch test](tests/LEDstrip_punchtest.ino) & [simple rainbox test](tests/LEDstrip_rainbowtest.ino)
+- [x] Punch: Simple **velostat** test & 3.3V optimiziation ([test](tests/punch%20simple%20velostat.ino))
+- [X] Punch: **Calibrate** sensor and trigger on punch ([test](tests/punch.ino))
+- [x] Punch: Play a **sound** ([sound tests](tests/DFplayer.ino))
+- [x] Punch: **Led strip** [punch test](tests/LEDstrip_punchtest.ino) & [simple rainbox test](tests/LEDstrip_rainbowtest.ino)
 ***
-- [X] Oefening 1: Max force ([test](tests/highesthit_hitcounter.ino))
-- [X] Oefening 2: Punch Count ([test](tests/highesthit_hitcounter.ino))
-- [X] Oefening 3: Ritme
-***
-- [X] Commz: Send data from Arduino A to Arduino B over UART ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
-- [X] Commz: Send data from Arduino A to Arduino B over BLE ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino)) ([simple demo sender](tests/BLE_sender_v2.ino))
-- [ ] Commz: Send data from Arduino A to Arduino B over HC-05 (Bluetooth) (sender & receiver)
-- [ ] Commz: Send data from Arduino A to Arduino B over HTTP (server & client) 
+- [X] Commz: Send data from Arduino A to Arduino B over **UART** ([master](tests/UART_master.ino) & [slave](tests/UART_master.ino))
+- [X] Commz: Send data from Arduino A to Arduino B over **BLE** ([sender](tests/BLE_sender.ino) & [receiver](tests/BLE_receiver.ino)) ([simple demo sender](tests/BLE_sender_v2.ino))
+- [X] Commz: Send data from Arduino A to Arduino B over **HC-05** (Bluetooth) ([sender](HC05_sender.ino) & [receiver](tests/HC05_receiver.ino))
+- [X] Commz: Send data from Arduino A to Arduino B over **HTTP** ([server](tests/WiFi_sender.ino) & [client](tests/WiFi_recevier.ino)) 
 ---
-- [X] Robot: Anthropomorphic stuff with two 8x8 led matrices ([eyes](tests/anthro_eyes.ino))
-- [X] Robot: servo mounts ([head movement](tests/anthro_headmovement.ino))([simple test script to test if the servo is still working](tests/servo_tester.ino))
-- [X] Robot: [integrated head movement & eye movement](tests/robot_intergration.ino)
-- [x] Robot: Reveive trigger and play a sound ([sound tests](tests/DFplayer.ino) // [sound tests with status pin](tests/DFplayer_with_status.ino))
-- [ ] Robot: outer casing
+- [X] Robot: Anthropomorphic stuff with two **8x8 led matrices** ([eyes](tests/anthro_eyes.ino))
+- [X] Robot: **servo** mounts ([head movement](tests/anthro_headmovement.ino))([simple test script to test if the servo is still working](tests/servo_tester.ino))
+- [X] Robot: [**integrated** head movement & eye movement](tests/robot_intergration.ino)
+- [x] Robot: Reveive trigger and play a **sound** ([sound tests](tests/DFplayer.ino) // [sound tests with status pin](tests/DFplayer_with_status.ino))
+- [X] Robot: [outer **casing**](https://a360.co/4fcM1B4)
 ---
-- [ ] Extra screen: send signal to Raspi with Protopie
-- [X] Extra screen: show stuff using Protopie with Serial switches
+- [X] Extra screen: show stuff using **Protopie** with [Serial Communication](pies/robotAssistant.pie)
 ---
-- [x] [State machine](tests/statemachine_simplesycle.ino)
-- [x] [.h and .cpp test](tests/multifilescripting)
+- [x] [**State machine**](tests/statemachine_simplesycle.ino)
+- [x] [**.h and .cpp** test](tests/multifilescripting)
       
 # Benchmarks 4 inspiration
 * [DIY Smart Punching Bag](https://www.instructables.com/Smart-Punching-Bag/)
