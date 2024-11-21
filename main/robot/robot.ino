@@ -35,19 +35,19 @@ the user can leave > goes back the IDLE state
 // | BLENotify);
 
 // Robot 1
-BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
-BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001",
-                             BLERead | BLENotify);
+// BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
+// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001",
+//                             BLERead | BLENotify);
 
 // Robot 2
 // BLEService punchService("123e4567-e89b-12d3-a456-426614174002");
-// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174003", BLERead
+//  BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174003", BLERead
 // | BLENotify);
 
 // Robot 3
-// BLEService punchService("123e4567-e89b-12d3-a456-426614174004");
-// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174005", BLERead
-// | BLENotify);
+BLEService punchService("123e4567-e89b-12d3-a456-426614174004");
+BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174005", BLERead
+| BLENotify);
 
 // States
 enum State {
