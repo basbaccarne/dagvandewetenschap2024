@@ -92,11 +92,11 @@ int punchCounter = 0;
 float punchVariance = 0.0;
 
 // benchmarks
-float mean_punchForce = 300;
-float mean_punchCounter = 200;
-float mean_punchVariance = 300;
+float mean_punchForce = 400;
+float mean_punchCounter = 100;
+float mean_punchVariance = 200;
 
-float sd_punchForce = 20;
+float sd_punchForce = 100;
 float sd_punchCounter = 40;
 float sd_punchVariance = 100;  // mean - 2*SD  mag niet onder nul gaan
 
@@ -353,7 +353,7 @@ void loop() {
                     punchData = 0;
                     previousPunchData = 0;
                     maxPunch = 0.0;
-                    Serial.println("reset ùax force");
+                    Serial.println("reset max force");
 
                     delay(20);
                   }
@@ -434,7 +434,12 @@ void loop() {
                     delay(100);
 
                     stateStart = millis();
-                    playSound(48);
+                    playSound(50);
+
+                    delay(30);
+
+                    Serial.print("subtitles||");
+                    Serial.println("Amai, zo hard!");
 
                     delay(4000);
                     playSound(15);
@@ -551,7 +556,12 @@ void loop() {
                     stateStart = millis();
 
                     // audio  on state switch
-                    playSound(48);
+                    playSound(51);
+                    delay(30);
+
+                    Serial.print("subtitles||");
+                    Serial.println(
+                        "Wat een snelheid!");
                     delay(4000);
 
                     // voice 26 (once on state switch)
@@ -561,10 +571,7 @@ void loop() {
                     Serial.print("subtitles||");
                     Serial.println(
                         "Nen goeie bokser slaat op het ritme! Dus als laatste "
-                        "opdracht, probeer zo ritmisch mogelijk te slaan. Up "
-                        "town "
-                        "funk you up, up town funk you up! Hupla nu is het aan "
-                        "u!");
+                        "opdracht, probeer zo ritmisch mogelijk te slaan.");
                   }
 
                   // timer to end the debrief state (15 seconds)
@@ -596,7 +603,6 @@ void loop() {
                     previousMillis_C3 = millis();
 
                     stateStage = 0;
-                    punchData = 0;
 
                     // reset punchVariance for every user
                     punchVariance = 0.0;
@@ -605,25 +611,20 @@ void loop() {
                     previousInterval == 0;
                   }
 
-                  // snap sound
-                  currentMillis = millis();
-                  if (currentMillis - previousMillis_snap >= snapInterval) {
-                    previousMillis_snap = currentMillis;
-                    playSound(49);
-                    delay(10);
-                  }
+                 
 
-                  // hitcounter
-                  punchCounter_C3++;
-
-                  // first hit
+                  
                   if (punchData != previousPunchData) {
+                     // hitcounter
+                  punchCounter_C3++;
+                  Serial.print("punch_counter||");
+                  Serial.println(punchCounter_C3);
                     previousPunchData = punchData;
                     currentMillis_C3 = millis();
                     Serial.print("punchforce||");
                     Serial.println(punchData);
                     delay(1);
-
+                    // first hit
                     if (punchCounter_C3 == 1) {
                       Serial.print("First Hit! ");
                       Serial.println(punchData);
@@ -648,7 +649,7 @@ void loop() {
                       delay(1);
                     }
 
-                    if (punchCounter_C3 > 2){
+                    if (punchCounter_C3 >= 3){
                       int delta = (interval - previousInterval);
                       previousInterval = interval;
                       Serial.print("punch_deviance||");
@@ -665,29 +666,20 @@ void loop() {
                       delay(1);
                     }
                   }
-                  // random voice (29, 47, 33)
+                  // random voice (47, 33)
                   int longestAudiotime = 17000 + 1000;
-                  int audiofiles[] = {29, 47, 33};
+                  int audiofiles[] = {47, 33};
 
                   currentMillis = millis();
                   if (currentMillis - previousMillis_voice >=
                       longestAudiotime) {
                     previousMillis_voice = currentMillis;
 
-                    audiofile = audiofiles[random(3)];
+                    audiofile = audiofiles[random(2)];
                     playSound(audiofile);
                     delay(10);
 
-                    if (audiofile == 29) {
-                      Serial.print("subtitles||");
-                      Serial.println(
-                          "Amai, gij zou beter drummer worden, wat een ritme, "
-                          "wat "
-                          "een precisie!");
-                      delay(10);
-                    }
-
-                    else if (audiofile == 47) {
+                    if (audiofile == 47) {
                       Serial.print("subtitles||");
                       Serial.println(
                           "Ik zie da ge er plezier in hebt, slaat eens op het "
@@ -698,7 +690,7 @@ void loop() {
                       delay(10);
                     }
 
-                    if (audiofile == 33) {
+                    else if (audiofile == 33) {
                       Serial.print("subtitles||");
                       Serial.println(
                           "Allez, voel het ritme in uw vuisten! Gelijk ne "
@@ -730,7 +722,17 @@ void loop() {
                     Serial.println("CHALLENGE3_DEBRIEF");
                     delay(200);
                     stateStart = millis();
+
+                    playSound(29);
+                    delay(30);
+
+                    Serial.print("subtitles||");
+                    Serial.println(
+                        "Amai, gij zou beter drummer worden, wat een ritme, "
+                          "wat "
+                          "een precisie!");
                   }
+                  delay(30);
 
                   // timer to end state
                   if (millis() - stateStart >= 5000) {
@@ -813,6 +815,8 @@ void loop() {
                       final_animal = 3;  // snow monkey
                     }
 
+                    delay(1000);
+
                     // voice 34 (once on state switch)
                     playSound(34);
                     delay(10);
@@ -859,7 +863,7 @@ void loop() {
                     delay(20);
                     Serial.print("jaguar||");
                     Serial.println(jaguar);
-                    delay(20);
+                    delay(200);
                     Serial.print("final_animal||");
                     Serial.println(final_animal);
                     delay(20);

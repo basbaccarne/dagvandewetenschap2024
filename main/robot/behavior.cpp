@@ -217,8 +217,8 @@ void updateEyeState() {
 void randomHeadMovement() {
   int DoesItMove = random(0, 100);
   if (DoesItMove > 50) {
-    posV = random(40, 80);
-    posH = random(40, 80);
+    posV = random(30, 80);
+    posH = random(30, 80);
     servoV.write(posV);
     servoH.write(posH);
   }

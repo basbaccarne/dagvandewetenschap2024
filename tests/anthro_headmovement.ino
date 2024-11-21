@@ -30,7 +30,7 @@ Digital Pin 11  ------------>  Servo Control (Yellow/Orange/White)
 #include <Servo.h>
 
 // general settings
-int ServoInterval = 30;              // how fast should the robot head move?
+int ServoInterval = 20;              // how fast should the robot head move?
 int lowerRestIntervalLimit = 600;    // what is the minimum time between two movements?
 int higherRestIntervalLimit = 2000;  // what is the maximum time between two movements?
 int lowerPostion = 40;               // What is the lower limit of the X and Y postions?
