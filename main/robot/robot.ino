@@ -35,19 +35,19 @@ the user can leave > goes back the IDLE state
 // | BLENotify);
 
 // Robot 1
-// BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
-// BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001",
+//  BLEService punchService("123e4567-e89b-12d3-a456-426614174000");
+//  BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174001",
 //                             BLERead | BLENotify);
 
 // Robot 2
-// BLEService punchService("123e4567-e89b-12d3-a456-426614174002");
+//  BLEService punchService("123e4567-e89b-12d3-a456-426614174002");
 //  BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174003", BLERead
 // | BLENotify);
 
 // Robot 3
 BLEService punchService("123e4567-e89b-12d3-a456-426614174004");
 BLEFloatCharacteristic punch("123e4567-e89b-12d3-a456-426614174005", BLERead
-| BLENotify);
+ | BLENotify);
 
 // States
 enum State {
@@ -92,13 +92,13 @@ int punchCounter = 0;
 float punchVariance = 0.0;
 
 // benchmarks
-float mean_punchForce = 400;
-float mean_punchCounter = 100;
-float mean_punchVariance = 200;
+float mean_punchForce = 480;
+float mean_punchCounter = 90;
+float mean_punchVariance = 185;
 
-float sd_punchForce = 100;
-float sd_punchCounter = 40;
-float sd_punchVariance = 100;  // mean - 2*SD  mag niet onder nul gaan
+float sd_punchForce = 38;
+float sd_punchCounter = 26;
+float sd_punchVariance = 170;  // mean - 2*SD  mag niet onder nul gaan
 
 // supporting variables
 unsigned long previousMillis_C3 = 0;  // 1st timer for interval calculation
@@ -275,7 +275,7 @@ void loop() {
                   if (punchData != previousPunchData) {
                     Serial.println("Punch detected");
                     Serial.println("Going to WELCOME state");
-                    currentState = WELCOME;
+                    currentState = CHALLENGE1;
                     punchData = 0;
                   }
                   break;
@@ -762,15 +762,15 @@ void loop() {
                     // 100)
 
                     int strengthMapped =
-                        map(maxPunch, mean_punchForce - (2 * sd_punchForce),
-                            mean_punchForce + (2 * sd_punchForce), 0, 100);
+                        map(maxPunch, mean_punchForce - (1 * sd_punchForce),
+                            mean_punchForce + (1 * sd_punchForce), 0, 100);
                     int speedMapped = map(
-                        punchCounter, mean_punchCounter - (2 * sd_punchCounter),
-                        mean_punchCounter + (2 * sd_punchCounter), 0, 100);
+                        punchCounter, mean_punchCounter - (1 * sd_punchCounter),
+                        mean_punchCounter + (1 * sd_punchCounter), 0, 100);
                     int punchVarianceMapped =
                         map(punchVariance,
-                            mean_punchVariance + (2 * sd_punchVariance),
-                            mean_punchVariance - (2 * sd_punchVariance), 0,
+                            mean_punchVariance + (1 * sd_punchVariance),
+                            mean_punchVariance - (1 * sd_punchVariance), 0,
                             100);  // reverse mapping
 
                     // calculate the animal rank
