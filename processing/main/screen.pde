@@ -16,6 +16,7 @@ boolean disconnected = true;
 String state ="booting";
 float punch = 0.0;
 float previousPunch = 0.0;
+float max_force = 0.0;
 boolean firstHit = false;
 float position = 0;
 int radius = 0;
@@ -37,7 +38,7 @@ void setup() {
   font2 = createFont("Jost-VariableFont_wght.ttf", 48);
   textFont(font1); // Set the font
   textAlign(CENTER, CENTER);
-  
+
   ellipseMode(CENTER);
 
   // animated GIF
@@ -149,62 +150,93 @@ void idle() {
   // reser variables for next state
   punch = 0;
   firstHit = false;
+  max_force = 0;
 }
 
 void challenge1() {
   // screen wipe
   background(#222222);
 
-
-  // uitdaging 1
+  // text: uitdaging 1
   fill(#FFE600);
   textSize(round(width*0.020));
-  text("Uitdaging 1", width / 2, height / 6);
+  text("Uitdaging 1: Kracht", width / 2, height / 6);
 
-  // main title
+  // text: main title
   if (!firstHit) {
     fill(#8A8A8A);
     textSize(round(width*0.05));
     text("Sla zo hard als je kan!", width / 2, height / 2);
   }
 
-  // progress bar
+  // moving progress bar
   int duration = 15;
   fill(#FFC800);
   float postion = width - ((millis()-m))*(width/duration)/1000;
   rectMode(CORNER);
   rect(0, height-height/20, postion, height-height/20);
 
-  // timer
+  // text: timer
   fill(#FFE600);
   textSize(round(width*0.05));
   int timer = duration-(round(millis()-m)/1000);
   text(timer, width*0.95, height*0.9);
 
-  // remove challenge on first hit
   if (punch > 0) {
+    // remove challenge on first hit
     firstHit = true;
-    // baseline ball
 
+    // ball: max force
+    fill(#525252);
+    circle(max_force*width*0.00166, height/2, height/5);
+    textSize(round(width*0.05));
+    text(round(max_force), max_force*width*0.00166, height/2-height/7);
+
+    // ball: last hit
     if (punch != previousPunch) {
       position = punch*width*0.00166;
       fill(#FFE600);
-      circle(punch*width*0.00166, height/2, height/20);
+      circle(punch*width*0.00166, height/2, height/10);
       radius = height/10;
       previousPunch = punch;
-      
     }
 
+    // slowly move left
     position -= width/600;
     radius -= width/1000;
     fill(#FFE600);
-    circle(position, height/2, max(radius,0));
+    circle(position, height/2, max(radius, 0));
   }
 }
 
 void challenge1_debrief() {
   // screen wipe
   background(#222222);
+
+  // text jouw krachtscore
+  fill(#FFE600);
+  textSize(round(width*0.020));
+  text("Uitdaging 1: Jouw krachtscore", width / 2, height-height / 6);
+
+  // score
+  fill(#525252);
+  rect(width/2, height/2, width/7, width/7, 60);
+  fill(#FFFFFF);
+  textSize(round(width*0.060));
+  text(round(max_force), width/2, height/2);
+
+  // moving progress bar
+  int duration = 12;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
+  rect(0, height-height/20, postion, height-height/20);
+
+  // text: timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
 }
 
 void challenge2() {
@@ -261,6 +293,11 @@ void SerialCheck() {
         print("punch: ");
         punch = float(parts[1]);
         println(punch);
+      } else if (val.startsWith("max_force||")) {
+        String[] parts = val.split("\\|\\|");
+        print("max_force: ");
+        max_force = float(parts[1]);
+        println(max_force);
         // subtitles
       } else if (val.startsWith("subtitles||")) {
         String[] parts = val.split("\\|\\|");
