@@ -18,6 +18,9 @@ float punch = 0.0;
 float previousPunch = 0.0;
 float max_force = 0.0;
 boolean firstHit = false;
+boolean firstHitSpeed = false;
+boolean firstHitRitme = false;
+float punch_counter = 0.0;
 float position = 0;
 int radius = 0;
 boolean expanding = false;
@@ -38,8 +41,8 @@ void setup() {
   font2 = createFont("Jost-VariableFont_wght.ttf", 48);
   textFont(font1); // Set the font
   textAlign(CENTER, CENTER);
-
   ellipseMode(CENTER);
+  rectMode(CENTER);
 
   // animated GIF
   myAnimation = new Gif(this, "data/boxer.gif");
@@ -101,16 +104,14 @@ void draw() {
 
   // overlays 2: subtitles
   int subtitleLength = subtitles.length();
-  rectMode(CENTER);
   fill(#525252);
   if (subtitles != "") {
+    rectMode(CENTER);
     rect(width/2, width*0.03, (subtitleLength*width*0.008)+width*0.03, width*0.03, width/100);
   }
   fill(#D8D8D8);
   textSize(round(width*0.02));
   text(subtitles, width/2, width*0.03);
-  // rect();
-  // text();
 }
 
 // boot screen waits for a signal
@@ -220,6 +221,7 @@ void challenge1_debrief() {
 
   // score
   fill(#525252);
+  rectMode(CENTER);
   rect(width/2, height/2, width/7, width/7, 60);
   fill(#FFFFFF);
   textSize(round(width*0.060));
@@ -242,16 +244,117 @@ void challenge1_debrief() {
 void challenge2() {
   // screen wipe
   background(#222222);
+
+  // text: uitdaging 2
+  fill(#FFE600);
+  textSize(round(width*0.020));
+  text("Uitdaging 2: Snelheid", width / 2, height / 6);
+
+  // text: main title
+  if (!firstHitSpeed) {
+    fill(#8A8A8A);
+    textSize(round(width*0.05));
+    text("Sla zo vaak als je kan in 30 seconden!", width / 2, height / 2);
+  }
+
+  // moving progress bar
+  int duration = 30;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
+  rect(0, height-height/20, postion, height-height/20);
+
+  // text: timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
+
+  if (punch > 0) {
+    // remove challenge on first hit
+    firstHitSpeed = true;
+    // score
+    fill(#525252);
+    rectMode(CENTER);
+    rect(width/2, height/2, width/7, width/7, 60);
+    fill(#FFFFFF);
+    textSize(round(width*0.070));
+    text(round(punch_counter), width/2, height/2);
+  }
 }
 
 void challenge2_debrief() {
   // screen wipe
   background(#222222);
+
+  // text jouw snelheidsscore
+  fill(#FFE600);
+  textSize(round(width*0.020));
+  text("Uitdaging 2: Jouw snelheid", width / 2, height-height / 6);
+
+  // score
+  fill(#525252);
+  rectMode(CENTER);
+  rect(width/2, height/2, width/7, width/7, 60);
+  fill(#FFFFFF);
+  textSize(round(width*0.060));
+  text(round(punch_counter), width/2, height/2);
+
+  // moving progress bar
+  int duration = 15;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
+  rect(0, height-height/20, postion, height-height/20);
+
+  // text: timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
 }
 
 void challenge3() {
   // screen wipe
   background(#222222);
+
+  // text: uitdaging 3
+  fill(#FFE600);
+  textSize(round(width*0.020));
+  text("Uitdaging 3: Ritme", width / 2, height / 6);
+
+  // text: main title
+  if (!firstHitRitme) {
+    fill(#8A8A8A);
+    textSize(round(width*0.05));
+    text("Sla zo regelmatig mogelijk!", width / 2, height / 2);
+  }
+
+  // moving progress bar
+  int duration = 30;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
+  rect(0, height-height/20, postion, height-height/20);
+
+  // text: timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
+
+  if (punch > 0) {
+    // remove challenge on first hit
+    firstHitRitme = true;
+
+    // score
+    fill(#525252);
+    rectMode(CENTER);
+    rect(width/2, height/2, width/7, width/7, 60);
+    fill(#FFFFFF);
+    textSize(round(width*0.070));
+    text(round(punch_counter), width/2, height/2);
+  }
 }
 
 void challenge3_debrief() {
@@ -293,11 +396,18 @@ void SerialCheck() {
         print("punch: ");
         punch = float(parts[1]);
         println(punch);
+        // max force
       } else if (val.startsWith("max_force||")) {
         String[] parts = val.split("\\|\\|");
         print("max_force: ");
         max_force = float(parts[1]);
         println(max_force);
+        // punchcounter
+      } else if (val.startsWith("punch_counter||")) {
+        String[] parts = val.split("\\|\\|");
+        print("punch_counter: ");
+        punch_counter = float(parts[1]);
+        println(punch_counter);
         // subtitles
       } else if (val.startsWith("subtitles||")) {
         String[] parts = val.split("\\|\\|");
@@ -320,6 +430,24 @@ void keyPressed() {
       break;
     case "challenge1":
       scene = "challenge1_debrief";
+      break;
+    case "challenge1_debrief":
+      scene = "challenge2";
+      break;
+    case "challenge2":
+      scene = "challenge2_debrief";
+      break;
+    case "challenge2_debrief":
+      scene = "challenge3";
+      break;
+    case "challenge3":
+      scene = "challenge3_debrief";
+      break;
+    case "challenge3_debrief":
+      scene = "conclusion";
+      break;
+    case "conclusion":
+      scene = "idle";
       break;
     }
   }
