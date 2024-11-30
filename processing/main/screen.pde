@@ -15,7 +15,10 @@ String oldVal = null;
 boolean disconnected = true;
 String state ="booting";
 float punch = 0.0;
+float previousPunch = 0.0;
 boolean firstHit = false;
+float position = 0;
+int radius = 0;
 boolean expanding = false;
 String subtitles = "";
 
@@ -34,6 +37,8 @@ void setup() {
   font2 = createFont("Jost-VariableFont_wght.ttf", 48);
   textFont(font1); // Set the font
   textAlign(CENTER, CENTER);
+  
+  ellipseMode(CENTER);
 
   // animated GIF
   myAnimation = new Gif(this, "data/boxer.gif");
@@ -179,9 +184,21 @@ void challenge1() {
   // remove challenge on first hit
   if (punch > 0) {
     firstHit = true;
-    // main ball
+    // baseline ball
+
+    if (punch != previousPunch) {
+      position = punch*width*0.00166;
+      fill(#FFE600);
+      circle(punch*width*0.00166, height/2, height/20);
+      radius = height/10;
+      previousPunch = punch;
+      
+    }
+
+    position -= width/600;
+    radius -= width/1000;
     fill(#FFE600);
-    circle(width/2, height/2, 30);
+    circle(position, height/2, max(radius,0));
   }
 }
 
