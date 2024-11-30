@@ -1,32 +1,49 @@
 // libraries
 import processing.serial.*;
+import gifAnimation.*;
+
+// configuration parameters
+int serialPort = 1; // depending in the device, the serial port might be different
 
 // main variables
 String scene = "booting"; // states
 PFont font1, font2; // fonts
 Serial myPort; // port
 String val; // serial data
+String oldVal = null;
+
+boolean disconnected = true;
+String state ="booting";
+float punch = 0.0;
+
+int x;
+int m = millis();
+
+Gif myAnimation;
 
 // el setup
 void setup() {
   fullScreen();
   background(#222222);
 
+  // fonts
   font1 =  createFont("JosefinSans-VariableFont_wght.ttf", 48);
   font2 = createFont("Jost-VariableFont_wght.ttf", 48);
   textFont(font1); // Set the font
   textAlign(CENTER, CENTER);
-  
+
+  // animated GIF
+  myAnimation = new Gif(this, "data/boxer.gif");
 
   // Initialize the serial port
-  String portName = Serial.list()[0]; // set correct port
+  String portName = Serial.list()[serialPort]; // set correct port
   myPort = new Serial(this, portName, 9600);
   myPort.bufferUntil('\n'); // Buffer until newline character
 }
 
 // big draw function & scene/state machine
 void draw() {
-  
+
   // check for serial data
   SerialCheck();
 
@@ -64,6 +81,7 @@ void draw() {
 
 // boot screen waits for a signal
 void booting() {
+
   // always wipe screen first
   background(#222222);
 
@@ -75,49 +93,129 @@ void booting() {
   // header 2
   fill(#FFE600);
   textSize(round(width*0.025));
-  text("Druk op spatie om verder te gaan, of klop op de zak.", width / 2, height / 2 + 80);
+  text("Druk op spatie om verder te gaan, of klop op de zak.", width / 2, height / 1.7);
 }
 
 void idle() {
+
+  // screen wipe
   background(#222222);
+
+  // header
+  textSize(round(width*0.05));
+  text("Klop op de zak om te beginnen", width / 2, height /4);
+
+  // animated GIF
+  myAnimation.play();
+  image(myAnimation, width / 2.2, height /2);
+
+  // set variables for next cycle$
+  m = millis();
 }
 
 void challenge1() {
+  // screen wipe
+  background(#222222);
+
+  // uitdaging 1
+  fill(#FFE600);
+  textSize(round(width*0.020));
+  text("Uitdaging 1", width / 2, height / 4);
+
+  // main title
+  fill(#8A8A8A);
+  textSize(round(width*0.05));
+  text("Sla zo hard als je kan!", width / 2, height / 2);
+
+  // progress bar
+  int duration = 30;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rect(0, height-height/20, postion, height-height/20);
+
+  // timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
 }
 
 void challenge1_debrief() {
+  // screen wipe
+  background(#222222);
 }
 
 void challenge2() {
+  // screen wipe
+  background(#222222);
 }
 
 void challenge2_debrief() {
+  // screen wipe
+  background(#222222);
 }
 
 void challenge3() {
+  // screen wipe
+  background(#222222);
 }
 
 void challenge3_debrief() {
+  // screen wipe
+  background(#222222);
 }
 
 void conclusion() {
+  // screen wipe
+  background(#222222);
 }
 
 // function to handle serial communication
 void SerialCheck() {
-
+  // if a signal is detected
   if ( myPort.available() > 0) {
-    val = myPort.readStringUntil('\n'); // read it and store it in val
+    // read it and store it in val
+    val = myPort.readStringUntil('\n');
+    // detect the nature of the data and store it in the right variables
+    if (val != null) {
+      // first trim the data (removes whitespaces at beginning & end)
+      val = trim(val);
+      // connection
+      if (val.equals("disconnected")) {
+        disconnected = true;
+        println("disconnected");
+      } else if (val.equals("Connected")) {
+        disconnected = false;
+        println("connected");
+        // state data
+      } else if (val.startsWith("state||")) {
+        String[] parts = val.split("\\|\\|");
+        state = parts[1];
+        print("state: ");
+        println(state);
+        // punch data
+      } else if (val.startsWith("punch||")) {
+        String[] parts = val.split("\\|\\|");
+        print("punch: ");
+        punch = float(parts[1]);
+        println(punch);
+      }
+    }
   }
-
-  // print the result for debugging
-  print("serial incoming: ");
-  println(val);
-
 }
 // function to handle key presses
 void keyPressed() {
   if (key == ' ') {
-    scene = "idle";
+    switch(scene) {
+    case "booting":
+      scene = "idle";
+      break;
+    case "idle":
+      scene = "challenge1";
+      break;
+    case "challenge1":
+      scene = "challenge1_debrief";
+      break;
+    }
   }
 }
