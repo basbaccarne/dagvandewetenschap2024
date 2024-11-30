@@ -15,6 +15,9 @@ String oldVal = null;
 boolean disconnected = true;
 String state ="booting";
 float punch = 0.0;
+boolean firstHit = false;
+boolean expanding = false;
+String subtitles = "";
 
 int x;
 int m = millis();
@@ -83,7 +86,7 @@ void draw() {
     fill(#FF7205);
     circle(width*0.03, width*0.03, width*0.006);
     textSize(round(width*0.01));
-    text("Lost connection with punch sensor", width*0.11, width*0.029);
+    text("No connection", width*0.0655, width*0.0295);
   } else {
     fill(#49CE02);
     circle(width*0.03, width*0.03, width*0.006);
@@ -91,6 +94,17 @@ void draw() {
 
 
   // overlays 2: subtitles
+  int subtitleLength = subtitles.length();
+  rectMode(CENTER);
+  fill(#525252);
+  if (subtitles != "") {
+    rect(width/2, width*0.03, (subtitleLength*width*0.008)+width*0.03, width*0.03, width/100);
+  }
+  fill(#D8D8D8);
+  textSize(round(width*0.02));
+  text(subtitles, width/2, width*0.03);
+  // rect();
+  // text();
 }
 
 // boot screen waits for a signal
@@ -126,26 +140,34 @@ void idle() {
 
   // set variables for next cycle$
   m = millis();
+
+  // reser variables for next state
+  punch = 0;
+  firstHit = false;
 }
 
 void challenge1() {
   // screen wipe
   background(#222222);
 
+
   // uitdaging 1
   fill(#FFE600);
   textSize(round(width*0.020));
-  text("Uitdaging 1", width / 2, height / 4);
+  text("Uitdaging 1", width / 2, height / 6);
 
   // main title
-  fill(#8A8A8A);
-  textSize(round(width*0.05));
-  text("Sla zo hard als je kan!", width / 2, height / 2);
+  if (!firstHit) {
+    fill(#8A8A8A);
+    textSize(round(width*0.05));
+    text("Sla zo hard als je kan!", width / 2, height / 2);
+  }
 
   // progress bar
-  int duration = 30;
+  int duration = 15;
   fill(#FFC800);
   float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
   rect(0, height-height/20, postion, height-height/20);
 
   // timer
@@ -153,6 +175,14 @@ void challenge1() {
   textSize(round(width*0.05));
   int timer = duration-(round(millis()-m)/1000);
   text(timer, width*0.95, height*0.9);
+
+  // remove challenge on first hit
+  if (punch > 0) {
+    firstHit = true;
+    // main ball
+    fill(#FFE600);
+    circle(width/2, height/2, 30);
+  }
 }
 
 void challenge1_debrief() {
@@ -209,11 +239,17 @@ void SerialCheck() {
         print("state: ");
         println(state);
         // punch data
-      } else if (val.startsWith("punch||")) {
+      } else if (val.startsWith("punchforce||")) {
         String[] parts = val.split("\\|\\|");
         print("punch: ");
         punch = float(parts[1]);
         println(punch);
+        // subtitles
+      } else if (val.startsWith("subtitles||")) {
+        String[] parts = val.split("\\|\\|");
+        print("subtitle: ");
+        subtitles = parts[1];
+        println(subtitles);
       }
     }
   }
