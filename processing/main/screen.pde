@@ -77,6 +77,20 @@ void draw() {
     conclusion();
     break;
   }
+
+  // overlays 1 : connection status
+  if (disconnected) {
+    fill(#FF7205);
+    circle(width*0.03, width*0.03, width*0.006);
+    textSize(round(width*0.01));
+    text("Lost connection with punch sensor", width*0.11, width*0.029);
+  } else {
+    fill(#49CE02);
+    circle(width*0.03, width*0.03, width*0.006);
+  }
+
+
+  // overlays 2: subtitles
 }
 
 // boot screen waits for a signal
@@ -102,6 +116,7 @@ void idle() {
   background(#222222);
 
   // header
+  fill(#8A8A8A);
   textSize(round(width*0.05));
   text("Klop op de zak om te beginnen", width / 2, height /4);
 
@@ -181,7 +196,7 @@ void SerialCheck() {
       // first trim the data (removes whitespaces at beginning & end)
       val = trim(val);
       // connection
-      if (val.equals("disconnected")) {
+      if (val.equals("Disconnected from central")) {
         disconnected = true;
         println("disconnected");
       } else if (val.equals("Connected")) {
