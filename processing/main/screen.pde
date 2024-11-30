@@ -21,9 +21,10 @@ boolean firstHit = false;
 boolean firstHitSpeed = false;
 boolean firstHitRitme = false;
 float punch_counter = 0.0;
+float punch_variance = 0.0;
+float punch_deviance = 0.0;
 float position = 0;
 int radius = 0;
-boolean expanding = false;
 String subtitles = "";
 
 int x;
@@ -144,14 +145,6 @@ void idle() {
   // animated GIF
   myAnimation.play();
   image(myAnimation, width / 2.2, height /2);
-
-  // set variables for next cycle$
-  m = millis();
-
-  // reser variables for next state
-  punch = 0;
-  firstHit = false;
-  max_force = 0;
 }
 
 void challenge1() {
@@ -343,28 +336,91 @@ void challenge3() {
   int timer = duration-(round(millis()-m)/1000);
   text(timer, width*0.95, height*0.9);
 
+  // variance
   if (punch > 0) {
     // remove challenge on first hit
     firstHitRitme = true;
 
-    // score
-    fill(#525252);
-    rectMode(CENTER);
-    rect(width/2, height/2, width/7, width/7, 60);
-    fill(#FFFFFF);
-    textSize(round(width*0.070));
-    text(round(punch_counter), width/2, height/2);
+    // zero stokes
+    stroke(#525252);
+    line(width/4, height/4, width/4, 3*height/4);
+    line(3*width/4-width/8, height/2, 3*width/4+width/8, height/2);
+
+    // deviance bar
+    textSize(round(width*0.02));
+    if (punch_deviance > 0) {
+      rectMode(CORNERS);
+      fill(#FFC800);
+      rect(width/4, height/2+height/10, width/4 + min(punch_deviance, width/2), height/2-height/10);
+      String message = abs(round(punch_deviance))+ " milliseconden \n te snel";
+      text(message, width/4+width/10, 3*height/4);
+    } else if (punch_deviance < 0) {
+      rectMode(CORNERS);
+      fill(#FFC800);
+      rect(width/4, height/2+height/10, width/4 + punch_deviance, height/2-height/10);
+      String message = abs(round(punch_deviance))+ " milliseconden \n te traag";
+      text(message, width/4-width/10, 3*height/4);
+    }
+
+    // variance bar
+    rectMode(CORNERS);
+    fill(#FFC800);
+    rect(3*width/4-width/10,height/2-punch_variance,3*width/4+width/10,height/2+punch_variance);
+    text("gemiddelde fout: \n" + abs(round(punch_variance)), 3*width/4-width/5, height/2);
   }
 }
 
 void challenge3_debrief() {
   // screen wipe
   background(#222222);
+
+  // text jouw ritmescore
+  fill(#FFE600);
+  textSize(round(width*0.020));
+  text("Uitdaging 2: Jouw ritmescore \n (gemiddelde afwijking van het rimte, in milliseconden)", width / 2, height-height / 6);
+
+  // score
+  fill(#525252);
+  rectMode(CENTER);
+  rect(width/2, height/2, width/7, width/7, 60);
+  fill(#FFFFFF);
+  textSize(round(width*0.060));
+  text(round(punch_variance), width/2, height/2);
+
+  // moving progress bar
+  int duration = 5;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
+  rect(0, height-height/20, postion, height-height/20);
+
+  // text: timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
 }
 
 void conclusion() {
   // screen wipe
   background(#222222);
+
+  fill(#8A8A8A);
+  textSize(round(width*0.05));
+  text("Jij bent een ...", width / 2, height / 2);
+
+  // moving progress bar
+  int duration = 20;
+  fill(#FFC800);
+  float postion = width - ((millis()-m))*(width/duration)/1000;
+  rectMode(CORNER);
+  rect(0, height-height/20, postion, height-height/20);
+
+  // text: timer
+  fill(#FFE600);
+  textSize(round(width*0.05));
+  int timer = duration-(round(millis()-m)/1000);
+  text(timer, width*0.95, height*0.9);
 }
 
 // function to handle serial communication
@@ -408,6 +464,18 @@ void SerialCheck() {
         print("punch_counter: ");
         punch_counter = float(parts[1]);
         println(punch_counter);
+        // punch deviance
+      } else if (val.startsWith("punch_deviance||")) {
+        String[] parts = val.split("\\|\\|");
+        print("punch_deviance: ");
+        punch_deviance = float(parts[1]);
+        println(punch_deviance);
+        // punch variance
+      } else if (val.startsWith("punch_variance||")) {
+        String[] parts = val.split("\\|\\|");
+        print("punch_variance: ");
+        punch_variance = float(parts[1]);
+        println(punch_variance);
         // subtitles
       } else if (val.startsWith("subtitles||")) {
         String[] parts = val.split("\\|\\|");
@@ -418,36 +486,72 @@ void SerialCheck() {
     }
   }
 }
+
+void resetVariables() {
+  // reset all the stuff besides main variables
+  punch = 0.0;
+  previousPunch = 0.0;
+  firstHit = false;
+  firstHitSpeed = false;
+  firstHitRitme = false;
+  punch_deviance = 0.0;
+  position = 0;
+  radius = 0;
+}
+
+void resetMain() {
+  max_force = 0.0;
+  punch_counter = 0.0;
+  punch_variance = 0.0;
+}
+
+
 // function to handle key presses
 void keyPressed() {
   if (key == ' ') {
     switch(scene) {
     case "booting":
       scene = "idle";
+      resetVariables();
+      m = millis();
       break;
     case "idle":
       scene = "challenge1";
+      resetVariables();
+      m = millis();
       break;
     case "challenge1":
       scene = "challenge1_debrief";
+      m = millis();
       break;
     case "challenge1_debrief":
       scene = "challenge2";
+      resetVariables();
+      m = millis();
       break;
     case "challenge2":
       scene = "challenge2_debrief";
+      m = millis();
       break;
     case "challenge2_debrief":
       scene = "challenge3";
+      resetVariables();
+      m = millis();
       break;
     case "challenge3":
       scene = "challenge3_debrief";
+      m = millis();
       break;
     case "challenge3_debrief":
       scene = "conclusion";
+      resetVariables();
+      m = millis();
       break;
     case "conclusion":
       scene = "idle";
+      resetVariables();
+      resetMain();
+      m = millis();
       break;
     }
   }
