@@ -5,7 +5,7 @@
 *A [comon](http://www.comon.gent) project, built for [Dag van de Wetenschap 2024](https://www.dagvandewetenschap.be/)    ([24 november 2024](https://comon.gent/evenement/kom-boksen-met-robots-op-dag-van-de-wetenschap))*
 ***
 <div align="center">
-<img src="img/AIdeation1.png" width="400"> <img src="img/AIdeation2.png" width="400">  
+<img src="img/inaction.jpg" width="400"> <img src="img/inaction2.jpg" width="400">  
 </div>
 
 ***
