@@ -6,6 +6,7 @@
 ***
 <div align="center">  
 <img src="img/inaction.jpg" width="400"> <img src="img/inaction2.jpg" width="400">  
+<img src="img/trio.gif" height="300">  
 </div>
 
 ***
@@ -111,7 +112,7 @@ The robot can be in the following states:
 * ⌨️ [Robot code & wiring](main/robot)
   
 <div align="center">
-<img src="img/wip.gif" height="300"> <img src="img/trio.gif" height="300">  
+<img src="img/wip.gif" height="300">
 </div>
 
 ### Robot Assistant Screen
