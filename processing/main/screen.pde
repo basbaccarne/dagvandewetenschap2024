@@ -6,7 +6,7 @@ import gifAnimation.*;
 int serialPort = 1; // depending in the device, the serial port might be different
 
 // main variables
-String scene = "booting"; // states
+String scene = "BOOTING"; // states
 PFont font1, font2; // fonts
 Serial myPort; // port
 String val; // serial data
@@ -14,6 +14,7 @@ String oldVal = null;
 
 boolean disconnected = true;
 String state ="booting";
+String oldState;
 float punch = 0.0;
 float previousPunch = 0.0;
 float max_force = 0.0;
@@ -23,6 +24,10 @@ boolean firstHitRitme = false;
 float punch_counter = 0.0;
 float punch_variance = 0.0;
 float punch_deviance = 0.0;
+float mantis = 0.0;
+float hummingbird = 0.0;
+float maki = 0.0;
+float final_animal = 0.0;
 float position = 0;
 int radius = 0;
 String subtitles = "";
@@ -31,6 +36,7 @@ int x;
 int m = millis();
 
 Gif myAnimation;
+PImage img1, img2, img3;
 
 // el setup
 void setup() {
@@ -48,6 +54,15 @@ void setup() {
   // animated GIF
   myAnimation = new Gif(this, "data/boxer.gif");
 
+  // animal images
+  img1 = loadImage("data/mantis_circle.png");
+  img2 = loadImage("data/hummingbird_circle.png");
+  img3 = loadImage("data/maki_circle.png");
+
+  img1.resize(height/3, height/3);
+  img2.resize(height/3, height/3);
+  img3.resize(height/3, height/3);
+
   // Initialize the serial port
   String portName = Serial.list()[serialPort]; // set correct port
   myPort = new Serial(this, portName, 9600);
@@ -62,31 +77,31 @@ void draw() {
 
   // state machine
   switch(scene) {
-  case "booting":
+  case "BOOTING":
     booting();
     break;
-  case "idle":
+  case "IDLE":
     idle();
     break;
-  case "challenge1":
+  case "CHALLENGE1":
     challenge1();
     break;
-  case "challenge1_debrief":
+  case "CHALLENGE1_DEBRIEF":
     challenge1_debrief();
     break;
-  case "challenge2":
+  case "CHALLENGE2":
     challenge2();
     break;
-  case "challenge2_debrief":
+  case "CHALLENGE2_DEBRIEF":
     challenge2_debrief();
     break;
-  case "challenge3":
+  case "CHALLENGE3":
     challenge3();
     break;
-  case "challenge3_debrief":
+  case "CHALLENGE3_DEBRIEF":
     challenge3_debrief();
     break;
-  case "conclusion":
+  case "CONCLUSION":
     conclusion();
     break;
   }
@@ -365,7 +380,7 @@ void challenge3() {
     // variance bar
     rectMode(CORNERS);
     fill(#FFC800);
-    rect(3*width/4-width/10,height/2-punch_variance,3*width/4+width/10,height/2+punch_variance);
+    rect(3*width/4-width/10, height/2-punch_variance, 3*width/4+width/10, height/2+punch_variance);
     text("gemiddelde fout: \n" + abs(round(punch_variance)), 3*width/4-width/5, height/2);
   }
 }
@@ -405,9 +420,84 @@ void conclusion() {
   // screen wipe
   background(#222222);
 
+  // selection circle
+  fill(#FFC800);
+
+  // replace with actual stuff
+  if (final_animal ==1) {
+    circle(width*0.25, height/2, height/2.7);
+  } else if (final_animal == 2) {
+    circle(width/2, height/2, height/2.7);
+  } else if (final_animal == 3) {
+    circle(width*0.75, height/2, height/2.7);
+  }
+
+  // images
+  image(img1, (width*0.25) - (img1.width/2), (height/2) - (img1.width/2));
+  image(img2, (width/2) - (img2.width/2), (height/2) - (img2.width/2));
+  image(img3, (width*0.75) - (img3.width/2), (height/2) - (img3.width/2));
+
+  // stars mantis
+  if (mantis == 1) {
+    star(width*0.25, height/5, height*0.03, height*0.015, 5);
+  } else if (mantis == 2) {
+    star(width*0.25-(height*0.04), height/5, height*0.03, height*0.015, 5);
+    star(width*0.25+(height*0.04), height/5, height*0.03, height*0.015, 5);
+  } else if (mantis == 3) {
+    star(width*0.25-(height*0.08), height/5, height*0.03, height*0.015, 5);
+    star(width*0.25, height/5, height*0.03, height*0.015, 5);
+    star(width*0.25+(height*0.08), height/5, height*0.03, height*0.015, 5);
+  }
+
+  // stars humming
+  if (hummingbird == 1) {
+    star(width/2, height/5, height*0.03, height*0.015, 5);
+  } else if (hummingbird == 2) {
+    star(width/2-(height*0.04), height/5, height*0.03, height*0.015, 5);
+    star(width/2+(height*0.04), height/5, height*0.03, height*0.015, 5);
+  } else if (hummingbird == 3) {
+    star(width/2-(height*0.08), height/5, height*0.03, height*0.015, 5);
+    star(width/2, height/5, height*0.03, height*0.015, 5);
+    star(width/2+(height*0.08), height/5, height*0.03, height*0.015, 5);
+  }
+
+  // stars maki
+  if (maki == 1) {
+    star(width*0.75, height/5, height*0.03, height*0.015, 5);
+  } else if (maki == 2) {
+    star(width*0.75-(height*0.04), height/5, height*0.03, height*0.015, 5);
+    star(width*0.75+(height*0.04), height/5, height*0.03, height*0.015, 5);
+  } else if (maki == 3) {
+    star(width*0.75-(height*0.08), height/5, height*0.03, height*0.015, 5);
+    star(width*0.75, height/5, height*0.03, height*0.015, 5);
+    star(width*0.75+(height*0.08), height/5, height*0.03, height*0.015, 5);
+  }
+
+  // scores
+  fill(#525252);
+  rectMode(CENTER);
+  rect(width*0.25, height*0.7, (width/7)+width*0.05, width*0.03, width/100);
+  rect(width/2, height*0.7, (width/7)+width*0.05, width*0.03, width/100);
+  rect(width*0.75, height*0.7, (width/7)+width*0.05, width*0.03, width/100);
+
+  fill(#D8D8D8);
+  textSize(round(width*0.02));
+  text("krachtscore: " + round(max_force), width*0.25, height*0.7);
+  text("aantal slagen: "+ round(punch_counter), width/2, height*0.7);
+  text("ritmefout (ms): "+ round(punch_variance), width*0.75, height*0.7);
+
+  // final animal
   fill(#8A8A8A);
   textSize(round(width*0.05));
-  text("Jij bent een ...", width / 2, height / 2);
+  if (final_animal == 0) {
+    text("Jij bent een ...", width / 2, height * 0.8);
+  } else if (final_animal == 1) {
+    text("mantis!", width / 2, height * 0.8);
+  } else if (final_animal == 2) {
+    text("kolibri!", width / 2, height * 0.8);
+  } else if (final_animal == 3) {
+    text("Japanse sneeuwaap!", width / 2, height * 0.8);
+  }
 
   // moving progress bar
   int duration = 20;
@@ -476,6 +566,30 @@ void SerialCheck() {
         print("punch_variance: ");
         punch_variance = float(parts[1]);
         println(punch_variance);
+        // mantis
+      } else if (val.startsWith("mantis||")) {
+        String[] parts = val.split("\\|\\|");
+        print("mantis: ");
+        mantis = float(parts[1]);
+        println(mantis);
+        // hummingbird
+      } else if (val.startsWith("hummingbird||")) {
+        String[] parts = val.split("\\|\\|");
+        print("hummingbird: ");
+        hummingbird = float(parts[1]);
+        println(hummingbird);
+        // punch variance
+      } else if (val.startsWith("maki||")) {
+        String[] parts = val.split("\\|\\|");
+        print("maki: ");
+        maki = float(parts[1]);
+        println(maki);
+        // final_animal
+      } else if (val.startsWith("final_animal||")) {
+        String[] parts = val.split("\\|\\|");
+        print("final_animal: ");
+        final_animal = float(parts[1]);
+        println(final_animal);
         // subtitles
       } else if (val.startsWith("subtitles||")) {
         String[] parts = val.split("\\|\\|");
@@ -483,6 +597,21 @@ void SerialCheck() {
         subtitles = parts[1];
         println(subtitles);
       }
+    }
+  }
+
+  setState();
+}
+
+void setState() {
+  if (state != oldState) {
+    oldState = state;
+    println("Changing state to: " + state);
+    scene = state;
+    resetVariables();
+    m = millis();
+    if (oldState == "CONCLUSION"){
+      resetMain();
     }
   }
 }
@@ -503,6 +632,10 @@ void resetMain() {
   max_force = 0.0;
   punch_counter = 0.0;
   punch_variance = 0.0;
+  mantis = 0.0;
+  hummingbird = 0.0;
+  maki = 0.0;
+  final_animal = 0.0;
 }
 
 
@@ -510,49 +643,65 @@ void resetMain() {
 void keyPressed() {
   if (key == ' ') {
     switch(scene) {
-    case "booting":
-      scene = "idle";
+    case "BOOTING":
+      scene = "IDLE";
       resetVariables();
       m = millis();
       break;
-    case "idle":
-      scene = "challenge1";
+    case "IDLE":
+      scene = "CHALLENGE1";
       resetVariables();
       m = millis();
       break;
-    case "challenge1":
-      scene = "challenge1_debrief";
+    case "CHALLENGE1":
+      scene = "CHALLENGE1_DEBRIEF";
       m = millis();
       break;
-    case "challenge1_debrief":
-      scene = "challenge2";
+    case "CHALLENGE1_DEBRIEF":
+      scene = "CHALLENGE2";
       resetVariables();
       m = millis();
       break;
-    case "challenge2":
-      scene = "challenge2_debrief";
+    case "CHALLENGE2":
+      scene = "CHALLENGE2_DEBRIEF";
       m = millis();
       break;
-    case "challenge2_debrief":
-      scene = "challenge3";
+    case "CHALLENGE2_DEBRIEF":
+      scene = "CHALLENGE3";
       resetVariables();
       m = millis();
       break;
-    case "challenge3":
-      scene = "challenge3_debrief";
+    case "CHALLENGE3":
+      scene = "CHALLENGE3_DEBRIEF";
       m = millis();
       break;
-    case "challenge3_debrief":
-      scene = "conclusion";
+    case "CHALLENGE3_DEBRIEF":
+      scene = "CONCLUSION";
       resetVariables();
       m = millis();
       break;
-    case "conclusion":
-      scene = "idle";
+    case "CONCLUSION":
+      scene = "IDLE";
       resetVariables();
       resetMain();
       m = millis();
       break;
     }
   }
+}
+
+
+void star(float x, float y, float radius1, float radius2, int npoints) {
+  float angle = TWO_PI / npoints;
+  float halfAngle = angle/2.0;
+  beginShape();
+  for (float a = 0; a < TWO_PI; a += angle) {
+    float sx = x + cos(a) * radius2;
+    float sy = y + sin(a) * radius2;
+    vertex(sx, sy);
+    sx = x + cos(a+halfAngle) * radius1;
+    sy = y + sin(a+halfAngle) * radius1;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
 }
