@@ -14,8 +14,10 @@ import gifAnimation.*;
 ///////////////////////////
 
 // Serial communication
-int serialPort = 1; // select port
-Serial myPort; // set port
+Serial myPort;
+String[] portList;
+int currentPort = 1; // my peripherals are on lower COM port n°s
+
 String val; // to store serial data
 String oldVal = null;
 
@@ -91,9 +93,13 @@ void setup() {
   img3.resize(height/3, height/3);
 
   // Initialize the serial port
-  String portName = Serial.list()[serialPort];
-  myPort = new Serial(this, portName, 9600);
-  myPort.bufferUntil('\n'); // Buffer until newline character
+  println(Serial.list());
+  portList = Serial.list();
+  connectToPort();
+
+  //String portName = Serial.list()[serialPort];
+  // myPort = new Serial(this, portName, 9600);
+  //myPort.bufferUntil('\n'); // Buffer until newline character
 }
 
 ///////////////
@@ -101,6 +107,9 @@ void setup() {
 ///////////////
 
 void draw() {
+
+  // check if Serial is still avaialble
+  checkConnection();
 
   // check for serial data
   SerialCheck();
@@ -834,4 +843,31 @@ void star(float x, float y, float radius1, float radius2, int npoints) {
     vertex(sx, sy);
   }
   endShape(CLOSE);
+}
+
+
+///////////////////////////////
+// SERIAL CONNECTION MANAGER //
+///////////////////////////////
+// this function handles the serial connection
+
+void connectToPort() {
+  try {
+    myPort = new Serial(this, portList[currentPort], 9600);
+    myPort.bufferUntil('\n');
+    println("Connected to " + portList[currentPort]);
+  } catch (Exception e) {
+    println("Failed to connect to " + portList[currentPort]);
+    currentPort = (currentPort + 1) % portList.length;
+    connectToPort();
+  }
+}
+
+void checkConnection() {
+  if (myPort != null && !myPort.active()) {
+    println("Connection lost. Reconnecting...");
+    myPort.stop();
+    currentPort = (currentPort + 1) % portList.length;
+    connectToPort();
+  }
 }
