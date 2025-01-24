@@ -23,14 +23,15 @@ MEDIUM_GRAY = (138, 138, 138)
 LIGHTGRAY = (216, 216, 216)
 BRIGHT_YELLOW = (255, 230, 0)
 
-# Set up the display
-screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN | pygame.DOUBLEBUF, 8)
-pygame.display.set_caption("PunchPal")
-
 # Get the screen size
 screen_info = pygame.display.Info()
 screen_width = screen_info.current_w
 screen_height = screen_info.current_h
+
+# Set up the display
+screen = pygame.display.set_mode((screen_width,screen_height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED, vsync=1)
+pygame.display.set_caption("PunchPal")
+
 
 # fonts
 FONT_PATH1 = "./dagvandewetenschap2024/python/data/Jost-VariableFont_wght.ttf"
