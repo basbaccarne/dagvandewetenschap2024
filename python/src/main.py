@@ -53,6 +53,9 @@ serial_thread.start()
 # Initialize an empty dictionary
 serial_dict = {}
 
+# initatialize scene variable
+scene = None
+
 def parseSerial(line):
     # Parse the incoming data from 'message||value' to dictionary
     if "||" in line:
@@ -126,7 +129,7 @@ while running:
                 if new_state != current_state:
                     current_state = new_state
                     print(f"New state: {current_state}")
-                    if scene == "":
+                    if scene == "BOOTING":
                         booting()
                     elif scene == "IDLE":
                         idle()
