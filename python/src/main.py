@@ -35,7 +35,7 @@ FONT_PATH1 = "./dagvandewetenschap2024/python/data/Jost-VariableFont_wght.ttf"
 FONT_PATH2 = "./dagvandewetenschap2024/python/data/JosefinSans-VariableFont_wght.ttf"
 
 font_H1 = pygame.font.Font(FONT_PATH1, 74)
-font_H2 = pygame.font.Font(FONT_PATH2, 74)
+font_H2 = pygame.font.Font(FONT_PATH2, 30)
 
 # Hide the mouse cursor
 pygame.mouse.set_visible(False)
@@ -78,7 +78,7 @@ def booting():
     pygame.display.update()
 
 def idle():
-    screen.fill(GRAY)
+    screen.fill(BG_COLOR)
     pygame.display.update()
 
 def challenge1():
@@ -174,6 +174,13 @@ while running:
         text_rect = text.get_rect()
         text_rect.center = (screen_width // 2, screen_height // 2)
         screen.blit(text, text_rect)
+
+        # subtitle
+        text = font_H2.render("Klop op de zak om verder te gaan", True, (BRIGHT_YELLOW))
+        text_rect = text.get_rect()
+        text_rect.center = (screen_width // 2, screen_height // 2 - 100)
+        screen.blit(text, text_rect)
+
         pygame.display.flip()
     
     elif scene == "IDLE":
