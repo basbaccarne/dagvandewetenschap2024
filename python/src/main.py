@@ -112,6 +112,8 @@ pygame.display.update()
 
 # Main loop
 running = True
+current_state = None
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
@@ -125,25 +127,29 @@ while running:
             parseSerial(line)
 
             if "state" in serial_dict:
+                new_state = serial_dict["state"]
                 scene = serial_dict["state"]
-                if scene == "":
-                    booting()
-                elif scene == "IDLE":
-                    idle()
-                elif scene == "CHALLENGE1":
-                    challenge1()
-                elif scene == "CHALLENGE1_DEBRIEF":
-                    challenge1_debrief()
-                elif scene == "CHALLENGE2":
-                    challenge2()
-                elif scene == "CHALLENGE2_DEBRIEF":
-                    challenge2_debrief()
-                elif scene == "CHALLENGE3":
-                    challenge3()
-                elif scene == "CHALLENGE3_DEBRIEF":
-                    challenge3_debrief()
-                elif scene == "CONCLUSION":
-                    conclusion()
+                if new_state != current_state:
+                    current_state = new_state
+                    print(f"New state: {current_state}")
+                    if scene == "":
+                        booting()
+                    elif scene == "IDLE":
+                        idle()
+                    elif scene == "CHALLENGE1":
+                        challenge1()
+                    elif scene == "CHALLENGE1_DEBRIEF":
+                        challenge1_debrief()
+                    elif scene == "CHALLENGE2":
+                        challenge2()
+                    elif scene == "CHALLENGE2_DEBRIEF":
+                        challenge2_debrief()
+                    elif scene == "CHALLENGE3":
+                        challenge3()
+                    elif scene == "CHALLENGE3_DEBRIEF":
+                        challenge3_debrief()
+                    elif scene == "CONCLUSION":
+                        conclusion()
 
     except (serial.SerialException, OSError) as e:
         print(f"Serial connection error: {e}")
