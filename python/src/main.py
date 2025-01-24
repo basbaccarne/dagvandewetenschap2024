@@ -74,7 +74,22 @@ def parseSerial(line):
 
 # Define scene functions
 def booting():
+
+    # background
     screen.fill(BG_COLOR)
+
+    # main title
+    text = font_H1.render("Hello, World!", True, (MEDIUM_GRAY))
+    text_rect = text.get_rect()
+    text_rect.center = (screen_width // 2, screen_height // 2)
+    screen.blit(text, text_rect)
+
+    # subtitle
+    text = font_H2.render("Klop op de zak om verder te gaan", True, (BRIGHT_YELLOW))
+    text_rect = text.get_rect()
+    text_rect.center = (screen_width // 2, screen_height // 2 + 100)
+    screen.blit(text, text_rect)
+
     pygame.display.update()
 
 def idle():
@@ -169,19 +184,7 @@ while running:
     ##########
 
     if scene == "BOOTING":
-        # main title
-        text = font_H1.render("Hello, World!", True, (MEDIUM_GRAY))
-        text_rect = text.get_rect()
-        text_rect.center = (screen_width // 2, screen_height // 2)
-        screen.blit(text, text_rect)
 
-        # subtitle
-        text = font_H2.render("Klop op de zak om verder te gaan", True, (BRIGHT_YELLOW))
-        text_rect = text.get_rect()
-        text_rect.center = (screen_width // 2, screen_height // 2 - 100)
-        screen.blit(text, text_rect)
-
-        pygame.display.flip()
     
     elif scene == "IDLE":
         # main title
