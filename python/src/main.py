@@ -184,7 +184,7 @@ while running:
     ##########
 
     if scene == "BOOTING":
-
+        test = 1
     
     elif scene == "IDLE":
         # main title
