@@ -73,6 +73,15 @@ def parseSerial(line):
         serial_dict[message] = value
         # print(f"Parsed: {serial_dict}")
 
+# Load the animated GIF
+gif_path = "./dagvandewetenschap2024/python/data/boxer.gif"
+gif = Image.open(gif_path)
+frames = []
+for frame in range(gif.n_frames):
+    gif.seek(frame)
+    frame_image = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode)
+    frames.append(frame_image)
+
 # Define scene functions (static)
 def booting():
 
@@ -104,7 +113,10 @@ def idle():
     screen.blit(text, text_rect)
 
     # animated gif
-
+    frame_index = (pygame.time.get_ticks() // 100) % len(frames)
+    frame = frames[frame_index]
+    frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
+    screen.blit(frame, frame_rect)
 
     pygame.display.update()
 

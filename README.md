@@ -281,7 +281,7 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
     ```
 - Required libraries
     ```console
-    pip3 install pyserial
+    pip3 install pyserial pillow
     ```
 - Run the main PyGame script
     ```console
