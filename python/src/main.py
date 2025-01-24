@@ -114,6 +114,7 @@ def idle():
     screen.blit(text, text_rect)
 
     # animated gif
+    current_time = pygame.time.get_ticks()
     frame_index = (current_time // ANIMATION_SPEED) % len(frames)
     frame = frames[frame_index]
     frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
