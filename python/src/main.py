@@ -80,6 +80,7 @@ frames = []
 for frame in range(gif.n_frames):
     gif.seek(frame)
     frame_image = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode)
+    frame_image.set_colorkey((255, 255, 255))
     frames.append(frame_image)
 
 # Define scene functions (static)
