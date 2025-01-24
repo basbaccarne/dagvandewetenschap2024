@@ -34,8 +34,8 @@ screen_height = screen_info.current_h
 FONT_PATH1 = "./dagvandewetenschap2024/python/data/Jost-VariableFont_wght.ttf"
 FONT_PATH2 = "./dagvandewetenschap2024/python/data/JosefinSans-VariableFont_wght.ttf"
 
-font_H1 = pygame.font.Font(FONT_PATH1, 74)
-font_H2 = pygame.font.Font(FONT_PATH2, 30)
+font_H1 = pygame.font.Font(FONT_PATH1, 100)
+font_H2 = pygame.font.Font(FONT_PATH2, 50)
 
 # Hide the mouse cursor
 pygame.mouse.set_visible(False)
@@ -132,6 +132,7 @@ screen.fill(BG_COLOR)
 pygame.display.update()
 
 # Main loop
+booting()
 running = True
 current_state = None
 
@@ -184,7 +185,7 @@ while running:
     ##########
 
     if scene == "BOOTING":
-        test = 1
+        True
     
     elif scene == "IDLE":
         # main title
