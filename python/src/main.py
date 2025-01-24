@@ -85,7 +85,6 @@ for frame in range(gif.n_frames):
 
 # Define scene functions (static)
 def booting():
-
     # background
     screen.fill(BG_COLOR)
 
@@ -112,6 +111,12 @@ def idle():
     text_rect = text.get_rect()
     text_rect.center = (screen_width // 2, screen_height // 4)
     screen.blit(text, text_rect)
+
+    # animated gif
+    frame_index = (pygame.time.get_ticks() // (1000 // FRAMERATE)) % len(frames)
+    frame = frames[frame_index]
+    frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
+    screen.blit(frame, frame_rect)
 
     pygame.display.update()
 
@@ -207,14 +212,7 @@ while running:
         True
     
     elif scene == "IDLE":
-        # animated gif
-        screen.fill(BG_COLOR)
-        frame_index = (pygame.time.get_ticks() // 100) % len(frames)
-        frame = frames[frame_index]
-        frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
-        screen.blit(frame, frame_rect)
-
-        pygame.display.update()
+        idle()
         
     elif scene == "CHALLENGE1":
         # main title
