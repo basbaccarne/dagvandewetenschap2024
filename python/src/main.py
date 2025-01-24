@@ -25,6 +25,9 @@ BRIGHT_YELLOW = (255, 230, 0)
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN | pygame.DOUBLEBUF, 8)
 pygame.display.set_caption("PunchPal")
 
+# fonts
+font_H1 = pygame.font.Font(None, 74)
+
 # Hide the mouse cursor
 pygame.mouse.set_visible(False)
 
@@ -149,6 +152,29 @@ while running:
         serial_thread = threading.Thread(target=connect_serial)
         serial_thread.daemon = True
         serial_thread.start()
+    
+    if state == "BOOTING":
+        # main title
+        text = font_H1.render("Booting ...", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif state == "IDLE":
+        # main title
+        text = font_H1.render("Idle state", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif state == "CHALLENGE1":
+        # main title
+        text = font_H1.render("Challenge 1", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+
+
     
     # Cap the frame rate
     clock.tick(FRAMERATE)
