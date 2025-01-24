@@ -121,28 +121,28 @@ while running:
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
-            print(line) 
+            # print(line) 
             parseSerial(line)
 
             if "state" in serial_dict:
                 scene = serial_dict["state"]
-                if scene == "booting":
+                if scene == "":
                     booting()
-                elif scene == "idle":
+                elif scene == "IDLE":
                     idle()
                 elif scene == "CHALLENGE1":
                     challenge1()
-                elif scene == "challenge1_debrief":
+                elif scene == "CHALLENGE1_DEBRIEF":
                     challenge1_debrief()
-                elif scene == "challenge2":
+                elif scene == "CHALLENGE2":
                     challenge2()
-                elif scene == "challenge2_debrief":
+                elif scene == "CHALLENGE2_DEBRIEF":
                     challenge2_debrief()
-                elif scene == "challenge3":
+                elif scene == "CHALLENGE3":
                     challenge3()
-                elif scene == "challenge3_debrief":
+                elif scene == "CHALLENGE3_DEBRIEF":
                     challenge3_debrief()
-                elif scene == "conclusion":
+                elif scene == "CONCLUSION":
                     conclusion()
 
     except (serial.SerialException, OSError) as e:
