@@ -207,6 +207,7 @@ while running:
     
     elif scene == "IDLE":
         # animated gif
+        screen.fill(BG_COLOR)
         frame_index = (pygame.time.get_ticks() // 100) % len(frames)
         frame = frames[frame_index]
         frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
