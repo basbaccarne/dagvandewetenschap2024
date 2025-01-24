@@ -8,6 +8,7 @@ import time
 import sys
 import os
 import threading
+from PIL import Image
 
 # Initialize Pygame
 pygame.init()
@@ -72,14 +73,14 @@ def parseSerial(line):
         serial_dict[message] = value
         # print(f"Parsed: {serial_dict}")
 
-# Define scene functions
+# Define scene functions (static)
 def booting():
 
     # background
     screen.fill(BG_COLOR)
 
     # main title
-    text = font_H1.render("Hello, World!", True, (MEDIUM_GRAY))
+    text = font_H1.render("Syteem operationeel!", True, (MEDIUM_GRAY))
     text_rect = text.get_rect()
     text_rect.center = (screen_width // 2, screen_height // 2)
     screen.blit(text, text_rect)
@@ -93,7 +94,18 @@ def booting():
     pygame.display.update()
 
 def idle():
+    # background
     screen.fill(BG_COLOR)
+
+    # main title
+    text = font_H1.render("Klop om de zak om te beginnen.", True, (MEDIUM_GRAY))
+    text_rect = text.get_rect()
+    text_rect.center = (screen_width // 2, screen_height // 4)
+    screen.blit(text, text_rect)
+
+    # animated gif
+
+
     pygame.display.update()
 
 def challenge1():
