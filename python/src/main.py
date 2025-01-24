@@ -11,7 +11,7 @@ FRAMERATE = 60
 BG_COLOR = (34, 34, 34)
 
 # Set up the display
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.DOUBLEBUF, 8)
+screen = pygame.display.set_mode((0,0), pygame.DOUBLEBUF, 8)
 pygame.display.set_caption("PunchPal")
 
 # Hide the mouse cursor
