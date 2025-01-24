@@ -14,7 +14,12 @@ pygame.init()
 
 # Constants
 FRAMERATE = 60
+
 BG_COLOR = (34, 34, 34)
+GRAY = (82, 82, 82)
+MEDIUM_GRAY = (138, 138, 138)
+LIGHTGRAY = (216, 216, 216)
+BRIGHT_YELLOW = (255, 230, 0)
 
 # Set up the display
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN | pygame.DOUBLEBUF, 8)
@@ -50,7 +55,44 @@ def parseSerial(line):
     if "||" in line:
         message, value = line.split("||")
         serial_dict[message] = value
-        print(f"Parsed: {serial_dict}")
+        # print(f"Parsed: {serial_dict}")
+
+# Define scene functions
+def booting():
+    screen.fill(BG_COLOR)
+    pygame.display.update()
+
+def idle():
+    screen.fill(GRAY)
+    pygame.display.update()
+
+def challenge1():
+    screen.fill(MEDIUM_GRAY)
+    pygame.display.update()
+
+def challenge1_debrief():
+    screen.fill(LIGHTGRAY)
+    pygame.display.update()
+
+def challenge2():
+    screen.fill(BRIGHT_YELLOW)
+    pygame.display.update()
+
+def challenge2_debrief():
+    screen.fill(BG_COLOR)
+    pygame.display.update()
+
+def challenge3():
+    screen.fill(GRAY)
+    pygame.display.update()
+
+def challenge3_debrief():
+    screen.fill(MEDIUM_GRAY)
+    pygame.display.update()
+
+def conclusion():
+    screen.fill(LIGHTGRAY)
+    pygame.display.update()
 
 # initialization
 clock = pygame.time.Clock()
@@ -72,6 +114,27 @@ while running:
             line = ser.readline().decode('utf-8').rstrip()
             print(line) 
             parseSerial(line)
+            if "scene" in serial_dict:
+                scene = serial_dict["scene"]
+                if scene == "booting":
+                    booting()
+                elif scene == "idle":
+                    idle()
+                elif scene == "challenge1":
+                    challenge1()
+                elif scene == "challenge1_debrief":
+                    challenge1_debrief()
+                elif scene == "challenge2":
+                    challenge2()
+                elif scene == "challenge2_debrief":
+                    challenge2_debrief()
+                elif scene == "challenge3":
+                    challenge3()
+                elif scene == "challenge3_debrief":
+                    challenge3_debrief()
+                elif scene == "conclusion":
+                    conclusion()
+
     except (serial.SerialException, OSError) as e:
         print(f"Serial connection error: {e}")
         ser = None
