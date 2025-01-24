@@ -279,7 +279,10 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
     ```console
     git clone https://github.com/basbaccarne/dagvandewetenschap2024
     ```
-
+- Required libraries
+    ```console
+    pip3 install pyserial
+    ```
 
 
    
