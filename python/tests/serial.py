@@ -42,11 +42,15 @@ serial_thread = threading.Thread(target=connect_serial)
 serial_thread.daemon = True
 serial_thread.start()
 
+# Initialize an empty dictionary
+serial_dict = {}
+
 def parseSerial(line):
-    # Parse the incoming data from 'message||value' to dictorionary
-    message, value = line.split("||")
-    serial_dict = {message: value}
-    print(message_values)
+    # Parse the incoming data from 'message||value' to dictionary
+    if "||" in line:
+        message, value = line.split("||")
+        serial_dict[message] = value
+        print(serial_dict)
 
 # initialization
 clock = pygame.time.Clock()
@@ -66,7 +70,7 @@ while running:
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
-            print(line)  # Print the received data
+            print(line) 
             parseSerial(line)
     except (serial.SerialException, OSError) as e:
         print(f"Serial connection error: {e}")
