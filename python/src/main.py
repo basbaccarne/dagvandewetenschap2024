@@ -9,13 +9,13 @@ import sys
 import os
 import threading
 from PIL import Image
+import gif_pygame
 
 # Initialize Pygame
 pygame.init()
 
 # Constants
 FRAMERATE = 60
-ANIMATION_SPEED = 200
 
 BG_COLOR = (34, 34, 34)
 GRAY = (82, 82, 82)
@@ -77,14 +77,7 @@ def parseSerial(line):
 
 # Load the animated GIF
 gif_path = "./dagvandewetenschap2024/python/data/boxer.gif"
-gif = Image.open(gif_path)
-frames = []
-for frame in range(gif.n_frames):
-    gif.seek(frame)
-    frame_image = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode)
-    frame_image = frame_image.convert_alpha() 
-    frame_image.set_colorkey((255, 255, 255))
-    frames.append(frame_image)
+animated_gif = gif_pygame.load(gif_path)
 
 # Define scene functions (static)
 def booting():
@@ -116,11 +109,7 @@ def idle():
     screen.blit(text, text_rect)
 
     # animated gif
-    current_time = pygame.time.get_ticks()
-    frame_index = (current_time // ANIMATION_SPEED) % len(frames)
-    frame = frames[frame_index]
-    frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
-    screen.blit(frame, frame_rect)
+    animated_gif.render(screen, (screen_width // 2 - animated_gif.get_width() // 2, screen_height // 2 - animated_gif.get_height() // 2))
 
     pygame.display.update()
 
