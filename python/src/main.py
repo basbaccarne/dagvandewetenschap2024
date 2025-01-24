@@ -59,38 +59,47 @@ def parseSerial(line):
 
 # Define scene functions
 def booting():
+    print("arrived in booting state")
     screen.fill(BG_COLOR)
     pygame.display.update()
 
 def idle():
+    print("arrived in idle state")
     screen.fill(GRAY)
     pygame.display.update()
 
 def challenge1():
+    print("arrived in challenge1 state")
     screen.fill(MEDIUM_GRAY)
     pygame.display.update()
 
 def challenge1_debrief():
+    print("arrived in challenge1_debrief state")
     screen.fill(LIGHTGRAY)
     pygame.display.update()
 
 def challenge2():
+    print("arrived in challenge2 state")
     screen.fill(BRIGHT_YELLOW)
     pygame.display.update()
 
 def challenge2_debrief():
+    print("arrived in challenge2_debrief state")
     screen.fill(BG_COLOR)
     pygame.display.update()
 
 def challenge3():
+    print("arrived in challenge3 state")
     screen.fill(GRAY)
     pygame.display.update()
 
 def challenge3_debrief():
+    print("arrived in challenge3_debrief state")
     screen.fill(MEDIUM_GRAY)
     pygame.display.update()
 
 def conclusion():
+    print("arrived in conclusion state")
     screen.fill(LIGHTGRAY)
     pygame.display.update()
 
