@@ -53,10 +53,18 @@ while running:
         if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
             running = False
 
-    # Read from the serial port
-    if ser and ser.in_waiting > 0:
-        line = ser.readline().decode('utf-8').rstrip()
-        print(line)  # Print the received data
+     # Read from the serial port
+    try:
+        if ser and ser.in_waiting > 0:
+            line = ser.readline().decode('utf-8').rstrip()
+            print(line)  # Print the received data
+    except (serial.SerialException, OSError) as e:
+        print(f"Serial connection error: {e}")
+        ser = None
+        # Restart the serial connection thread
+        serial_thread = threading.Thread(target=connect_serial)
+        serial_thread.daemon = True
+        serial_thread.start()
 
     # Cap the frame rate
     clock.tick(FRAMERATE)
