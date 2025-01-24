@@ -152,22 +152,23 @@ while running:
         serial_thread = threading.Thread(target=connect_serial)
         serial_thread.daemon = True
         serial_thread.start()
+
     
-    if state == "BOOTING":
+    if scene == "BOOTING":
         # main title
         text = font_H1.render("Booting ...", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
-    elif state == "IDLE":
+    elif scene == "IDLE":
         # main title
         text = font_H1.render("Idle state", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
-    elif state == "CHALLENGE1":
+    elif scene == "CHALLENGE1":
         # main title
         text = font_H1.render("Challenge 1", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
