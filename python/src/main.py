@@ -4,6 +4,7 @@ import serial
 import time
 import sys
 import os
+import threading
 
 # Initialize Pygame
 pygame.init()
@@ -20,8 +21,23 @@ pygame.display.set_caption("PunchPal")
 pygame.mouse.set_visible(False)
 
 # set-up the serial connection
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
-time.sleep(2)
+# Global variable to store the serial connection
+ser = None
+def connect_serial():
+    global ser
+    while True:
+        try:
+            ser = serial.Serial('/dev/ttyACM0, 9600, timeout=1) 
+            print("Serial connection established")
+            break
+        except serial.SerialException:
+            print("Failed to connect to serial port. Retrying...")
+            time.sleep(2)  # Wait before retrying
+
+# Start the serial connection thread
+serial_thread = threading.Thread(target=connect_serial)
+serial_thread.daemon = True
+serial_thread.start()
 
 # initialization
 clock = pygame.time.Clock()
@@ -38,7 +54,7 @@ while running:
             running = False
 
     # Read from the serial port
-    if ser.in_waiting > 0:
+    if ser and ser.in_waiting > 0:
         line = ser.readline().decode('utf-8').rstrip()
         print(line)  # Print the received data
 
@@ -46,7 +62,8 @@ while running:
     clock.tick(FRAMERATE)
 
 # Quit Pygame
-ser.close()
+if ser:
+    ser.close()
 pygame.quit()
 sys.exit()
 
