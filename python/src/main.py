@@ -123,8 +123,9 @@ while running:
             line = ser.readline().decode('utf-8').rstrip()
             print(line) 
             parseSerial(line)
-            if "scene" in serial_dict:
-                scene = serial_dict["scene"]
+
+            if "state" in serial_dict:
+                scene = serial_dict["state"]
                 if scene == "booting":
                     booting()
                 elif scene == "idle":
