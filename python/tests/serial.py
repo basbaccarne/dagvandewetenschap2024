@@ -50,7 +50,7 @@ def parseSerial(line):
     if "||" in line:
         message, value = line.split("||")
         serial_dict[message] = value
-        print(serial_dict)
+        print(f"Parsed: {serial_dict}")
 
 # initialization
 clock = pygame.time.Clock()
