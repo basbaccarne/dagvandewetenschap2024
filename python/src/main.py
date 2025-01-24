@@ -112,12 +112,6 @@ def idle():
     text_rect.center = (screen_width // 2, screen_height // 4)
     screen.blit(text, text_rect)
 
-    # animated gif
-    frame_index = (pygame.time.get_ticks() // 100) % len(frames)
-    frame = frames[frame_index]
-    frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
-    screen.blit(frame, frame_rect)
-
     pygame.display.update()
 
 def challenge1():
@@ -212,12 +206,14 @@ while running:
         True
     
     elif scene == "IDLE":
-        # main title
-        text = font_H1.render("Idle state", True, (255, 255, 255))
-        text_rect = text.get_rect(center=(400, 300))
-        screen.blit(text, text_rect)
-        pygame.display.flip()
-    
+        # animated gif
+        frame_index = (pygame.time.get_ticks() // 100) % len(frames)
+        frame = frames[frame_index]
+        frame_rect = frame.get_rect(center=(screen_width // 2, screen_height // 2))
+        screen.blit(frame, frame_rect)
+
+        pygame.display.update()
+        
     elif scene == "CHALLENGE1":
         # main title
         text = font_H1.render("Challenge 1", True, (255, 255, 255))
