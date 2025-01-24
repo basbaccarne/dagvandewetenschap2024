@@ -283,6 +283,10 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
     ```console
     pip3 install pyserial
     ```
+- Run the main PyGame script
+    ```console
+    python3 dagvandewetenschap2024/python/src/main.py
+    ```
 
 
    

@@ -150,8 +150,6 @@ while running:
         serial_thread.daemon = True
         serial_thread.start()
     
-
-
     # Cap the frame rate
     clock.tick(FRAMERATE)
 
