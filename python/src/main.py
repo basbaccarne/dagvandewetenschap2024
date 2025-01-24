@@ -130,7 +130,7 @@ while running:
                     booting()
                 elif scene == "idle":
                     idle()
-                elif scene == "challenge1":
+                elif scene == "CHALLENGE1":
                     challenge1()
                 elif scene == "challenge1_debrief":
                     challenge1_debrief()
