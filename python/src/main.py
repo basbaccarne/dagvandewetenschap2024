@@ -25,8 +25,17 @@ BRIGHT_YELLOW = (255, 230, 0)
 screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN | pygame.DOUBLEBUF, 8)
 pygame.display.set_caption("PunchPal")
 
+# Get the screen size
+screen_info = pygame.display.Info()
+screen_width = screen_info.current_w
+screen_height = screen_info.current_h
+
 # fonts
-font_H1 = pygame.font.Font(None, 74)
+FONT_PATH1 = ".dagvandewetenschap2024/python/data/Jost-VariableFont_wght.ttf"
+FONT_PATH2 = ".dagvandewetenschap2024/python/data/JosefinSans-VariableFont_wght.ttf"
+
+font_H1 = pygame.font.Font(FONT_PATH1, 74)
+font_H2 = pygame.font.Font(FONT_PATH2, 74)
 
 # Hide the mouse cursor
 pygame.mouse.set_visible(False)
@@ -156,11 +165,14 @@ while running:
         serial_thread.daemon = True
         serial_thread.start()
 
-    
+    # scenes #
+    ##########
+
     if scene == "BOOTING":
         # main title
-        text = font_H1.render("Booting ...", True, (255, 255, 255))
-        text_rect = text.get_rect(center=(400, 300))
+        text = font_H1.render("Hello, World!", True, (MEDIUM_GRAY))
+        text_rect = text.get_rect()
+        text_rect.center = (screen_width // 2, screen_height // 2)
         screen.blit(text, text_rect)
         pygame.display.flip()
     
@@ -177,9 +189,49 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
-
-
     
+    elif scene == "CHALLENGE1_DEBRIEF":
+        # main title
+        text = font_H1.render("Challenge 1 Debrief", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif scene == "CHALLENGE2":
+        # main title
+        text = font_H1.render("Challenge 2", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif scene == "CHALLENGE2_DEBRIEF":
+        # main title
+        text = font_H1.render("Challenge 2 Debrief", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif scene == "CHALLENGE3":
+        # main title
+        text = font_H1.render("Challenge 3", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif scene == "CHALLENGE3_DEBRIEF":
+        # main title
+        text = font_H1.render("Challenge 3 Debrief", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+    
+    elif scene == "CONCLUSION":
+        # main title
+        text = font_H1.render("Conclusion", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(400, 300))
+        screen.blit(text, text_rect)
+        pygame.display.flip()
+
     # Cap the frame rate
     clock.tick(FRAMERATE)
 
