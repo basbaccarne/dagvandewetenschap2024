@@ -142,6 +142,146 @@ With this conclusion the players can to to a screen with extra information.
 </div>
 
 ***
+
+# Transfer to Processing
+For a more autonomous installation, we transformed the installation to an independently running set-up in which we replace the laptop with Protopie by a `Raspberry Pi Zero W` with `Processing`.   
+
+Status:   
+* The **Zero W V1.1**'s latency is a problem. We'll need to try with the 2 or a full raspberry
+* Also, Processing might not be the best solution: over to **PyGame**. An initial benchmark seems give better results.
+* [PyGame benchmark code](/python/src/benchmark.py)
+* Current setup: Raspi 3 + pygame
+
+## Processing experiment
+
+Extra materials:
+* Raspberry Pi Zero W
+* Raspberry Pi Screen (HDMI)
+
+Processing Code
+* ⌨️ [Processing code](processing)
+
+Set-up:
+* Burn a fresh image on the raspi zero W. There is an image with processing preinstalled ([download here](https://github.com/processing/processing/releases/download/processing-0265-3.4/processing-3.4-linux-raspbian.zip))
+* This image only runs Processing 3. Older raspberry Pies don't have the latsts Java versions required for scripts in Processing 4
+* SSH into the raspi and get system up to date (-Y says yes to every question, can take a while)
+    ```
+    sudo apt update   
+    sudo apt upgrade -y
+    ```
+* Compile code in Processing 3 and export for Linux
+
+* You'll need the `application.linux-armv6hf` for the Raspi Zero W
+
+* Upload the Processing code in a logical place
+    * In this case `home/io/processing/punchpal`
+    * I'm using [WinSCP](https://winscp.net/) for file transfer
+
+* If you want a faster system, you can burn a Raspi Lite version
+    * But you'll need to install the lastst java version   
+    `sudo apt install openjdk-17-jdk`
+    * You'll also need the UI elements, since the system won't work in the UI   
+    `sudo apt-get install raspberrypi-ui-mods`
+    * set the system to boot in the GUI mode   
+    `sudo raspi-config`
+    * reboot   
+    `reboot`
+    * check java install   
+    `java -version`
+    * download and unzip Processing 3 in the /opt folder (4 doesn't work on old Pies)   
+    `wget https://github.com/processing/processing/releases/download/processing-0269-3.5.3/processing-3.5.3-linux-armv6hf.tgz`   
+    `tar -xvzf processing-3.5.3-linux-armv6hf.tgz`
+    * install required libraries
+    * go to the processing folder and run the script   
+   `sh processing-java --sketch=/home/io/processing/main/  --present`
+
+* Testrun:   
+    ```
+    cd /users/io/processing/punchpal
+    source punchpal
+    /opt/processing/processing-java --sketch=/users/io/processing/punchpal --run
+    ```
+
+## Pygame experiment 1.1
+The goal remains the same: For a more autonomous installation, we transformed the installation to an independently running set-up in which we replace the laptop with Protopie by a `Raspberry Pi Zero W 1.1` with `PyGame`. The Zero W1.1 has very limited capacities and has to do some graphical stuff. That's why we chose PyGame over tKinter, Kivy & Qt (PyQt/PySide).
+
+It's challenging to create a fluid interface on the Zero W. The code can contribute to a better UX:
+* Lower the resolution (this has the biggest impact)
+* Double buffering
+* Don't call `pygame.display.update()` more than needed (once per frame)
+* Reduce the color depth
+* Use hardware accelleration (not realy helping on the zero W)
+
+* Optimize the framerate
+* Keep the main loop as efficient as possible
+
+Extra materials:
+* [Raspberry Pi Zero W](https://www.raspberrypi.com/products/raspberry-pi-zero-w/)
+* [Raspberry Pi Screen (HDMI)](https://www.raspberrypi.com/products/raspberry-pi-monitor/)
+
+Set-up:
+* Burn a fresh image on the raspi zero W. *Raspberry Pi OS Lite* works best for the Zero W.
+* SSH into the raspi and get system up to date (-Y says yes to every question, can take a while)
+    ```
+    sudo apt update   
+    sudo apt upgrade -y
+    ```
+
+* Confirm installation of Python and pip
+    ```
+    sudo apt install python3 python3-pip
+    ```
+* You might get some issues with missing graphical libraries, therefore:
+    ```
+    sudo apt-get install libsdl2-2.0-0 libsdl2-dev libsdl2-ttf-2.0-0
+    ```
+
+* Set-up a project folder, e.g. `pi/punchpal`
+* Download the loading script and main program in `/punchpal/src`
+
+* Create and start a virtual environment
+    ```
+    cd ~/punchpal
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+* Install required libraries
+    ```
+    pip install -r requirements.txt
+    ```
+* test run of the py scripts
+    ```
+    python animated_text.py
+    ```
+
+This is still challenging on the raspi zero W. With a resulution of 1280x720 the test script barely reaches 20 FPS. Although we could improve the hardware, it's challenging to explore how far we can get with the raspi zero W 1.1. Next up the exploration list (1) Pyglet end (2) Arcade. Since Phyglet has better support for animated GIFs & video, let's start there.
+
+
+## Pygame experiment 1.2
+- Insight: The zero W is still not powerfull enough
+- Swithing to RPI3 (same processor as zero 2W)
+- Fresh install pi OS (with GUI)   
+    ```console
+    sudo apt update
+    sudo apt upgrade -y
+    ```
+- Pygame and Python normally come preinstalled; get latest version & check
+    ```console
+    mkdrir punchpal
+    cd punchpal
+    python3 -m venv venv
+    source venv/bin/activate
+    python3 -m pip install -U pygame
+    python3 -m pygame.examples.aliens
+    ```
+- Sync the github page
+    ```console
+    git clone https://github.com/basbaccarne/dagvandewetenschap2024
+    ```
+
+
+
    
 # Subchallenges
 Before creating the final prototypes, we solve a couple of subchallenges
