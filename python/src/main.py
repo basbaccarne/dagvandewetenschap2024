@@ -20,7 +20,7 @@ pygame.display.set_caption("PunchPal")
 pygame.mouse.set_visible(False)
 
 # set-up the serial connection
-ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 time.sleep(2)
 
 # initialization
