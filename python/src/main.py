@@ -15,7 +15,7 @@ pygame.init()
 
 # Constants
 FRAMERATE = 60
-ANIMATION_SPEED = 100  # Adjust this value to control the animation speed
+ANIMATION_SPEED = 200
 
 BG_COLOR = (34, 34, 34)
 GRAY = (82, 82, 82)
@@ -29,8 +29,9 @@ screen_width = screen_info.current_w
 screen_height = screen_info.current_h
 
 # Set up the display
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE)
+screen = pygame.display.set_mode((screen_width,screen_height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED, vsync=1)
 pygame.display.set_caption("PunchPal")
+
 
 # fonts
 FONT_PATH1 = "./dagvandewetenschap2024/python/data/Jost-VariableFont_wght.ttf"
@@ -81,7 +82,7 @@ frames = []
 for frame in range(gif.n_frames):
     gif.seek(frame)
     frame_image = pygame.image.fromstring(gif.tobytes(), gif.size, gif.mode)
-    frame_image = frame_image.convert_alpha()  # Optimize the image for faster blitting
+    frame_image = frame_image.convert_alpha() 
     frame_image.set_colorkey((255, 255, 255))
     frames.append(frame_image)
 
@@ -274,3 +275,4 @@ if ser:
     ser.close()
 pygame.quit()
 sys.exit()
+
