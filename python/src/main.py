@@ -54,7 +54,7 @@ serial_thread.start()
 serial_dict = {}
 
 # initatialize scene variable
-scene = BOOTING
+scene = "BOOTING"
 
 def parseSerial(line):
     # Parse the incoming data from 'message||value' to dictionary
