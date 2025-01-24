@@ -27,12 +27,12 @@ def connect_serial():
     global ser
     while True:
         try:
-            ser = serial.Serial('/dev/ttyACM0, 9600, timeout=1) 
+            ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1) 
             print("Serial connection established")
             break
         except serial.SerialException:
             print("Failed to connect to serial port. Retrying...")
-            time.sleep(2)  # Wait before retrying
+            time.sleep(2)
 
 # Start the serial connection thread
 serial_thread = threading.Thread(target=connect_serial)
