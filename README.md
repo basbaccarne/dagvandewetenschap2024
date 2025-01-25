@@ -143,7 +143,7 @@ With this conclusion the players can to to a screen with extra information.
 
 ***
 
-# Transfer to Processing
+# Stage 2: Transfer to autonomous installation
 For a more autonomous installation, we transformed the installation to an independently running set-up in which we replace the laptop with Protopie by a `Raspberry Pi Zero W` with `Processing`.   
 
 Status:   
@@ -287,6 +287,20 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
     ```console
     python3 dagvandewetenschap2024/python/src/main.py
     ```
+### PyGame subchallenge: animated gifs
+- The raspi3 still has limited CPU power to render animated gifs
+- We're using lottiefiles for our animation with a 394 × 463 PX resolution, 30 FPS and 4 second duration
+- To manage animated gifs, there are 3 options   
+
+    1. Extract images in PyGame using PIL & display in a loop
+    2. Extract individual still images beforehand and read them in a loop
+    3. Create a spritesheet from the animated gif 
+- With the limited raspi resources, option 3 seems most interesting
+- Workflow:
+    - Download animtated gif from lottiefiles
+    - Extract individual images (as png, given transparent background and vector)
+    - Create spritesheet
+    - Run spritesheet
 
 
    
@@ -312,6 +326,8 @@ Before creating the final prototypes, we solve a couple of subchallenges
 ---
 - [x] [**State machine**](tests/statemachine_simplesycle.ino)
 - [x] [**.h and .cpp** test](tests/multifilescripting)
+---
+- [X] [Hanlde **Serial Communication** in PyGame](/python/tests/serial.py)
       
 # Benchmarks 4 inspiration
 * [DIY Smart Punching Bag](https://www.instructables.com/Smart-Punching-Bag/)
