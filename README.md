@@ -298,15 +298,15 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
 - With the limited raspi resources, option 3 seems most interesting
 - Workflow:
     - Download animtated gif from [lottiefiles](https://lottiefiles.com/)
-    - Extract individual images (as png, given transparent background and vector) (if you want to resize use `convert boxer.gif -resize 320x240 frame_%03d.png
-`)
+    - Extract [individual images](/python/data/boxer/) (as png, given transparent background and vector)   
+    (if you want to resize, use `convert boxer.gif -resize 320x240 frame_%03d.png`)
 
         ```console
         sudo apt install imagemagick
         convert boxer.gif frame_%03d.png
         ```
-    - Create spritesheet (using [Piskel](https://www.piskelapp.com/))
-    - Run spritesheet
+    - Create [spritesheet](/python/data/boxer_spritesheet.png) (using [Piskel](https://www.piskelapp.com/))
+    - Run spritesheet (see [spritesheet test](/python/tests/sprite.py))
 
 
    
