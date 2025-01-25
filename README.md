@@ -260,7 +260,7 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
 
 ## Pygame experiment 1.2
 - Insight: The zero W is still not powerfull enough
-- Swithing to RPI3 (same processor as zero 2W)
+- Switching to RPI3 (same processor as zero 2W)
 - Fresh install pi OS (with GUI)   
     ```console
     sudo apt update
@@ -297,8 +297,13 @@ This is still challenging on the raspi zero W. With a resulution of 1280x720 the
     3. Create a spritesheet from the animated gif 
 - With the limited raspi resources, option 3 seems most interesting
 - Workflow:
-    - Download animtated gif from lottiefiles
+    - Download animtated gif from [lottiefiles](https://lottiefiles.com/)
     - Extract individual images (as png, given transparent background and vector)
+    
+        ```console
+        sudo apt install imagemagick
+        convert boxer.gif frame_%03d.png
+        ```
     - Create spritesheet
     - Run spritesheet
 
