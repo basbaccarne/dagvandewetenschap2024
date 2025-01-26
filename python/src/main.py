@@ -94,7 +94,7 @@ def readSerial():
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
             # uncomment to print raw serial input
-            # print(line) 
+            print(line) 
 
             parseSerial(line)
 
