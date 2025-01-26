@@ -174,7 +174,7 @@ def init_Progress_bar(time_duration):
     pygame.draw.rect(screen, bar_color, bar_area)
 
     # Render the time text
-    text = FONT3.render(f"  {str(time_duration}  ", True, (BRIGHT_YELLOW))
+    text = FONT3.render(f"  {str(time_duration)}  ", True, (BRIGHT_YELLOW))
     text_rect = text.get_rect()
     text_rect.center = (SCREEN_WIDTH -SCREEN_WIDTH//25, SCREEN_HEIGHT - SCREEN_HEIGHT//10)
     
