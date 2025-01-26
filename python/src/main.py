@@ -54,10 +54,22 @@ SPRITE_WIDTH = 195     # each frame is 195 pixels wide
 SPRITE_HEIGHT = 300    # each frame is 300 pixels high
 VALID_FRAMES = (COL_COUNT * ROW_COUNT) - 5 # the last 5 frames in the spriteheet are blank
 
+
+"""progress bar variables"""
+bar_height = SCREEN_HEIGHT // 20
+bar_width = SCREEN_WIDTH
+bar_area = pygame.Rect(0, SCREEN_HEIGHT - bar_height, bar_width, bar_height)
+bin_width = 0
+countdown = 0
+start_time = 0
+last_update_time = 0
+
+
 # FUNCTIONS
-"""Function to load a spritesheet"""
 def load_spritesheet(SPRITESHEET_PATH):
+    """Function to load a spritesheet"""
     global COL_COUNT, ROW_COUNT, SPRITE_WIDTH, SPRITE_HEIGHT, VALID_FRAMES
+    
     """Load and preprocess frames from the spritesheet."""
     spritesheet = pygame.image.load(SPRITESHEET_PATH).convert_alpha()
     frames = []
@@ -72,10 +84,12 @@ def load_spritesheet(SPRITESHEET_PATH):
             frames.append(frame)
     return frames
 
-"""Function to set-up the serial connection"""
+
 ser = None
 def connect_serial():
+    """Function to set-up the serial connection"""
     global ser
+
     while True:
         try:
             ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1) 
@@ -85,19 +99,23 @@ def connect_serial():
             print("Failed to connect to serial port. Retrying...")
             time.sleep(2)
 
-"""Function to parse the incoming serial data"""
+
 serial_dict = {}
 def parseSerial(line):
+    """Function to parse the incoming serial data"""
     global serial_dict
+
     # Parse the incoming data from 'message||value' to dictionary
     if "||" in line:
         message, value = line.split("||")
         serial_dict[message] = value
         # print(f"Parsed: {serial_dict}")
 
-"""Function to read from the serial port and set variables"""
+
 def readSerial():
+    """Function to read from the serial port and set variables"""
     global ser, current_state, scene
+
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -141,8 +159,52 @@ def readSerial():
         serial_thread.daemon = True
         serial_thread.start()
 
-"""Function to update the progress bar"""
-def progressBar(time):
+def init_Progress_bar(time_duration):
+    """Initialize the progress bar with the given duration."""
+    global bin_width, countdown, start_time
+
+    # Bar color
+    bar_color = BRIGHT_YELLOW
+
+    # Render the background
+    screen.fill(BG_COLOR)
+
+    # Draw the initial progress bar
+    pygame.draw.rect(screen, bar_color, bar_area)
+    pygame.display.update(bar_area)
+    
+    # Calculate bin width and set the countdown time
+    bin_width = bar_width / time_duration
+    countdown = time_duration
+    start_time = time.time()
+
+
+def update_progress_bar():
+    """Update the progress bar based on elapsed time."""
+    global last_update_time
+
+    elapsed_time = time.time() - start_time
+    remaining_time = countdown - elapsed_time
+
+    # Update the progress bar every second
+    if remaining_time > -1 and elapsed_time - last_update_time >= 1:
+        last_update_time = elapsed_time
+
+        # subtract the bin width from the right side of the bar
+        retract_x = SCREEN_WIDTH - (bin_width * elapsed_time)
+        progress_rect = pygame.Rect(retract_x, bar_area.top, bin_width + 10, bar_height)    
+        pygame.draw.rect(screen, BG_COLOR, progress_rect)
+
+        # Render the remaining time text
+        text = FONT.render(f"  {str(round(remaining_time))}  ", True, (BRIGHT_YELLOW))
+        text_rect = text.get_rect()
+        text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+        # Clear the text area and render the new text
+        screen.fill(BG_COLOR, text_rect)
+        screen.blit(text, text_rect)
+
+        pygame.display.update(progress_rect, text_rect)
     
 
 # SCENE MANAGEMENT (static scene elements)
@@ -197,6 +259,8 @@ def challenge1():
     text_rect = text.get_rect()
     text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
     screen.blit(text, text_rect)
+    # progress bar
+    init_Progress_bar(10)
     # render
     pygame.display.flip()
 
@@ -284,11 +348,7 @@ while running:
         idle_dynamic()
         
     elif scene == "CHALLENGE1":
-        # main title
-        text = FONT1.render("Challenge 1", True, (255, 255, 255))
-        text_rect = text.get_rect(center=(400, 300))
-        screen.blit(text, text_rect)
-        pygame.display.flip()
+        update_progress_bar()
     
     elif scene == "CHALLENGE1_DEBRIEF":
         # main title
