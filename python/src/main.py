@@ -1,5 +1,12 @@
-# Simple scipt that shows a grey screen 
-# and monitors the serial port for incoming data.
+# This is the main script for the PunchPal project.
+# It is responsible for the following:
+# - Initializing the Pygame environment
+# - Setting up the serial connection
+# - Parsing the incoming serial data
+# - Reading from the serial port and setting variables
+# - Managing the different scenes
+# - Rendering the static scene elements
+# - Rendering the dynamic scene elements
 
 # Load libraries
 import pygame
@@ -16,17 +23,18 @@ pygame.init()
 # CONSTANTS
 """video settings"""
 FRAMERATE = 24
-screen_info = pygame.display.Info()
-screen_width = screen_info.current_w
-screen_height = screen_info.current_h
+SCREEN_INFO = pygame.display.Info()
+SCREEN_WIDTH = SCREEN_INFO.current_w
+SCREEN_HEIGHT = SCREEN_INFO.current_h
+
 pygame.mouse.set_visible(False)
 
 """paths"""
-script_dir = Path(__file__).parent
-data_dir = script_dir.parent / 'data'
-spritesheet_path = data_dir / 'boxer_spritesheet.png'
-font1_path = data_dir / 'Jost-VariableFont_wght.ttf'
-font2_path = data_dir / 'JosefinSans-VariableFont_wght.ttf'
+SCRIPT_DIR = Path(__file__).parent
+DATA_DIR = SCRIPT_DIR.parent / 'data'
+SPRITESHEET_PATH = DATA_DIR / 'boxer_spritesheet.png'
+FONT1_PATH = DATA_DIR / 'Jost-VariableFont_wght.ttf'
+FONT2_PATH = DATA_DIR / 'JosefinSans-VariableFont_wght.ttf'
 
 """design system"""
 BG_COLOR = (34, 34, 34)
@@ -35,8 +43,8 @@ MEDIUM_GRAY = (138, 138, 138)
 LIGHTGRAY = (216, 216, 216)
 BRIGHT_YELLOW = (255, 230, 0)
 
-font_H1 = pygame.font.Font(font1_path, 100)
-font_H2 = pygame.font.Font(font2_path, 50)
+FONT1 = pygame.font.Font(FONT1_PATH, 100)
+FONT2 = pygame.font.Font(FONT2_PATH, 50)
 
 """animated sprite settings"""
 COL_COUNT = 14  # the spritesheet has 14 columns
@@ -44,14 +52,14 @@ ROW_COUNT  = 9  # the spritesheet has 9 rows
 FPS = 24        # frames per second
 SPRITE_WIDTH = 195     # each frame is 195 pixels wide
 SPRITE_HEIGHT = 300    # each frame is 300 pixels high
-VALID_FRAMES = (COL_COUNT*ROW_COUNT) - 5 # the last 5 frames in the spriteheet are blank
+VALID_FRAMES = (COL_COUNT * ROW_COUNT) - 5 # the last 5 frames in the spriteheet are blank
 
 # FUNCTIONS
 """Function to load a spritesheet"""
-def load_spritesheet(spritesheet_path):
+def load_spritesheet(SPRITESHEET_PATH):
     global COL_COUNT, ROW_COUNT, SPRITE_WIDTH, SPRITE_HEIGHT, VALID_FRAMES
     """Load and preprocess frames from the spritesheet."""
-    spritesheet = pygame.image.load(spritesheet_path).convert_alpha()
+    spritesheet = pygame.image.load(SPRITESHEET_PATH).convert_alpha()
     frames = []
     for row in range(ROW_COUNT):
         for col in range(COL_COUNT):
@@ -89,7 +97,7 @@ def parseSerial(line):
 
 """Function to read from the serial port and set variables"""
 def readSerial():
-    global ser, current_state, scene  
+    global ser, current_state, scene
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -126,59 +134,71 @@ def readSerial():
 
     # manage serial connection errors
     except (serial.SerialException, OSError) as e:
-        print(f"Serial connection error: {e}")
+        print(f"Nothing to parse || error: {e}")
         ser = None
         # Restart the serial connection thread
         serial_thread = threading.Thread(target=connect_serial)
         serial_thread.daemon = True
         serial_thread.start()
 
+"""Function to update the progress bar"""
+def progressBar(time):
+    
+
 # SCENE MANAGEMENT (static scene elements)
 """Set initial scene"""
 scene = "BOOTING"
 
-"""Function to render the booting screen"""
+"""Function to render the booting screen (static elements)"""
 def booting():
     # background
     screen.fill(BG_COLOR)
-
     # main title
-    text = font_H1.render("Syteem operationeel!", True, (MEDIUM_GRAY))
+    text = FONT1.render("Syteem operationeel!", True, (MEDIUM_GRAY))
     text_rect = text.get_rect()
-    text_rect.center = (screen_width // 2, screen_height // 2)
+    text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     screen.blit(text, text_rect)
-
     # subtitle
-    text = font_H2.render("Klop op de zak om verder te gaan", True, (BRIGHT_YELLOW))
+    text = FONT2.render("Klop op de zak om verder te gaan", True, (BRIGHT_YELLOW))
     text_rect = text.get_rect()
-    text_rect.center = (screen_width // 2, screen_height // 2 + 100)
+    text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
     screen.blit(text, text_rect)
-
+    # render
     pygame.display.flip()
 
-"""Function to render the idle screen"""
+"""Function to render the idle screen (static elements)"""
 def idle():
     global animation_rect, frame_x, frame_y, frames
     # background
     screen.fill(BG_COLOR)
-
     # main title
-    text = font_H1.render("Klop om de zak om te beginnen.", True, (MEDIUM_GRAY))
+    text = FONT1.render("Klop om de zak om te beginnen.", True, (MEDIUM_GRAY))
     text_rect = text.get_rect()
-    text_rect.center = (screen_width // 2, screen_height // 4)
+    text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4)
     screen.blit(text, text_rect)
-
-    # Define position for the animated sprite
-    frame_x = (screen_width - SPRITE_WIDTH) // 2
-    frame_y = (screen_height - SPRITE_HEIGHT) // 2 + 100
+    # render
+    pygame.display.flip()
+    # Define position for the animated sprite (only once)
+    frame_x = (SCREEN_WIDTH - SPRITE_WIDTH) // 2
+    frame_y = (SCREEN_HEIGHT - SPRITE_HEIGHT) // 2 + 100
     animation_rect = pygame.Rect(frame_x, frame_y, SPRITE_WIDTH, SPRITE_HEIGHT)
 
-    pygame.display.update()
-
-"""Function to render the challenge 1 screen"""
+"""Function to render the challenge 1 screen (static elements)"""
 def challenge1():
-    screen.fill(MEDIUM_GRAY)
-    pygame.display.update()
+    # background
+    screen.fill(BG_COLOR)
+    # main title
+    text = FONT1.render("Uitdaging 1: Kracht", True, (MEDIUM_GRAY))
+    text_rect = text.get_rect()
+    text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 6)
+    screen.blit(text, text_rect)
+    # subtitle
+    text = FONT2.render("Sla zo hard als je kan!", True, (BRIGHT_YELLOW))
+    text_rect = text.get_rect()
+    text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+    screen.blit(text, text_rect)
+    # render
+    pygame.display.flip()
 
 """"Function to render the challenge 1 debrief screen"""
 def challenge1_debrief():
@@ -221,7 +241,7 @@ def idle_dynamic():
     
 # PRELOADING AND RENDERING: GENERAL DISPLAY
 """Set up the display"""
-screen = pygame.display.set_mode((screen_width,screen_height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED, vsync=1)
+screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.SCALED, vsync=1)
 pygame.display.set_caption("PunchPal")
 
 # PRELOADING AND RENDERING: SERIAL COMMUNICATION
@@ -232,7 +252,7 @@ serial_thread.start()
 
 # PRELOADING AND RENDERING: ANIMATIONS
 """Load the spritesheet frames"""
-frames = load_spritesheet(spritesheet_path)
+frames = load_spritesheet(SPRITESHEET_PATH)
 frame_index = 0
 
 # PRELOADING AND RENDERING: CLOCK, INIT SCREEN & LOOP
@@ -265,49 +285,49 @@ while running:
         
     elif scene == "CHALLENGE1":
         # main title
-        text = font_H1.render("Challenge 1", True, (255, 255, 255))
+        text = FONT1.render("Challenge 1", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
     elif scene == "CHALLENGE1_DEBRIEF":
         # main title
-        text = font_H1.render("Challenge 1 Debrief", True, (255, 255, 255))
+        text = FONT1.render("Challenge 1 Debrief", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
     elif scene == "CHALLENGE2":
         # main title
-        text = font_H1.render("Challenge 2", True, (255, 255, 255))
+        text = FONT1.render("Challenge 2", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
     elif scene == "CHALLENGE2_DEBRIEF":
         # main title
-        text = font_H1.render("Challenge 2 Debrief", True, (255, 255, 255))
+        text = FONT1.render("Challenge 2 Debrief", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
     elif scene == "CHALLENGE3":
         # main title
-        text = font_H1.render("Challenge 3", True, (255, 255, 255))
+        text = FONT1.render("Challenge 3", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
     elif scene == "CHALLENGE3_DEBRIEF":
         # main title
-        text = font_H1.render("Challenge 3 Debrief", True, (255, 255, 255))
+        text = FONT1.render("Challenge 3 Debrief", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
     
     elif scene == "CONCLUSION":
         # main title
-        text = font_H1.render("Conclusion", True, (255, 255, 255))
+        text = FONT1.render("Conclusion", True, (255, 255, 255))
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
