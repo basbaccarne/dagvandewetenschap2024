@@ -162,7 +162,7 @@ def readSerial():
 
 def init_Progress_bar(time_duration):
     """Initialize the progress bar with the given duration."""
-    global bin_width, countdown, last_update_time
+    global bin_width, countdown, last_update_time, start_time
 
     # Bar color
     bar_color = BRIGHT_YELLOW
@@ -178,7 +178,7 @@ def init_Progress_bar(time_duration):
     bin_width = bar_width / time_duration
     countdown = time_duration
     start_time = time.time()
-    last_update_time = time.time() - start_time
+    last_update_time = 0
 
 
 def update_progress_bar():
