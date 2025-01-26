@@ -178,7 +178,7 @@ def init_Progress_bar(time_duration):
     bin_width = bar_width / time_duration
     countdown = time_duration
     start_time = time.time()
-    last_update_time = 0
+    last_update_time = time.time() - start_time
 
 
 def update_progress_bar():
