@@ -177,8 +177,9 @@ def init_Progress_bar(time_duration):
     text = FONT3.render(f"  {str(time_duration)}  ", True, (BRIGHT_YELLOW))
     text_rect = text.get_rect()
     text_rect.center = (SCREEN_WIDTH -SCREEN_WIDTH//25, SCREEN_HEIGHT - SCREEN_HEIGHT//10)
-    
-    #render the text
+    screen.blit(text, text_rect)
+
+    # render the text
     pygame.display.update(bar_area, text_rect)
 
     # Calculate bin width and set the countdown time
@@ -256,8 +257,7 @@ def idle():
 
 """Function to render the challenge 1 screen (static elements)"""
 def challenge1():
-    # background
-    screen.fill(BG_COLOR)
+    
     # main title
     text = FONT1.render("Uitdaging 1: Kracht", True, (MEDIUM_GRAY))
     text_rect = text.get_rect()
@@ -275,14 +275,14 @@ def challenge1():
 
 """"Function to render the challenge 1 debrief screen"""
 def challenge1_debrief():
-    screen.fill(LIGHTGRAY)
+    screen.fill(BG_COLOR)
     pygame.display.update()
     # progress bar
     init_Progress_bar(12)
 
 """Function to render the challenge 2 screen"""
 def challenge2():
-    screen.fill(BRIGHT_YELLOW)
+    screen.fill(BG_COLOR)
     pygame.display.update()
     # progress bar
     init_Progress_bar(30)
@@ -296,21 +296,21 @@ def challenge2_debrief():
 
 """Function to render the challenge 3 screen"""
 def challenge3():
-    screen.fill(GRAY)
+    screen.fill(BG_COLOR)
     pygame.display.update()
     # progress bar
     init_Progress_bar(30)
 
 """Function to render the challenge 3 debrief screen"""
 def challenge3_debrief():
-    screen.fill(MEDIUM_GRAY)
+    screen.fill(BG_COLOR)
     pygame.display.update()
     # progress bar
     init_Progress_bar(5)
 
 """Function to render the conclusion screen"""
 def conclusion():
-    screen.fill(LIGHTGRAY)
+    screen.fill(BG_COLOR)
     pygame.display.update()
     # progress bar
     init_Progress_bar(20)
