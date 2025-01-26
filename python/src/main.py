@@ -166,8 +166,8 @@ def idle():
     screen.blit(text, text_rect)
 
     # Define position for the animated sprite
-    frame_x = (SCREEN_WIDTH - SPRITE_WIDTH) // 2
-    frame_y = (SCREEN_HEIGHT - SPRITE_HEIGHT) // 2 + 100
+    frame_x = (screen_width - SPRITE_WIDTH) // 2
+    frame_y = (screen_height - SPRITE_HEIGHT) // 2 + 100
     animation_rect = pygame.Rect(frame_x, frame_y, SPRITE_WIDTH, SPRITE_HEIGHT)
 
     pygame.display.update()
