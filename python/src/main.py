@@ -158,7 +158,7 @@ def booting():
 
 """Function to render the idle screen"""
 def idle():
-    global animation_rect
+    global animation_rect, frame_x, frame_y, frames
     # background
     screen.fill(BG_COLOR)
 
