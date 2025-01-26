@@ -197,12 +197,12 @@ def update_progress_bar():
     remaining_time = countdown - elapsed_time
 
     # Update the progress bar every second
-    if remaining_time > -1 and elapsed_time - last_update_time >= 1:
+    if remaining_time > -1 and round(elapsed_time) - round(last_update_time) >= 1:
         last_update_time = elapsed_time
 
         # subtract the bin width from the right side of the bar
         retract_x = SCREEN_WIDTH - (bin_width * elapsed_time)
-        progress_rect = pygame.Rect(retract_x, bar_area.top, bin_width + 15, bar_height)    
+        progress_rect = pygame.Rect(retract_x, bar_area.top, bin_width + 20, bar_height)    
         pygame.draw.rect(screen, BG_COLOR, progress_rect)
 
         # Render the remaining time text
