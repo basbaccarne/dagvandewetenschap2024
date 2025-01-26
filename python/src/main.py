@@ -134,6 +134,7 @@ def readSerial():
 # SCENE MANAGEMENT (static scene elements)
 """Set initial scene"""
 scene = "BOOTING"
+global current_state
 
 """Function to render the booting screen"""
 def booting():
@@ -246,7 +247,7 @@ booting()
 
 # MAIN LOOP
 running = True
-global current_state = scene
+current_state = scene
 
 while running:
     # Handle events
