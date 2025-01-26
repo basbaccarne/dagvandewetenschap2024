@@ -261,7 +261,7 @@ def challenge1():
     text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
     screen.blit(text, text_rect)
     # progress bar
-    init_Progress_bar(10)
+    init_Progress_bar(15)
     # render
     pygame.display.flip()
 
@@ -269,31 +269,43 @@ def challenge1():
 def challenge1_debrief():
     screen.fill(LIGHTGRAY)
     pygame.display.update()
+    # progress bar
+    init_Progress_bar(12)
 
 """Function to render the challenge 2 screen"""
 def challenge2():
     screen.fill(BRIGHT_YELLOW)
     pygame.display.update()
+    # progress bar
+    init_Progress_bar(30)
 
 """Function to render the challenge 2 debrief screen"""
 def challenge2_debrief():
     screen.fill(BG_COLOR)
     pygame.display.update()
+    # progress bar
+    init_Progress_bar(15)
 
 """Function to render the challenge 3 screen"""
 def challenge3():
     screen.fill(GRAY)
     pygame.display.update()
+    # progress bar
+    init_Progress_bar(30)
 
 """Function to render the challenge 3 debrief screen"""
 def challenge3_debrief():
     screen.fill(MEDIUM_GRAY)
     pygame.display.update()
+    # progress bar
+    init_Progress_bar(5)
 
 """Function to render the conclusion screen"""
 def conclusion():
     screen.fill(LIGHTGRAY)
     pygame.display.update()
+    # progress bar
+    init_Progress_bar(20)
 
 # SCENE MANAGEMENT (dynamic scene elements)
 """Function to render the idle screen (animated boxer)"""
@@ -357,6 +369,8 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
+
+        update_progress_bar()
     
     elif scene == "CHALLENGE2":
         # main title
@@ -364,6 +378,8 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
+
+        update_progress_bar()
     
     elif scene == "CHALLENGE2_DEBRIEF":
         # main title
@@ -371,6 +387,8 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
+
+        update_progress_bar()
     
     elif scene == "CHALLENGE3":
         # main title
@@ -378,6 +396,8 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
+
+        update_progress_bar()
     
     elif scene == "CHALLENGE3_DEBRIEF":
         # main title
@@ -385,6 +405,8 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
+
+        update_progress_bar()
     
     elif scene == "CONCLUSION":
         # main title
@@ -392,6 +414,8 @@ while running:
         text_rect = text.get_rect(center=(400, 300))
         screen.blit(text, text_rect)
         pygame.display.flip()
+
+        update_progress_bar()
 
     # Cap the frame rate
     clock.tick(FRAMERATE)
