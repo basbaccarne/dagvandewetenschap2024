@@ -87,6 +87,7 @@ def parseSerial(line):
 
 """Function to read from the serial port and set variables"""
 def readSerial():
+    global ser 
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
