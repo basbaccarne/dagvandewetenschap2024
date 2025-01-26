@@ -158,6 +158,7 @@ def booting():
 
 """Function to render the idle screen"""
 def idle():
+    global animation_rect
     # background
     screen.fill(BG_COLOR)
 
