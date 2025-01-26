@@ -172,8 +172,15 @@ def init_Progress_bar(time_duration):
 
     # Draw the initial progress bar
     pygame.draw.rect(screen, bar_color, bar_area)
-    pygame.display.update(bar_area)
+
+    # Render the time text
+    text = FONT3.render(f"  {str(time_duration}  ", True, (BRIGHT_YELLOW))
+    text_rect = text.get_rect()
+    text_rect.center = (SCREEN_WIDTH -SCREEN_WIDTH//25, SCREEN_HEIGHT - SCREEN_HEIGHT//10)
     
+    #render the text
+    pygame.display.update(bar_area, text_rect)
+
     # Calculate bin width and set the countdown time
     bin_width = bar_width / time_duration
     countdown = time_duration
@@ -200,7 +207,7 @@ def update_progress_bar():
         # Render the remaining time text
         text = FONT3.render(f"  {str(round(remaining_time))}  ", True, (BRIGHT_YELLOW))
         text_rect = text.get_rect()
-        text_rect.center = (SCREEN_WIDTH -SCREEN_WIDTH//30, SCREEN_HEIGHT - SCREEN_HEIGHT//10)
+        text_rect.center = (SCREEN_WIDTH -SCREEN_WIDTH//25, SCREEN_HEIGHT - SCREEN_HEIGHT//10)
 
         # Clear the text area and render the new text
         screen.fill(BG_COLOR, text_rect)
