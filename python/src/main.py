@@ -194,13 +194,13 @@ def update_progress_bar():
 
         # subtract the bin width from the right side of the bar
         retract_x = SCREEN_WIDTH - (bin_width * elapsed_time)
-        progress_rect = pygame.Rect(retract_x, bar_area.top, bin_width + 10, bar_height)    
+        progress_rect = pygame.Rect(retract_x, bar_area.top, bin_width + 15, bar_height)    
         pygame.draw.rect(screen, BG_COLOR, progress_rect)
 
         # Render the remaining time text
         text = FONT3.render(f"  {str(round(remaining_time))}  ", True, (BRIGHT_YELLOW))
         text_rect = text.get_rect()
-        text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        text_rect.center = (SCREEN_WIDTH -SCREEN_WIDTH//30, SCREEN_HEIGHT - SCREEN_HEIGHT//10)
 
         # Clear the text area and render the new text
         screen.fill(BG_COLOR, text_rect)
