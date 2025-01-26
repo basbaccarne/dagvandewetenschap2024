@@ -45,6 +45,7 @@ BRIGHT_YELLOW = (255, 230, 0)
 
 FONT1 = pygame.font.Font(FONT1_PATH, 100)
 FONT2 = pygame.font.Font(FONT2_PATH, 50)
+FONT3 = pygame.font.Font(FONT2_PATH, 100)
 
 """animated sprite settings"""
 COL_COUNT = 14  # the spritesheet has 14 columns
@@ -196,7 +197,7 @@ def update_progress_bar():
         pygame.draw.rect(screen, BG_COLOR, progress_rect)
 
         # Render the remaining time text
-        text = FONT.render(f"  {str(round(remaining_time))}  ", True, (BRIGHT_YELLOW))
+        text = FONT3.render(f"  {str(round(remaining_time))}  ", True, (BRIGHT_YELLOW))
         text_rect = text.get_rect()
         text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
