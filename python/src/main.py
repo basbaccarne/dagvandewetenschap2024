@@ -211,18 +211,12 @@ def conclusion():
     pygame.display.update()
 
 # SCENE MANAGEMENT (dynamic scene elements)
+"""Function to render the idle screen (animated boxer)"""
 def idle_dynamic():
-    global frame_index, frames, frame_x, frame_y, animation_rect, screen, screen_width, screen_height, BG_COLOR
-    # Clear the animation area by filling it with black
-    screen.fill((0, 0, 0), animation_rect)
-
-    # Draw the current frame of animation
+    global frame_index
+    screen.fill((BG_COLOR), animation_rect)
     screen.blit(frames[frame_index], (frame_x, frame_y))
-
-    # Update only the animated area (animation rectangle)
     pygame.display.update(animation_rect)
-
-    # Move to the next frame
     frame_index = (frame_index + 1) % len(frames)
     
 # PRELOADING AND RENDERING: GENERAL DISPLAY
