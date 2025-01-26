@@ -87,7 +87,7 @@ def parseSerial(line):
 
 """Function to read from the serial port and set variables"""
 def readSerial():
-    global ser 
+    global ser, current_state  
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -134,7 +134,6 @@ def readSerial():
 # SCENE MANAGEMENT (static scene elements)
 """Set initial scene"""
 scene = "BOOTING"
-global current_state
 
 """Function to render the booting screen"""
 def booting():
