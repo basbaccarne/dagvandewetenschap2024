@@ -246,7 +246,7 @@ booting()
 
 # MAIN LOOP
 running = True
-current_state = scene
+global current_state = scene
 
 while running:
     # Handle events
