@@ -49,6 +49,7 @@ VALID_FRAMES = (COL_COUNT*ROW_COUNT) - 5 # the last 5 frames in the spriteheet a
 # FUNCTIONS
 """Function to load a spritesheet"""
 def load_spritesheet(spritesheet_path):
+    global COL_COUNT, ROW_COUNT, SPRITE_WIDTH, SPRITE_HEIGHT, VALID_FRAMES
     """Load and preprocess frames from the spritesheet."""
     spritesheet = pygame.image.load(spritesheet_path).convert_alpha()
     frames = []
@@ -79,6 +80,7 @@ def connect_serial():
 """Function to parse the incoming serial data"""
 serial_dict = {}
 def parseSerial(line):
+    global serial_dict
     # Parse the incoming data from 'message||value' to dictionary
     if "||" in line:
         message, value = line.split("||")
@@ -87,7 +89,7 @@ def parseSerial(line):
 
 """Function to read from the serial port and set variables"""
 def readSerial():
-    global ser, current_state  
+    global ser, current_state, scene  
     try:
         if ser and ser.in_waiting > 0:
             line = ser.readline().decode('utf-8').rstrip()
@@ -209,6 +211,7 @@ def conclusion():
 
 # SCENE MANAGEMENT (dynamic scene elements)
 def idle_dynamic():
+    global frame_index, frames, frame_x, frame_y, animation_rect, screen, screen_width, screen_height, BG_COLOR
     # Clear the animation area by filling it with black
     screen.fill((0, 0, 0), animation_rect)
 
